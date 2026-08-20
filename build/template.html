@@ -1,0 +1,719 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anthropeum Study Map</title>
+<style>
+  :root{
+    color-scheme: dark;
+    --page:#0d0d0d; --surface:#1a1a19; --surface-2:#222221;
+    --ink:#ffffff; --ink-2:#c3c2b7; --muted:#898781;
+    --grid:#2c2c2a; --baseline:#383835; --ring:rgba(255,255,255,0.10);
+    --stone:#3987e5; --metal:#d95926; --perish:#199e70; --other:#c98500;
+    --instr:#9085e9; --accent:#3987e5;
+  }
+  *{box-sizing:border-box; margin:0}
+  html,body{height:100%}
+  body{background:var(--page); color:var(--ink);
+    font:14px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;
+    display:flex; flex-direction:column; overflow:hidden}
+  header{display:flex; align-items:center; gap:18px; padding:10px 16px 8px;
+    border-bottom:1px solid var(--ring); flex-wrap:wrap}
+  header h1{font-size:17px; font-weight:650; letter-spacing:.2px}
+  header h1 span{color:var(--muted); font-weight:400; font-size:12.5px; margin-left:8px}
+  nav{display:flex; gap:4px}
+  nav button{background:none; border:1px solid transparent; color:var(--ink-2);
+    padding:6px 13px; border-radius:8px; font:inherit; font-size:13.5px; cursor:pointer}
+  nav button:hover{background:var(--surface-2)}
+  nav button.on{background:var(--surface-2); color:var(--ink); border-color:var(--ring); font-weight:600}
+  #eraReadout{margin-left:auto; color:var(--ink-2); font-size:13px}
+  #eraReadout b{color:var(--ink)}
+
+  #timeline{display:grid; grid-template-columns:56px repeat(20,1fr); gap:2px;
+    padding:8px 16px 10px; border-bottom:1px solid var(--ring); user-select:none}
+  #timeline .cell{position:relative; height:44px; border-radius:5px; cursor:pointer;
+    background:var(--surface); border:1px solid transparent; overflow:hidden}
+  #timeline .cell:hover{border-color:var(--ring)}
+  #timeline .cell.on{border-color:var(--ink-2); box-shadow:inset 0 0 0 1px var(--ink-2)}
+  #timeline .fillbar{position:absolute; left:0; right:0; bottom:0; background:var(--accent); opacity:.85}
+  #timeline .yr{position:absolute; top:3px; left:5px; font-size:10.5px; color:var(--ink-2)}
+  #timeline .bce{position:absolute; bottom:2px; left:5px; font-size:9px; color:var(--muted)}
+  #timeline .all .yr{font-size:11.5px; top:50%; transform:translateY(-50%); color:var(--ink)}
+
+  main{flex:1; display:flex; min-height:0}
+  #mapwrap{flex:1; position:relative; min-width:0}
+  svg#map{width:100%; height:100%; display:block; background:#101318; cursor:grab; touch-action:none}
+  svg#map.dragging{cursor:grabbing}
+  .border-path{stroke:var(--baseline); stroke-width:.6; vector-effect:non-scaling-stroke}
+  .border-path:hover{filter:brightness(1.7)}
+  .grat{stroke:var(--grid); stroke-width:.5; vector-effect:non-scaling-stroke; opacity:.5}
+  .dot{stroke:rgba(255,255,255,.55); stroke-width:1; vector-effect:non-scaling-stroke; cursor:pointer}
+  .dot:hover{stroke:#fff; stroke-width:2}
+  .dot.hl{stroke:#fff; stroke-width:2.5}
+  .maplabel{fill:var(--ink-2); pointer-events:none; paint-order:stroke; stroke:#101318; stroke-width:.5px; font-weight:600}
+  #maphint{position:absolute; left:12px; bottom:10px; color:var(--muted); font-size:11.5px;
+    background:rgba(13,13,13,.65); padding:3px 8px; border-radius:6px; pointer-events:none}
+  #maplegendbox{position:absolute; right:12px; top:10px; background:rgba(26,26,25,.92);
+    border:1px solid var(--ring); border-radius:8px; padding:8px 11px; font-size:12px; color:var(--ink-2); max-width:230px}
+  #maplegendbox b{color:var(--ink); font-size:12px}
+
+  aside{width:360px; border-left:1px solid var(--ring); background:var(--surface);
+    overflow-y:auto; padding:14px 16px 20px; flex-shrink:0}
+  aside h2{font-size:14px; font-weight:650; margin:2px 0 8px}
+  aside h3{font-size:12px; font-weight:600; color:var(--muted); text-transform:uppercase;
+    letter-spacing:.6px; margin:16px 0 6px}
+  .rowlist{display:flex; flex-direction:column; gap:3px}
+  .rrow{display:grid; grid-template-columns:18px 1fr auto; gap:8px; align-items:center;
+    padding:3px 6px; border-radius:6px; cursor:pointer; font-size:13px}
+  .rrow:hover{background:var(--surface-2)}
+  .rrow.sel{background:var(--surface-2); box-shadow:inset 2px 0 0 var(--ink-2)}
+  .rrow .rk{color:var(--muted); font-size:11px; text-align:right}
+  .rrow .nm{color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .rrow .nm small{color:var(--muted); font-weight:400}
+  .rrow .ct{color:var(--ink-2); font-variant-numeric:tabular-nums; font-size:12px}
+  .rrow .bar{grid-column:2/4; height:4px; border-radius:2px; background:var(--accent); opacity:.75; margin-top:-1px}
+  .emprow{display:grid; grid-template-columns:16px 1fr; gap:8px; padding:6px; border-radius:6px; cursor:pointer}
+  .emprow:hover{background:var(--surface-2)}
+  .emprow .edot{width:11px; height:11px; border-radius:50%; margin-top:3px; border:1px solid rgba(255,255,255,.4)}
+  .emprow .enm{font-size:13px; font-weight:600}
+  .emprow .ent{font-size:12px; color:var(--ink-2); margin-top:1px}
+  .chips{display:flex; gap:6px; flex-wrap:wrap; margin:4px 0 10px}
+  .chip{display:flex; align-items:center; gap:6px; border:1px solid var(--ring); background:none;
+    color:var(--ink-2); font:inherit; font-size:12.5px; padding:4px 10px; border-radius:16px; cursor:pointer}
+  .chip .sw{width:9px; height:9px; border-radius:2px}
+  .chip.on{background:var(--surface-2); color:var(--ink); border-color:var(--ink-2)}
+  label.ctl{display:flex; gap:7px; align-items:center; font-size:12.5px; color:var(--ink-2); margin:6px 0; cursor:pointer}
+  .note{font-size:12.5px; color:var(--ink-2); margin:6px 0; padding-left:14px; position:relative}
+  .note::before{content:"•"; position:absolute; left:2px; color:var(--muted)}
+  details{margin-top:16px; border-top:1px solid var(--ring); padding-top:8px}
+  details summary{cursor:pointer; font-size:12.5px; color:var(--muted); font-weight:600}
+  details .note{margin:5px 0}
+  #matchart{margin:4px 0 2px}
+  .leg{display:flex; gap:12px; flex-wrap:wrap; margin:6px 0 2px}
+  .leg span{display:flex; gap:5px; align-items:center; font-size:11.5px; color:var(--ink-2)}
+  .leg i{width:9px; height:9px; border-radius:2px; display:inline-block}
+  footer{padding:5px 16px; border-top:1px solid var(--ring); color:var(--muted); font-size:11px}
+  footer a{color:var(--muted)}
+  #tip{position:fixed; pointer-events:none; background:#242423; border:1px solid var(--ring);
+    border-radius:8px; padding:8px 11px; font-size:12.5px; max-width:290px; z-index:50;
+    display:none; box-shadow:0 4px 18px rgba(0,0,0,.5); color:var(--ink-2)}
+  #tip b{color:var(--ink); display:block; margin-bottom:2px; font-size:13px}
+  #tip .tsub{color:var(--muted); font-size:11.5px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Anthropeum Study Map <span>Met collection · 3000 BCE – 2000 CE</span></h1>
+  <nav id="tabs">
+    <button data-tab="hotspots" class="on">Hotspots</button>
+    <button data-tab="empires">Empires</button>
+    <button data-tab="materials">Materials</button>
+    <button data-tab="instruments">Instruments</button>
+  </nav>
+  <div id="eraReadout"></div>
+</header>
+<div id="timeline"></div>
+<main>
+  <div id="mapwrap">
+    <svg id="map"></svg>
+    <div id="maplegendbox"></div>
+    <div id="maphint">drag to pan · scroll to zoom · ←/→ era · 1–4 tabs</div>
+  </div>
+  <aside id="side"></aside>
+</main>
+<footer>
+  Personal study tool for <a href="https://www.anthropeum.games/">anthropeum.games</a>. Data:
+  Metropolitan Museum of Art Open Access (CC0, 484,956 objects) · borders from
+  <a href="https://github.com/aourednik/historical-basemaps">historical-basemaps</a> (CC BY-NC-SA 4.0).
+  Not affiliated with the Met or Anthropeum.
+</footer>
+<div id="tip"></div>
+
+<script>
+const AGG = /*%%AGG%%*/;
+const EMPIRES = /*%%EMPIRES%%*/;
+</script>
+<script>
+/*%%BORDERS%%*/
+</script>
+<script>
+"use strict";
+/* ---------- constants & state ---------- */
+const CATS = [
+  {key:"stone",  ci:1, label:"Stone & gems",          color:"var(--stone)",  hex:"#3987e5"},
+  {key:"metal",  ci:2, label:"Metal",                 color:"var(--metal)",  hex:"#d95926"},
+  {key:"perish", ci:3, label:"Perishables (organic)", color:"var(--perish)", hex:"#199e70"},
+  {key:"other",  ci:4, label:"Ceramic, glass & other",color:"var(--other)",  hex:"#c98500"},
+];
+const ERA2MAP = ["bc3000","bc3000","bc2000","bc2000","bc2000","bc1500","bc1500","bc1000","bc1000",
+  "bc700","bc400","bc100","100","400","600","900","1100","1400","1600","1880"];
+const ALLMAP = "2000";
+const SEQ = ["#1c5cab","#2a78d6","#3987e5","#6da7ec","#9ec5f4"];
+const STRENGTH_COLOR = {3:"#86b6ef", 2:"#3987e5", 1:"#1c5cab"};
+const STRENGTH_LABEL = {3:"superpower of its era", 2:"major power", 1:"regional culture"};
+
+const STRATEGY = {
+  hotspots: [
+    "The daily game draws from a curated pool of ~2,300 artifacts that is deliberately re-balanced across world regions — so Africa, Mesoamerica, the Andes, the Pacific and the Central Asian steppe come up far more often than raw Met counts suggest. Toggle “exclude works on paper” to see the balanced picture.",
+    "Location is worth 5,000 pts (full points within ~50 km, decaying fast); era is also 5,000 but scored much more forgivingly (full credit for overlap, partial for adjacent blocks). Nail the region first — the era usually follows.",
+    "Score is against where an object was MADE, not what it depicts or where it was dug up. A Roman marble copy of a Greek bronze → pin Italy.",
+    "When unsure, use historical population density as a prior: Nile valley, Mesopotamia/Levant, north India, eastern China, Mediterranean coasts, central Mexico, Andean coast.",
+    "Players report the game loves steppe-nomad metalwork (Avar belt fittings, Central Asian ornaments, 8th–12th c.) — a classic blind spot.",
+    "Getting the right continent + right millennium already beats the median score. Guess coarse-but-safe over precise-but-risky.",
+  ],
+  empires: [
+    "The game scores your pin against era-appropriate borders, not modern countries — learn what the map looked like in each 250-year block.",
+    "Markers show the dominant powers of the selected era (size = strength). Hover borders to see every polity’s name.",
+    "Strong empires produce a disproportionate share of museum artifacts: court workshops, temples, royal tombs. If an object looks expensive, ask “who was the superpower then?”",
+  ],
+  materials: [
+    "Survival bias is your best dating tool: organic materials (wood, textile, paper, leather) rarely survive from before ~1000 CE — except in desert Egypt and the arid Andes, where 3,000-year-old linen and feathers are common.",
+    "Oil on canvas → after the 1400s, almost always Europe. Photographs → after 1839. Prints/engravings → mostly 1450+ Europe.",
+    "Bronze ritual vessels → Shang/Zhou China (1600–250 BCE). Cast bronze with rivets and animal motifs → steppe nomads. Iron only appears after ~1200 BCE.",
+    "Porcelain → China from the Tang/Song era; Europe copies it only after 1710. Faience → Egypt. Black- and red-figure pottery → Greece 700–300 BCE.",
+    "Gold: Andes (Moche/Chimú/Inca), Colombia, West Africa (Asante), Egypt, and steppe cultures. Andean gold is hammered sheet; Egyptian is inlaid.",
+    "Stone sculpture dominates the deep BCE eras simply because it is what survives — a stone object can be almost any age, so lean on style, not material, for dating stone.",
+  ],
+  instruments: [
+    "The Met’s ~5,200 instruments skew heavily to 1500–2000 CE Europe and America (violins, keyboards, guitars) — if an instrument looks orchestral, guess Europe 1750+.",
+    "Non-Western clusters to know: Japan & China (zithers, flutes, drums), India (sitars, vinas), Africa (drums, harps, sansas), Southeast Asia (gongs, gamelan), the Americas (whistles, rattles — often ceramic, i.e. pre-Columbian).",
+    "Ancient instruments are rare and precious: Egyptian harps and sistra, Roman/Greek auloi. A very old-looking instrument is most likely Egypt.",
+    "Materials give it away: gourd resonators → Africa; lacquered wood → East Asia; ivory inlay → courtly Europe or Mughal India; ceramic whistles → Mesoamerica/Andes.",
+  ],
+  facts: [
+    "10 artifacts/day · 10,000 pts each = 5,000 location + 5,000 era · 100,000 max.",
+    "Location: full 5,000 within ~50 km of the making-place, then decays with distance on period-correct borders.",
+    "Era: 250-year blocks on a 3000 BCE – 2000 CE line; overlap = full credit, near-miss = partial.",
+    "3 hints/day: a hint reveals either a ~1,000-year window or a verbal region (“Mesoamerica”).",
+    "Share-grid tiers per artifact: green ≥9,000 · blue ≥7,000 · yellow ≥5,000 · red below.",
+    "Benchmarks from shared scores: ~50k bottom decile · ~64k median · 75–85k top ~3–12%.",
+  ],
+};
+
+const state = { tab:"hotspots", era:null, mat:"stone", sub:null, matMode:"pct", exWop:false };
+
+/* sub-material index: p.S[era][sid] = count */
+const SUBM = AGG.meta.submats;
+for (const p of AGG.places){ p.S = {}; for (const e in (p.sub || {})) p.S[e] = Object.fromEntries(p.sub[e]); }
+const GSUB = {}; for (const e in AGG.gsub) GSUB[e] = Object.fromEntries(AGG.gsub[e]);
+function subVal(p, sid, era){
+  if (era != null) return (p.S[era] && p.S[era][sid]) || 0;
+  let v = 0; for (const e in p.S) v += p.S[e][sid] || 0; return v;
+}
+function gsubVal(sid, era){
+  if (era != null) return (GSUB[era] && GSUB[era][sid]) || 0;
+  let v = 0; for (const e in GSUB) v += GSUB[e][sid] || 0; return v;
+}
+const subsOfCat = catKey => SUBM.map((s, i) => ({ ...s, sid:i })).filter(s => s.cat === catKey);
+
+/* material priors — the mindmap hooks */
+const SUBNOTES = {
+  limestone:"Egypt’s default stone (Nile cliffs & Giza bedrock): reliefs, stelae, statues. Also Maya stelae and Gothic France. White-ish soft carved stone → guess Egypt first.",
+  marble:"Greece (Cycladic figures, Parian/Pentelic sculpture) → Rome (copies!) → Renaissance Italy. White crystalline figure = Aegean/Italian axis, almost never Egypt.",
+  granite:"Hard-stone Egypt: Aswan pink & black granite colossi and sarcophagi.",
+  basalt:"Dark dense stone: Mesopotamian steles & Egyptian late-period statuary.",
+  alabaster:"Banded translucent vessels = Egypt (canopic jars, unguent jars); also medieval English reliefs and Islamic windows.",
+  sandstone:"Khmer temple sculpture, Indian temple fragments, Egyptian quartzite colossi, US Southwest.",
+  steatite:"Soft carveable: Egyptian scarabs (usually glazed green-blue) and Indus Valley seals.",
+  serpentine:"Dark green polish: Egypt, Mesoamerica (Olmec masks), Aegean.",
+  schist:"Gandhara (Pakistan) Greco-Buddhist sculpture = gray schist; Egyptian Late Period = greywacke.",
+  jade:"Three jade worlds: China (bi discs, cong tubes, Ming pendants), Mesoamerica (Olmec/Maya celts, masks), Māori New Zealand (hei-tiki). Style decides which.",
+  obsidian:"Volcanic glass: Mesoamerica (blades, mirrors) first; also Anatolia and Pacific.",
+  flint:"Knapped tools: prehistoric anywhere; ripple-flaked knives = Predynastic Egypt.",
+  quartz:"Rock crystal vessels: Fatimid Egypt ewers, European reliquaries and Renaissance carvings.",
+  carnelian:"Orange-red beads/seals: Mesopotamia & Indus trade, Egyptian jewelry, Roman intaglio gems.",
+  lapis:"Deep blue = mined only in Afghanistan (Badakhshan) → Mesopotamian inlay (Ur), Egyptian amulets. Lapis far from Afghanistan = long-distance trade.",
+  turquoise:"Egypt/Sinai, Persia (tilework too), Aztec mosaic masks, US Southwest (Ancestral Pueblo).",
+  porphyry:"Imperial purple stone from one Egyptian quarry — Roman/Byzantine emperors only.",
+  gems:"Cut gemstones & pearls: courtly jewelry — Hellenistic, Mughal India, Renaissance+ Europe.",
+  gold:"Regional accents: Andes = hammered sheet masks; Colombia = cast tumbaga; Egypt = inlay & funerary; steppe (Scythian) = animal-style plaques; West Africa (Asante) = regalia; Byzantine = icons/glass.",
+  silver:"Sasanian hunting plates, Greek/Roman tableware, colonial Peru & Mexico, Georgian/Victorian England & America.",
+  bronze:"Big four: Shang/Zhou China ritual vessels (taotie masks), Greek/Roman statuary & mirrors, Luristan (Iran) horse gear, Chola India Nataraja. Renaissance statuettes too.",
+  copper:"Earlier/simpler than bronze: Old Kingdom Egypt, Andean plates & tumi knives, Great Lakes North America.",
+  brass:"Benin ‘bronzes’ (Nigeria) are brass!; Islamic inlaid ewers & astrolabes; European instruments.",
+  iron:"Only after ~1200 BCE anywhere. Mostly = Arms & Armor: European plate, Japanese swords & tsuba, Persian/Indian (wootz) blades. Rust-brown = recent or armor.",
+  lead:"Cheap casts & seals: Roman, Byzantine pilgrim tokens; pewter = European/American tableware 1600+.",
+  metal_other:"Mixed or unspecified metalwork — check the object type instead.",
+  papyrus:"= Egypt, full stop. 2000 BCE letters → Book of the Dead → Byzantine/Coptic documents (to ~1000 CE).",
+  parchment:"Animal-skin pages: European medieval manuscripts & Books of Hours, early Qur’ans, Ethiopian scrolls. Pre/para-paper bookworld, 300–1500 CE.",
+  paper:"China invents 105 CE → Islamic world ~800 → Europe ~1300. Prints: Europe 1450+ (engravings, etchings), Japan ukiyo-e 1670–1900. Photographs = post-1839. A print is nearly always Europe/US/Japan.",
+  canvas:"Oil on canvas = Europe after ~1450 (Venice popularized it), then colonial Americas. Before that panels & frescoes.",
+  silk:"China’s monopoly to ~550 CE, then Byzantium/Sasanian/Islamic weaving; Japanese kimono/kosode; Safavid Persian & French (Lyon) 18th-c. silks.",
+  wool:"Two great wool worlds: Andean camelid fiber (Paracas/Nasca mantles, khipu often cotton+camelid) and Near Eastern/Islamic carpets + European tapestry.",
+  cotton:"India’s signature export (painted/printed chintz, fine muslin) + one of coastal Peru’s oldest crops + Islamic tiraz. Printed cotton = India→Europe trade.",
+  linen:"= flax = Egypt above all: mummy wrappings, tunics, Fayum shrouds; later European/Flemish lace & damask.",
+  fiber:"Cordage priors by region: Andes = agave/cabuya & cotton cords (khipu!); Pacific = coconut coir sennit, pandanus mats, barkcloth (tapa); Africa = raffia (Kuba cloth) & bast; North America = cedar bark, yucca, sweetgrass; SE Asia = rattan & bamboo; Egypt = halfa grass & papyrus rope. A knotted/plaited cord’s plant ≈ its continent.",
+  textile:"Technique beats fiber when unspecified: tapestry-weave = Europe or Andes; ikat = Indonesia/Central Asia; brocade = China/Japan/Persia; batik = Java.",
+  wood:"Wood survives only where dry: Egypt (coffins, tomb models, 2000 BCE+) and Andes. Everywhere else assume post-1000 CE — African wood sculpture in museums is mostly 1800s–1900s despite ancient-looking styles!",
+  lacquer:"East Asia’s signature coating: Chinese carved red (cinnabar), Japanese maki-e gold sprinkle, Ryukyu, Burmese. Shiny black/red layered = East/SE Asia.",
+  leather:"Plains North America parfleche & garments, Islamic/European bookbindings, horse tack.",
+  ivory:"Elephant/walrus/hippo: Egyptian & Phoenician inlays, Gothic French diptychs (1250–1400), Benin & Loango carved tusks, Mughal India, Japanese netsuke (1700+).",
+  bone:"Cheap ivory substitute + prehistoric tools; Inuit & Arctic carving; medieval European workshops.",
+  shell:"Mesopotamian inlay (Standard of Ur), Andean Spondylus (sacred red), Pacific ornaments & money, Native North American wampum.",
+  feather:"Featherwork = the Americas + Pacific: Andean panels & tunics (brilliant macaw), Aztec shields, Hawaiian ‘ahu‘ula cloaks (red/yellow). Feathers on it → not Eurasia.",
+  hair:"Horsehair, human-hair jewelry (Victorian mourning), brushes.",
+  terracotta:"Fired clay figures everywhere, but signature schools: Greek Tanagra figurines, Etruscan sarcophagi, Nok & Ife (Nigeria), Chinese tomb figures (Han/Tang), Indus & Maya figurines.",
+  stoneware:"High-fired: Chinese celadons (Song!), Korean Goryeo, Japanese tea wares, German salt-glaze jugs 1500+.",
+  porcelain:"China invents it (Tang → Song wares → Ming blue-and-white → Qing famille rose); Korea; Japan Imari/Kakiemon 1650+; Europe cracks the secret only 1708 (Meissen) → Sèvres etc.",
+  faience:"Glazed quartz paste, bright blue-green = Egypt: shabtis, scarabs, amulets, the hippo ‘William’. Also Mesopotamia & Iran. Small bright-blue amulet → Egypt.",
+  glass:"Timeline: core-formed vessels = Egypt/Phoenicia (1500 BCE+); glassblowing = Roman ~50 BCE (mass produced); Islamic enameled mosque lamps; Venetian cristallo 1450+; Bohemian; Tiffany/Art Nouveau 1890s.",
+  enamel:"Glass on metal: Byzantine cloisonné icons, Limoges (France) champlevé 1150+, Chinese cloisonné (Ming), Mughal & Russian enamels.",
+  plaster:"Egyptian cartonnage mummy masks, Roman wall fragments, stucco of Central Asian Buddhist & Islamic sites.",
+  ceramic:"Glazed or unspecified pottery — style carries the signal: black/red-figure = Greece; lusterware = Islamic; majolica = Italy/Spain; Delft blue = Netherlands; celadon = China/Korea.",
+  unspecified:"Medium too vague to classify — lean on object type and style.",
+};
+
+/* ---------- helpers ---------- */
+const $ = s => document.querySelector(s);
+const fmtN = n => n.toLocaleString("en-US");
+const fmtYr = y => y < 0 ? `${-y} BCE` : `${y === 0 ? 1 : y} CE`;
+const eraStart = i => -3000 + i * 250;
+const eraLabel = i => `${fmtYr(eraStart(i))} – ${fmtYr(eraStart(i) + 250)}`;
+function esc(s){ return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+function hashHue(s){ let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return h % 360; }
+
+function placeVal(p, ci, era, exWop){
+  if (era != null){
+    let v = p.counts[era][ci];
+    if (exWop && ci === 0) v = Math.max(0, v - p.counts[era][6]);
+    return v;
+  }
+  let v = 0;
+  for (const row of p.counts){ v += row[ci]; if (exWop && ci === 0) v -= row[6]; }
+  return Math.max(0, v);
+}
+
+/* ---------- map svg ---------- */
+const svg = $("#map"), NS = "http://www.w3.org/2000/svg";
+const vb = { x:-185, y:-78, w:378, h:158 };
+const el = (t, at) => { const e = document.createElementNS(NS, t); for (const k in at) e.setAttribute(k, at[k]); return e; };
+const gGrat = el("g",{}), gBorders = el("g",{}), gDots = el("g",{}), gLabels = el("g",{});
+svg.append(gGrat, gBorders, gDots, gLabels);
+for (let lon = -180; lon <= 180; lon += 30) gGrat.append(el("line",{x1:lon,y1:-85,x2:lon,y2:85,class:"grat"}));
+for (let lat = -60; lat <= 80; lat += 30) gGrat.append(el("line",{x1:-180,y1:-lat,x2:180,y2:-lat,class:"grat"}));
+
+function applyVB(){
+  svg.setAttribute("viewBox", `${vb.x} ${vb.y} ${vb.w} ${vb.h}`);
+  const k = Math.sqrt(378 / vb.w);
+  for (const d of gDots.children) if (d.dataset.r0) d.setAttribute("r", d.dataset.r0 / k);
+  for (const t of gLabels.children){
+    t.setAttribute("font-size", t.dataset.f0 / k);
+    const c = t.__c; if (c) t.setAttribute("y", c.y - (+c.r0) / k - 2.2 / k);
+  }
+}
+
+const borderCache = {};
+function ringPath(rings){
+  let d = "";
+  for (const r of rings){
+    d += "M" + r.map(pt => `${pt[0]},${-pt[1]}`).join("L") + "Z";
+  }
+  return d;
+}
+function borderLayer(year){
+  if (borderCache[year]) return borderCache[year];
+  const g = el("g",{});
+  const fc = BORDERS[year];
+  if (fc) for (const f of fc.features){
+    const geo = f.geometry;
+    const polys = geo.type === "Polygon" ? [geo.coordinates] : geo.coordinates;
+    let d = ""; for (const poly of polys) d += ringPath(poly);
+    const name = f.properties.n || "(unlabeled)";
+    const p = el("path",{ d, class:"border-path", fill:`hsl(${hashHue(name)} 15% 24%)`, "fill-opacity":.85 });
+    p.__meta = f.properties;
+    p.addEventListener("mousemove", ev => {
+      const m = p.__meta;
+      showTip(ev, `<b>${esc(m.n || "(unlabeled)")}</b>${m.s ? `<div class="tsub">part of / subject to: ${esc(m.s)}</div>` : ""}<div class="tsub">borders of ${year.startsWith("bc") ? year.slice(2) + " BCE" : year + " CE"}</div>`);
+    });
+    p.addEventListener("mouseleave", hideTip);
+    g.append(p);
+  }
+  borderCache[year] = g;
+  return g;
+}
+function renderBorders(){
+  const year = state.era == null ? ALLMAP : ERA2MAP[state.era];
+  const want = borderLayer(year);
+  if (gBorders.firstChild !== want){ gBorders.innerHTML = ""; gBorders.append(want); }
+}
+
+/* ---------- tooltip ---------- */
+const tip = $("#tip");
+function showTip(ev, html){
+  tip.innerHTML = html; tip.style.display = "block";
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  let x = ev.clientX + 14, y = ev.clientY + 12;
+  if (x + w > innerWidth - 8) x = ev.clientX - w - 12;
+  if (y + h > innerHeight - 8) y = ev.clientY - h - 10;
+  tip.style.left = x + "px"; tip.style.top = y + "px";
+}
+function hideTip(){ tip.style.display = "none"; }
+
+/* ---------- dots ---------- */
+function seqColor(v, vmax){
+  const t = Math.log(1 + v) / Math.log(1 + vmax);
+  return SEQ[Math.min(SEQ.length - 1, Math.floor(t * SEQ.length))];
+}
+function currentValFn(){
+  if (state.tab === "materials"){
+    const c = CATS.find(x => x.key === state.mat);
+    if (state.sub != null) return p => subVal(p, state.sub, state.era);
+    return p => placeVal(p, c.ci, state.era, false);
+  }
+  if (state.tab === "instruments") return p => placeVal(p, 5, state.era, false);
+  return p => placeVal(p, 0, state.era, state.exWop);
+}
+function placeSubBreakdown(p, catKey, n = 6){
+  const acc = {};
+  for (const e in p.S){
+    if (state.era != null && e !== String(state.era)) continue;
+    for (const sid in p.S[e]){
+      if (SUBM[sid].cat !== catKey) continue;
+      acc[sid] = (acc[sid] || 0) + p.S[e][sid];
+    }
+  }
+  return Object.entries(acc).sort((a, b) => b[1] - a[1]).slice(0, n)
+    .map(([sid, v]) => ({ sid:+sid, v, label:SUBM[sid].label }));
+}
+function dotTip(p, v, extra){
+  const cul = p.cultures.length ? `<div class="tsub">cultures: ${esc(p.cultures.join(", "))}</div>` : "";
+  return `<b>${esc(p.name)}</b><div>${fmtN(v)} objects${state.era != null ? " · " + eraLabel(state.era) : " · all eras"}</div>${cul}${extra || ""}<div class="tsub" style="margin-top:3px">${esc(p.top.slice(0,5).join(" · "))}</div>`;
+}
+function renderDots(){
+  gDots.innerHTML = ""; gLabels.innerHTML = "";
+  const k = Math.sqrt(378 / vb.w);
+  let items = [];
+  if (state.tab === "empires"){
+    const era = state.era ?? 12;
+    for (const e of EMPIRES.eras[era].empires) items.push({ emp:e });
+    items.sort((a, b) => b.emp.strength - a.emp.strength);
+    for (const it of items){
+      const e = it.emp, r0 = {1:3.2, 2:4.6, 3:6.4}[e.strength];
+      const c = el("circle",{ cx:e.lon, cy:-e.lat, r:r0 / k, class:"dot", fill:STRENGTH_COLOR[e.strength], "fill-opacity":.9 });
+      c.dataset.r0 = r0;
+      c.addEventListener("mousemove", ev => showTip(ev, `<b>${esc(e.name)}</b><div class="tsub">${STRENGTH_LABEL[e.strength]} · ${EMPIRES.eras[state.era ?? 12].label}</div><div style="margin-top:3px">${esc(e.note)}</div>`));
+      c.addEventListener("mouseleave", hideTip);
+      gDots.append(c);
+      if (e.strength >= 2){
+        const t = el("text",{ x:e.lon, y:-e.lat - r0 / k - 2.2 / k, "text-anchor":"middle", class:"maplabel", "font-size":3.4 / k });
+        t.dataset.f0 = 3.4; t.__c = { y:-e.lat, r0 }; t.textContent = e.name;
+        gLabels.append(t);
+      }
+    }
+    return;
+  }
+  const valFn = currentValFn();
+  for (const p of AGG.places){
+    const v = valFn(p);
+    if (v > 0) items.push({ p, v });
+  }
+  items.sort((a, b) => b.v - a.v);
+  const vmax = items.length ? items[0].v : 1;
+  const catColor = state.tab === "materials" ? CATS.find(c => c.key === state.mat).hex
+                 : state.tab === "instruments" ? "#9085e9" : null;
+  items.forEach((it, i) => {
+    const { p, v } = it;
+    const r0 = Math.max(0.9, 14 * Math.sqrt(v / vmax));
+    const fill = catColor || seqColor(v, vmax);
+    const c = el("circle",{ cx:p.lon, cy:-p.lat, r:r0 / k, class:"dot", fill, "fill-opacity":.62 });
+    c.dataset.r0 = r0; c.dataset.place = p.name;
+    let extra = "";
+    if (state.tab === "instruments" && p.instr.length)
+      extra = `<div class="tsub" style="margin-top:3px">instruments: ${esc(p.instr.join(", "))}</div>`;
+    if (state.tab === "materials"){
+      const bd = placeSubBreakdown(p, state.mat);
+      const cur = state.sub != null ? `<div class="tsub">${esc(SUBM[state.sub].label)}: <b style="color:var(--ink)">${fmtN(v)}</b></div>` : "";
+      extra = cur + (bd.length ? `<div class="tsub" style="margin-top:3px">${CATS.find(x => x.key === state.mat).label} here: ${bd.map(b => `${esc(b.label)} ${fmtN(b.v)}`).join(" · ")}</div>` : "");
+    }
+    c.addEventListener("mousemove", ev => showTip(ev, dotTip(p, v, extra)));
+    c.addEventListener("mouseleave", hideTip);
+    gDots.append(c);
+    if (i < 8){
+      const t = el("text",{ x:p.lon, y:-p.lat - r0 / k - 2.2 / k, "text-anchor":"middle", class:"maplabel", "font-size":3.2 / k });
+      t.dataset.f0 = 3.2; t.__c = { y:-p.lat, r0 }; t.textContent = p.name;
+      gLabels.append(t);
+    }
+  });
+}
+
+/* ---------- pan / zoom ---------- */
+let drag = null;
+svg.addEventListener("pointerdown", ev => {
+  drag = { x:ev.clientX, y:ev.clientY, vx:vb.x, vy:vb.y };
+  svg.classList.add("dragging"); svg.setPointerCapture(ev.pointerId);
+});
+svg.addEventListener("pointermove", ev => {
+  if (!drag) return;
+  const sc = vb.w / svg.clientWidth;
+  vb.x = drag.vx - (ev.clientX - drag.x) * sc;
+  vb.y = drag.vy - (ev.clientY - drag.y) * sc;
+  applyVB();
+});
+svg.addEventListener("pointerup", () => { drag = null; svg.classList.remove("dragging"); });
+svg.addEventListener("wheel", ev => {
+  ev.preventDefault();
+  const f = ev.deltaY > 0 ? 1.18 : 1 / 1.18;
+  const nw = Math.min(400, Math.max(14, vb.w * f));
+  const r = svg.getBoundingClientRect();
+  const mx = vb.x + (ev.clientX - r.left) / r.width * vb.w;
+  const my = vb.y + (ev.clientY - r.top) / r.height * vb.h;
+  const s = nw / vb.w;
+  vb.x = mx - (mx - vb.x) * s; vb.y = my - (my - vb.y) * s;
+  vb.w = nw; vb.h = vb.h * s;
+  applyVB();
+}, { passive:false });
+function flyTo(lon, lat, w){
+  vb.w = w; vb.h = w * 158 / 378;
+  vb.x = lon - vb.w / 2; vb.y = -lat - vb.h / 2;
+  applyVB();
+}
+
+/* ---------- timeline ---------- */
+function renderTimeline(){
+  const tl = $("#timeline"); tl.innerHTML = "";
+  const exWop = state.tab === "hotspots" && state.exWop;
+  const totals = AGG.global.map(r => exWop ? r[0] - r[6] : r[0]);
+  const gmax = Math.max(...totals);
+  const all = document.createElement("div");
+  all.className = "cell all" + (state.era == null ? " on" : "");
+  all.innerHTML = `<span class="yr">All eras</span>`;
+  all.onclick = () => setEra(null);
+  tl.append(all);
+  for (let i = 0; i < 20; i++){
+    const c = document.createElement("div");
+    c.className = "cell" + (state.era === i ? " on" : "");
+    const h = Math.round(38 * Math.log(1 + totals[i]) / Math.log(1 + gmax));
+    const s = eraStart(i);
+    c.innerHTML = `<div class="fillbar" style="height:${h}px; opacity:.28"></div>
+      <span class="yr">${s === 0 ? 1 : Math.abs(s)}</span><span class="bce">${s < 0 ? "BCE" : "CE"}</span>`;
+    c.onclick = () => setEra(i);
+    c.addEventListener("mousemove", ev => showTip(ev, `<b>${eraLabel(i)}</b><div>${fmtN(totals[i])} objects in collection</div>`));
+    c.addEventListener("mouseleave", hideTip);
+    tl.append(c);
+  }
+}
+function setEra(i){ state.era = i; renderAll(); }
+
+/* ---------- sidebar ---------- */
+function rankedList(ci, opts = {}){
+  const exWop = state.tab === "hotspots" && state.exWop;
+  const valFn = opts.val || (p => placeVal(p, ci, state.era, exWop));
+  const items = AGG.places
+    .map(p => ({ p, v: valFn(p) }))
+    .filter(x => x.v > 0).sort((a, b) => b.v - a.v).slice(0, opts.n || 18);
+  if (!items.length) return `<div class="note">No objects in this era.</div>`;
+  const vmax = items[0].v;
+  return `<div class="rowlist">` + items.map((x, i) => `
+    <div class="rrow" data-place="${esc(x.p.name)}" data-lon="${x.p.lon}" data-lat="${x.p.lat}">
+      <span class="rk">${i + 1}</span>
+      <span class="nm">${esc(x.p.name)}${opts.instr && x.p.instr.length ? ` <small>· ${esc(x.p.instr[0].replace(/ \(\d+\)$/, ""))}</small>` : ""}</span>
+      <span class="ct">${fmtN(x.v)}</span>
+      <div class="bar" style="width:${Math.max(2, 100 * x.v / vmax)}%; background:${opts.color || "var(--accent)"}"></div>
+    </div>`).join("") + `</div>`;
+}
+function notesHtml(arr){ return arr.map(t => `<div class="note">${t}</div>`).join(""); }
+function factsHtml(){
+  return `<details><summary>Game facts & scoring</summary>${notesHtml(STRATEGY.facts)}</details>`;
+}
+
+function matChart(){
+  const W = 322, H = 130, n = 20, gap = 2, cw = (W - gap * (n - 1)) / n;
+  const mode = state.matMode;
+  const rows = AGG.global;
+  const maxTot = Math.max(...rows.map(r => r[0]));
+  let bars = "";
+  for (let i = 0; i < n; i++){
+    const r = rows[i], tot = r[0] || 1;
+    const colH = mode === "pct" ? H : Math.max(r[0] > 0 ? 3 : 0, H * Math.sqrt(r[0] / maxTot));
+    let y = H;
+    const x = i * (cw + gap);
+    for (const c of CATS){
+      const share = r[c.ci] / tot;
+      let h = share * colH;
+      if (h > 0 && h < 1) h = 1;
+      if (h <= 0) continue;
+      y -= h;
+      bars += `<rect x="${x}" y="${y}" width="${cw}" height="${Math.max(0, h - (y > H - colH + 1 ? 1 : 0))}" rx="1"
+        fill="${c.hex}" data-era="${i}" data-cat="${c.key}" style="cursor:pointer"
+        ${state.era === i ? 'stroke="#fff" stroke-width="1"' : ""}></rect>`;
+      y -= 0; // 2px gaps come from height shave above
+    }
+  }
+  return `<svg id="matchart" width="${W}" height="${H + 16}" viewBox="0 0 ${W} ${H + 16}">
+    ${bars}
+    <text x="0" y="${H + 12}" font-size="10" fill="var(--muted)">3000 BCE</text>
+    <text x="${W / 2}" y="${H + 12}" font-size="10" fill="var(--muted)" text-anchor="middle">1 CE</text>
+    <text x="${W}" y="${H + 12}" font-size="10" fill="var(--muted)" text-anchor="end">2000 CE</text>
+  </svg>`;
+}
+
+function renderSide(){
+  const s = $("#side");
+  const eraTxt = state.era == null ? "all eras" : eraLabel(state.era);
+  if (state.tab === "hotspots"){
+    s.innerHTML = `
+      <h2>Where artifacts come from <span style="color:var(--muted); font-weight:400">· ${eraTxt}</span></h2>
+      <label class="ctl"><input type="checkbox" id="exwop" ${state.exWop ? "checked" : ""}>
+        Exclude works on paper (prints, drawings, photos — 210k objects that skew to US/France)</label>
+      <h3>Top places</h3>
+      ${rankedList(0)}
+      <h3>How to use this</h3>
+      ${notesHtml(STRATEGY.hotspots)}
+      ${factsHtml()}`;
+    $("#exwop").onchange = ev => { state.exWop = ev.target.checked; renderAll(); };
+  } else if (state.tab === "empires"){
+    const era = state.era ?? 12;
+    const E = EMPIRES.eras[era];
+    s.innerHTML = `
+      <h2>Dominant powers <span style="color:var(--muted); font-weight:400">· ${E.label}</span></h2>
+      ${state.era == null ? `<div class="note">No era selected — showing ${E.label}. Click the timeline to change.</div>` : ""}
+      <div>${E.empires.map(e => `
+        <div class="emprow" data-lon="${e.lon}" data-lat="${e.lat}">
+          <div class="edot" style="background:${STRENGTH_COLOR[e.strength]}"></div>
+          <div><div class="enm">${esc(e.name)} <span style="color:var(--muted); font-weight:400; font-size:11px">· ${STRENGTH_LABEL[e.strength]}</span></div>
+          <div class="ent">${esc(e.note)}</div></div>
+        </div>`).join("")}</div>
+      <h3>How to use this</h3>
+      ${notesHtml(STRATEGY.empires)}
+      ${factsHtml()}`;
+  } else if (state.tab === "materials"){
+    const cat = CATS.find(c => c.key === state.mat);
+    const subs = subsOfCat(state.mat)
+      .map(su => ({ ...su, v: gsubVal(su.sid, state.era) }))
+      .sort((a, b) => b.v - a.v);
+    const catTot = subs.reduce((a, x) => a + x.v, 0) || 1;
+    const smax = subs.length ? Math.max(1, subs[0].v) : 1;
+    const selLabel = state.sub != null ? SUBM[state.sub].label : cat.label;
+    const selKey = state.sub != null ? SUBM[state.sub].key : null;
+    const subChartHtml = state.sub != null ? (() => {
+      const vals = []; for (let i = 0; i < 20; i++) vals.push(gsubVal(state.sub, i));
+      const m = Math.max(1, ...vals), W = 322, H = 56, cw = (W - 38) / 20;
+      return `<h3>When ${esc(selLabel.toLowerCase())} appears</h3>
+        <svg id="subchart" width="${W}" height="${H + 14}" viewBox="0 0 ${W} ${H + 14}">
+        ${vals.map((v, i) => {
+          const h = v ? Math.max(2, H * Math.sqrt(v / m)) : 0;
+          return `<rect x="${i * (cw + 2)}" y="${H - h}" width="${cw}" height="${h}" rx="1" fill="${cat.hex}"
+            data-era="${i}" style="cursor:pointer" ${state.era === i ? 'stroke="#fff" stroke-width="1"' : ""}></rect>`;
+        }).join("")}
+        <text x="0" y="${H + 11}" font-size="9.5" fill="var(--muted)">3000 BCE</text>
+        <text x="${W - 40}" y="${H + 11}" font-size="9.5" fill="var(--muted)">2000 CE</text></svg>`;
+    })() : "";
+    s.innerHTML = `
+      <h2>Materials over time <span style="color:var(--muted); font-weight:400">· ${eraTxt}</span></h2>
+      <div class="chips">${CATS.map(c => `
+        <button class="chip ${c.key === state.mat ? "on" : ""}" data-mat="${c.key}">
+          <span class="sw" style="background:${c.hex}"></span>${c.label}</button>`).join("")}</div>
+      <h3>${cat.label} — by specific material <span style="text-transform:none; letter-spacing:0">(${eraTxt})</span></h3>
+      <div class="rowlist" id="sublist">
+        <div class="rrow ${state.sub == null ? "sel" : ""}" data-sub="">
+          <span class="rk"></span><span class="nm" style="font-weight:600">All ${esc(cat.label.toLowerCase())}</span>
+          <span class="ct">${fmtN(catTot)}</span>
+        </div>
+        ${subs.filter(x => x.v > 0).map((x, i) => `
+        <div class="rrow ${state.sub === x.sid ? "sel" : ""}" data-sub="${x.sid}">
+          <span class="rk">${i + 1}</span>
+          <span class="nm">${esc(x.label)}</span>
+          <span class="ct">${fmtN(x.v)} · ${Math.round(100 * x.v / catTot)}%</span>
+          <div class="bar" style="width:${Math.max(2, 100 * x.v / smax)}%; background:${cat.hex}"></div>
+        </div>`).join("")}
+      </div>
+      ${selKey && SUBNOTES[selKey] ? `<div class="note" style="margin-top:8px; border-left:2px solid ${cat.hex}; padding-left:10px"><b style="color:var(--ink)">${esc(selLabel)}:</b> ${SUBNOTES[selKey]}</div>` : ""}
+      ${subChartHtml}
+      <h3>Top places for ${esc(selLabel.toLowerCase())}</h3>
+      ${rankedList(cat.ci, { n:12, color:cat.hex, val: currentValFn() })}
+      <h3>Collection composition by era ${state.matMode === "pct" ? "(share)" : "(volume)"}</h3>
+      ${matChart()}
+      <div class="leg">${CATS.map(c => `<span><i style="background:${c.hex}"></i>${c.label}</span>`).join("")}</div>
+      <label class="ctl"><input type="checkbox" id="absmode" ${state.matMode === "abs" ? "checked" : ""}>
+        Scale bars by object volume (√) instead of 100% share</label>
+      <div class="note" style="margin-top:8px">Click a sub-material to map it · hover a circle to see each place’s material mix · click a bar to jump eras.</div>
+      <h3>Material dating rules</h3>
+      ${notesHtml(STRATEGY.materials)}
+      ${factsHtml()}`;
+    for (const b of s.querySelectorAll(".chip"))
+      b.onclick = () => { state.mat = b.dataset.mat; state.sub = null; renderAll(); };
+    for (const r of s.querySelectorAll("#sublist .rrow"))
+      r.onclick = () => { state.sub = r.dataset.sub === "" ? null : +r.dataset.sub; renderAll(); };
+    const sc = s.querySelector("#subchart");
+    if (sc) sc.addEventListener("click", ev => { const r = ev.target.closest("rect"); if (r) setEra(+r.dataset.era); });
+    $("#absmode").onchange = ev => { state.matMode = ev.target.checked ? "abs" : "pct"; renderSide(); };
+    const mc = $("#matchart");
+    mc.addEventListener("click", ev => { const r = ev.target.closest("rect"); if (r) setEra(+r.dataset.era); });
+    mc.addEventListener("mousemove", ev => {
+      const r = ev.target.closest("rect"); if (!r) return hideTip();
+      const i = +r.dataset.era, c = CATS.find(x => x.key === r.dataset.cat), row = AGG.global[i];
+      showTip(ev, `<b>${eraLabel(i)}</b><div>${c.label}: ${fmtN(row[c.ci])} objects (${Math.round(100 * row[c.ci] / (row[0] || 1))}%)</div><div class="tsub">${fmtN(row[0])} total this era</div>`);
+    });
+    mc.addEventListener("mouseleave", hideTip);
+  } else {
+    s.innerHTML = `
+      <h2>Musical instruments <span style="color:var(--muted); font-weight:400">· ${eraTxt}</span></h2>
+      <div class="note" style="margin-bottom:8px">${fmtN(AGG.global.reduce((a, r) => a + r[5], 0))} instruments in the Met collection. Hover a circle to see the typical instrument types of each place.</div>
+      <h3>Top places</h3>
+      ${rankedList(5, { n:16, color:"#9085e9", instr:true })}
+      <h3>How to use this</h3>
+      ${notesHtml(STRATEGY.instruments)}
+      ${factsHtml()}`;
+  }
+  for (const row of s.querySelectorAll("[data-lon]"))
+    row.addEventListener("click", () => {
+      flyTo(+row.dataset.lon, +row.dataset.lat, 80);
+      const nm = row.dataset.place;
+      if (nm) for (const d of gDots.children) d.classList.toggle("hl", d.dataset.place === nm);
+    });
+}
+
+/* ---------- legend box ---------- */
+function renderLegend(){
+  const box = $("#maplegendbox");
+  if (state.tab === "hotspots")
+    box.innerHTML = `<b>Circle = objects made there</b><div class="tsub" style="margin-top:2px">size & shade ∝ count · borders are ${state.era == null ? "modern (select an era!)" : "period-correct for " + eraLabel(state.era)}</div>`;
+  else if (state.tab === "empires")
+    box.innerHTML = `<b>Powers of ${EMPIRES.eras[state.era ?? 12].label}</b><div class="tsub" style="margin-top:2px">` +
+      [3,2,1].map(k => `<span style="display:inline-flex; align-items:center; gap:4px; margin-right:8px"><span style="width:${4 + k * 2}px; height:${4 + k * 2}px; border-radius:50%; background:${STRENGTH_COLOR[k]}; display:inline-block"></span>${STRENGTH_LABEL[k].split(" ")[0]}</span>`).join("") + `</div>`;
+  else if (state.tab === "materials"){
+    const c = CATS.find(x => x.key === state.mat);
+    const sel = state.sub != null ? SUBM[state.sub].label : c.label;
+    box.innerHTML = `<b style="color:${c.hex}">${esc(sel)}</b><div class="tsub">where objects of this material were made${state.era != null ? " · " + eraLabel(state.era) : ""}</div><div class="tsub">hover a circle for that place’s material mix</div>`;
+  } else
+    box.innerHTML = `<b style="color:#9085e9">Musical instruments</b><div class="tsub">Met Musical Instruments dept.${state.era != null ? " · " + eraLabel(state.era) : ""}</div>`;
+}
+
+/* ---------- tabs / render ---------- */
+function renderReadout(){
+  $("#eraReadout").innerHTML = state.era == null
+    ? `Era: <b>all</b> (3000 BCE – 2000 CE)` : `Era: <b>${eraLabel(state.era)}</b>`;
+}
+function renderAll(){
+  renderTimeline(); renderBorders(); renderDots(); renderSide(); renderLegend(); renderReadout(); applyVB();
+}
+for (const b of document.querySelectorAll("#tabs button"))
+  b.onclick = () => {
+    state.tab = b.dataset.tab;
+    for (const x of document.querySelectorAll("#tabs button")) x.classList.toggle("on", x === b);
+    renderAll();
+  };
+addEventListener("keydown", ev => {
+  if (ev.target.tagName === "INPUT") return;
+  if (ev.key === "ArrowRight") setEra(state.era == null ? 0 : Math.min(19, state.era + 1));
+  else if (ev.key === "ArrowLeft") setEra(state.era == null ? 19 : (state.era === 0 ? null : state.era - 1));
+  else if (/^[1-4]$/.test(ev.key)) document.querySelectorAll("#tabs button")[+ev.key - 1].click();
+});
+/* URL hash: #tab=materials&era=13&mat=metal — bookmarkable views */
+(function(){
+  const h = new URLSearchParams(location.hash.slice(1));
+  if (h.get("tab")) state.tab = h.get("tab");
+  if (h.get("era") != null && h.get("era") !== "") state.era = Math.max(0, Math.min(19, +h.get("era")));
+  if (h.get("mat")) state.mat = h.get("mat");
+  if (h.get("sub") != null && h.get("sub") !== ""){
+    const i = SUBM.findIndex(x => x.key === h.get("sub"));
+    if (i >= 0){ state.sub = i; state.mat = SUBM[i].cat; }
+  }
+  for (const x of document.querySelectorAll("#tabs button")) x.classList.toggle("on", x.dataset.tab === state.tab);
+})();
+renderAll();
+applyVB();
+</script>
+</body>
+</html>

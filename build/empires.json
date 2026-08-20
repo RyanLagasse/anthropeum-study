@@ -1,0 +1,183 @@
+{"eras":[
+{"start":-3000,"end":-2750,"label":"3000–2750 BCE","empires":[
+{"name":"Early Dynastic Egypt","lat":29.85,"lon":31.25,"strength":3,"note":"Unified c.3100 BCE under Narmer; capital Memphis; hieroglyphs, palette of Narmer"},
+{"name":"Sumerian City-States","lat":31.32,"lon":45.64,"strength":3,"note":"Uruk, Ur, Lagash; cuneiform writing, ziggurats, cylinder seals"},
+{"name":"Early Indus (Harappan)","lat":30.63,"lon":72.87,"strength":2,"note":"Early Harappan phase; planned towns forming along Indus River"},
+{"name":"Norte Chico (Caral)","lat":-10.89,"lon":-77.52,"strength":1,"note":"Oldest cities in the Americas; monumental mounds at Caral, Peru"},
+{"name":"Elam","lat":32.19,"lon":48.25,"strength":1,"note":"Proto-Elamite state at Susa; early writing rival to Sumer"},
+{"name":"Longshan Culture China","lat":36.6,"lon":117.0,"strength":1,"note":"Late Neolithic Yellow River; eggshell-thin black pottery, walled towns"}
+]},
+{"start":-2750,"end":-2500,"label":"2750–2500 BCE","empires":[
+{"name":"Old Kingdom Egypt","lat":29.98,"lon":31.13,"strength":3,"note":"Pyramid Age: Djoser step pyramid, Great Pyramid of Giza c.2560 BCE"},
+{"name":"Sumerian City-States","lat":30.96,"lon":46.10,"strength":3,"note":"Royal Tombs of Ur, Standard of Ur; Gilgamesh legend era"},
+{"name":"Indus Valley Civilization","lat":27.32,"lon":68.14,"strength":2,"note":"Mature Harappan begins; grid cities, drains, standardized weights"},
+{"name":"Norte Chico (Caral)","lat":-10.89,"lon":-77.52,"strength":1,"note":"Peak of Caral; sunken plazas, quipu precursor, no pottery"},
+{"name":"Elam","lat":32.19,"lon":48.25,"strength":1,"note":"Susa trades and wars with Sumer; Elamite kingdoms consolidate"},
+{"name":"Ebla","lat":35.80,"lon":36.80,"strength":1,"note":"Syrian trade kingdom; famous palace archive of cuneiform tablets"}
+]},
+{"start":-2500,"end":-2250,"label":"2500–2250 BCE","empires":[
+{"name":"Akkadian Empire","lat":33.10,"lon":44.10,"strength":3,"note":"Sargon of Akkad c.2334 unites Mesopotamia; world's first empire"},
+{"name":"Old Kingdom Egypt","lat":29.85,"lon":31.25,"strength":3,"note":"Dynasties 5–6; sun temples, Pyramid Texts, expeditions to Punt"},
+{"name":"Indus Valley Civilization","lat":27.32,"lon":68.14,"strength":2,"note":"Mohenjo-daro and Harappa at peak; steatite seals, Great Bath"},
+{"name":"Elam","lat":32.19,"lon":48.25,"strength":1,"note":"Rival of Akkad; Awan dynasty kings at Susa"},
+{"name":"Norte Chico (Caral)","lat":-10.89,"lon":-77.52,"strength":1,"note":"Late flourishing of coastal Peru ceremonial centers"},
+{"name":"Longshan Culture China","lat":36.6,"lon":117.0,"strength":1,"note":"Walled chiefdom centers; jade cong and bi ritual objects"}
+]},
+{"start":-2250,"end":-2000,"label":"2250–2000 BCE","empires":[
+{"name":"Ur III (Neo-Sumerian)","lat":30.96,"lon":46.10,"strength":3,"note":"Ur-Nammu c.2112; Great Ziggurat of Ur, earliest law code"},
+{"name":"Egypt (First Intermediate–Middle Kingdom)","lat":25.7,"lon":32.6,"strength":2,"note":"Collapse then reunification by Mentuhotep II c.2050 from Thebes"},
+{"name":"Indus Valley Civilization","lat":27.32,"lon":68.14,"strength":2,"note":"Still urban but beginning slow decline after c.2000 BCE"},
+{"name":"Kerma (Nubia)","lat":19.60,"lon":30.40,"strength":1,"note":"Rising Nubian kingdom on upper Nile; mudbrick deffufa temples"},
+{"name":"Elam (Shimashki)","lat":32.19,"lon":48.25,"strength":1,"note":"Elamites sack Ur c.2004 BCE, ending Ur III dynasty"},
+{"name":"Erlitou / Xia China","lat":34.7,"lon":112.7,"strength":1,"note":"Legendary Xia dynasty era; earliest Chinese bronze casting begins"}
+]},
+{"start":-2000,"end":-1750,"label":"2000–1750 BCE","empires":[
+{"name":"Middle Kingdom Egypt","lat":29.30,"lon":30.85,"strength":3,"note":"Dynasty 12 golden age; classic literature, Faiyum projects, Nubian forts"},
+{"name":"Old Babylonian Empire","lat":32.54,"lon":44.42,"strength":3,"note":"Hammurabi (r.1792–1750) unites Mesopotamia; famous law code stele"},
+{"name":"Minoan Crete","lat":35.30,"lon":25.16,"strength":2,"note":"First palaces at Knossos; Kamares pottery, bull-leaping frescoes, Linear A"},
+{"name":"Old Assyrian City-State","lat":35.46,"lon":43.26,"strength":1,"note":"Assur merchants run tin-and-textile trade colonies in Anatolia"},
+{"name":"Kerma (Nubia)","lat":19.60,"lon":30.40,"strength":1,"note":"Powerful Kush precursor; controls Nile trade south of Egypt"},
+{"name":"Erlitou / Xia China","lat":34.7,"lon":112.7,"strength":1,"note":"Erlitou palace city; earliest bronze ritual vessels in China"}
+]},
+{"start":-1750,"end":-1500,"label":"1750–1500 BCE","empires":[
+{"name":"Egypt (Hyksos to New Kingdom)","lat":25.7,"lon":32.6,"strength":2,"note":"Hyksos rule north with chariots; Ahmose reunites Egypt c.1550"},
+{"name":"Old Hittite Kingdom","lat":40.02,"lon":34.62,"strength":2,"note":"Hattusa capital; Mursili I sacks Babylon c.1595 BCE"},
+{"name":"Shang China","lat":34.75,"lon":113.65,"strength":2,"note":"Founded c.1600; bronze ritual vessels, early oracle bone divination"},
+{"name":"Minoan Crete","lat":35.30,"lon":25.16,"strength":2,"note":"New palace peak; Thera eruption c.1600 weakens Minoan power"},
+{"name":"Kassite Babylonia","lat":32.54,"lon":44.42,"strength":1,"note":"Kassites take Babylon after 1595; long stable dynasty, kudurru stones"},
+{"name":"Kerma (Nubia)","lat":19.60,"lon":30.40,"strength":1,"note":"Classic Kerma peak; conquered by Egypt's Thutmose I after c.1500"}
+]},
+{"start":-1500,"end":-1250,"label":"1500–1250 BCE","empires":[
+{"name":"New Kingdom Egypt","lat":25.7,"lon":32.6,"strength":3,"note":"Peak: Thutmose III, Hatshepsut, Ramesses II; Karnak, Valley of the Kings"},
+{"name":"Hittite Empire","lat":40.02,"lon":34.62,"strength":3,"note":"Superpower rival of Egypt; Battle of Kadesh 1274, first peace treaty"},
+{"name":"Shang China","lat":36.10,"lon":114.35,"strength":2,"note":"Anyang capital; oracle bones, massive bronze ding vessels"},
+{"name":"Mycenaean Greece","lat":37.73,"lon":22.76,"strength":2,"note":"Warrior palaces, Linear B, gold death masks; Trojan War setting"},
+{"name":"Mitanni","lat":36.8,"lon":40.8,"strength":1,"note":"Hurrian kingdom in north Syria; famed horse-training texts"},
+{"name":"Kassite Babylonia","lat":32.54,"lon":44.42,"strength":1,"note":"Diplomatic player in Amarna letters age of great powers"},
+{"name":"Olmec (San Lorenzo)","lat":17.75,"lon":-94.76,"strength":1,"note":"Mesoamerica's first civilization; colossal stone heads begin c.1400"}
+]},
+{"start":-1250,"end":-1000,"label":"1250–1000 BCE","empires":[
+{"name":"New Kingdom Egypt (late)","lat":25.7,"lon":32.6,"strength":2,"note":"Ramesses III repels Sea Peoples c.1177; slow decline follows"},
+{"name":"Middle Assyrian Empire","lat":35.46,"lon":43.26,"strength":2,"note":"Tiglath-Pileser I expands; survives Bronze Age collapse"},
+{"name":"Shang then Western Zhou China","lat":34.27,"lon":108.9,"strength":2,"note":"Zhou conquer Shang 1046 BCE; Mandate of Heaven doctrine"},
+{"name":"Elam (Shutrukid)","lat":32.19,"lon":48.25,"strength":2,"note":"Peak c.1150: sacks Babylon, seizes Hammurabi stele and Naram-Sin stele"},
+{"name":"Olmec (San Lorenzo)","lat":17.75,"lon":-94.76,"strength":1,"note":"Colossal heads, jade; San Lorenzo peak then shift to La Venta"},
+{"name":"Phoenician City-States","lat":33.27,"lon":35.20,"strength":1,"note":"Tyre and Sidon rise after 1200 collapse; alphabet, purple dye, trade"}
+]},
+{"start":-1000,"end":-750,"label":"1000–750 BCE","empires":[
+{"name":"Neo-Assyrian Empire (early)","lat":36.36,"lon":43.15,"strength":2,"note":"Ashurnasirpal II rebuilds power; palace reliefs, feared iron army"},
+{"name":"Western Zhou China","lat":34.27,"lon":108.9,"strength":2,"note":"Feudal Zhou order; inscribed ritual bronzes; falls east in 771"},
+{"name":"Egypt (Third Intermediate)","lat":30.80,"lon":31.83,"strength":1,"note":"Divided rule from Tanis and Thebes; Libyan dynasties"},
+{"name":"Phoenician City-States","lat":33.27,"lon":35.20,"strength":2,"note":"Tyre's peak; spreads alphabet, founds colonies incl. Carthage 814"},
+{"name":"Kingdom of Israel and Judah","lat":31.78,"lon":35.22,"strength":1,"note":"Traditional era of David and Solomon; Jerusalem temple"},
+{"name":"Olmec (La Venta)","lat":18.10,"lon":-94.04,"strength":1,"note":"La Venta ceremonial center; jade offerings, great pyramid mound"},
+{"name":"Chavín Culture","lat":-9.59,"lon":-77.18,"strength":1,"note":"Andean religious center Chavín de Huántar; jaguar imagery, Lanzón"}
+]},
+{"start":-750,"end":-500,"label":"750–500 BCE","empires":[
+{"name":"Neo-Assyrian Empire","lat":36.36,"lon":43.15,"strength":3,"note":"Peak under Sennacherib, Ashurbanipal; Nineveh library; falls 612"},
+{"name":"Neo-Babylonian Empire","lat":32.54,"lon":44.42,"strength":2,"note":"Nebuchadnezzar II; Ishtar Gate, Hanging Gardens legend; 626–539"},
+{"name":"Achaemenid Persia","lat":29.93,"lon":52.89,"strength":3,"note":"Cyrus the Great founds empire 550; takes Babylon 539; Cyrus Cylinder"},
+{"name":"Kingdom of Kush","lat":18.53,"lon":31.85,"strength":2,"note":"Nubian 25th Dynasty rules Egypt c.744–656; pyramids at Napata"},
+{"name":"Zhou China (Spring and Autumn)","lat":34.62,"lon":112.45,"strength":2,"note":"Zhou king weak, hegemon states compete; age of Confucius (b.551)"},
+{"name":"Greek City-States","lat":37.98,"lon":23.73,"strength":2,"note":"Archaic polis era; hoplites, black-figure pottery, colonization"},
+{"name":"Etruscans","lat":42.42,"lon":11.87,"strength":1,"note":"Dominant in Italy; tomb frescoes, influence early Rome's kings"},
+{"name":"Chavín Culture","lat":-9.59,"lon":-77.18,"strength":1,"note":"Chavín horizon spreads art style across the Andes"}
+]},
+{"start":-500,"end":-250,"label":"500–250 BCE","empires":[
+{"name":"Achaemenid Persia","lat":29.93,"lon":52.89,"strength":3,"note":"Largest empire yet; Persepolis, Royal Road; falls to Alexander 330"},
+{"name":"Classical Greece (Athens/Sparta)","lat":37.98,"lon":23.73,"strength":2,"note":"Persian Wars, Parthenon, red-figure pottery, Plato and Aristotle"},
+{"name":"Macedonian Empire","lat":40.76,"lon":22.52,"strength":3,"note":"Alexander conquers Persia to India 334–323; Hellenistic age begins"},
+{"name":"Mauryan Empire","lat":25.61,"lon":85.14,"strength":3,"note":"Founded 322; Ashoka (r.268–232) spreads Buddhism; pillar edicts"},
+{"name":"Warring States China","lat":34.27,"lon":108.9,"strength":2,"note":"Seven kingdoms at war; iron tools, crossbows, Legalism; Qin rising"},
+{"name":"Carthage","lat":36.85,"lon":10.32,"strength":2,"note":"Phoenician maritime empire dominates western Mediterranean trade"},
+{"name":"Roman Republic (early)","lat":41.90,"lon":12.50,"strength":1,"note":"Conquers Italy by 264; legions, Twelve Tables law"},
+{"name":"Zapotec (Monte Albán)","lat":17.04,"lon":-96.77,"strength":1,"note":"Hilltop capital founded c.500; earliest Mesoamerican writing"}
+]},
+{"start":-250,"end":1,"label":"250–1 BCE","empires":[
+{"name":"Roman Republic","lat":41.90,"lon":12.50,"strength":3,"note":"Defeats Carthage in Punic Wars (146); rules Mediterranean; Caesar, Augustus"},
+{"name":"Han China","lat":34.27,"lon":108.9,"strength":3,"note":"Qin unifies 221, Han from 202; Great Wall, Silk Road opens, terracotta army"},
+{"name":"Parthian Empire","lat":33.09,"lon":44.58,"strength":2,"note":"Iranian power; horse archers crush Rome at Carrhae 53 BCE"},
+{"name":"Ptolemaic Egypt","lat":31.20,"lon":29.92,"strength":2,"note":"Greek dynasty in Alexandria; Library and Lighthouse; ends with Cleopatra 30 BCE"},
+{"name":"Kingdom of Kush (Meroë)","lat":16.94,"lon":33.72,"strength":1,"note":"Iron-working capital Meroë; steep Nubian pyramids, Meroitic script"},
+{"name":"Xiongnu Confederation","lat":47.0,"lon":102.0,"strength":2,"note":"Steppe nomad empire; forces Han tribute and Great Wall defense"},
+{"name":"Maya (Late Preclassic)","lat":17.75,"lon":-89.92,"strength":1,"note":"El Mirador's huge pyramids; early Maya kingship and calendars"}
+]},
+{"start":1,"end":250,"label":"1–250 CE","empires":[
+{"name":"Roman Empire","lat":41.90,"lon":12.50,"strength":3,"note":"Pax Romana peak under Trajan 117; Colosseum, aqueducts, roads"},
+{"name":"Han China (Eastern)","lat":34.62,"lon":112.45,"strength":3,"note":"Paper invented c.105; ends 220 in Three Kingdoms split"},
+{"name":"Parthian Empire","lat":33.09,"lon":44.58,"strength":2,"note":"Rome's eastern rival on the Silk Road until 224 CE"},
+{"name":"Kushan Empire","lat":34.01,"lon":71.58,"strength":2,"note":"Kanishka links Silk Road; Gandhara Greco-Buddhist art"},
+{"name":"Teotihuacan","lat":19.69,"lon":-98.84,"strength":2,"note":"Pyramids of Sun and Moon rise; largest city in the Americas"},
+{"name":"Kingdom of Aksum","lat":14.13,"lon":38.72,"strength":1,"note":"Red Sea trade power; minted coins, giant stone stelae"},
+{"name":"Moche Culture","lat":-8.10,"lon":-79.00,"strength":1,"note":"Peru coast; portrait pottery, gold, Huaca del Sol adobe pyramid"}
+]},
+{"start":250,"end":500,"label":"250–500 CE","empires":[
+{"name":"Roman/Byzantine Empire","lat":41.01,"lon":28.98,"strength":3,"note":"Constantine founds Constantinople 330; West falls 476, East endures"},
+{"name":"Sasanian Persia","lat":33.09,"lon":44.58,"strength":3,"note":"From 224; Zoroastrian state, Ctesiphon arch, captures Emperor Valerian"},
+{"name":"Gupta Empire","lat":25.61,"lon":85.14,"strength":3,"note":"India's golden age c.320–550; zero, Kalidasa, Ajanta cave art"},
+{"name":"Northern Wei / Jin China","lat":40.10,"lon":113.30,"strength":2,"note":"Divided era; Buddhism spreads, Yungang cave Buddhas carved"},
+{"name":"Teotihuacan","lat":19.69,"lon":-98.84,"strength":2,"note":"Peak c.450, pop ~125,000; influences Maya politics at Tikal"},
+{"name":"Maya (Early Classic)","lat":17.22,"lon":-89.62,"strength":2,"note":"Tikal and rivals; stelae with Long Count dates, royal dynasties"},
+{"name":"Kingdom of Aksum","lat":14.13,"lon":38.72,"strength":2,"note":"King Ezana adopts Christianity c.330; conquers Kush"},
+{"name":"Moche Culture","lat":-8.10,"lon":-79.00,"strength":1,"note":"Lords of Sipán tombs; fine-line ceramic battle scenes"}
+]},
+{"start":500,"end":750,"label":"500–750 CE","empires":[
+{"name":"Byzantine Empire","lat":41.01,"lon":28.98,"strength":3,"note":"Justinian reconquests, Hagia Sophia 537, Corpus Juris Civilis"},
+{"name":"Umayyad Caliphate","lat":33.51,"lon":36.29,"strength":3,"note":"Islam expands Spain to Indus by 750; Dome of the Rock 691"},
+{"name":"Tang China","lat":34.27,"lon":108.9,"strength":3,"note":"Founded 618; cosmopolitan Chang'an, Silk Road peak, tri-color ceramics"},
+{"name":"Sasanian Persia","lat":33.09,"lon":44.58,"strength":2,"note":"Last great war with Byzantium; falls to Arab conquest 651"},
+{"name":"Maya (Classic)","lat":17.22,"lon":-89.62,"strength":2,"note":"Tikal vs Calakmul wars; peak of temples, glyphic texts, astronomy"},
+{"name":"Wari and Tiwanaku","lat":-13.05,"lon":-74.30,"strength":1,"note":"Twin Andean empires; roads, terraces, Gateway of the Sun"},
+{"name":"Srivijaya","lat":-2.99,"lon":104.76,"strength":1,"note":"From c.670 controls Malacca Strait trade; Buddhist learning hub"}
+]},
+{"start":750,"end":1000,"label":"750–1000 CE","empires":[
+{"name":"Abbasid Caliphate","lat":33.31,"lon":44.37,"strength":3,"note":"Baghdad founded 762; House of Wisdom, Islamic Golden Age science"},
+{"name":"Tang China","lat":34.27,"lon":108.9,"strength":3,"note":"Recovers from An Lushan revolt 755; poetry of Li Bai; falls 907"},
+{"name":"Byzantine Empire","lat":41.01,"lon":28.98,"strength":2,"note":"Macedonian dynasty revival; icons restored, converts the Slavs"},
+{"name":"Carolingian Empire","lat":50.78,"lon":6.08,"strength":2,"note":"Charlemagne crowned emperor 800; Carolingian minuscule script"},
+{"name":"Maya (Late/Terminal Classic)","lat":17.22,"lon":-89.62,"strength":2,"note":"Final flourish then southern collapse c.900; Chichén Itzá rises north"},
+{"name":"Ghana Empire","lat":15.77,"lon":-7.98,"strength":1,"note":"West African gold-salt trade lord; capital Koumbi Saleh"},
+{"name":"Srivijaya","lat":-2.99,"lon":104.76,"strength":1,"note":"Maritime peak; sponsors Borobudur-era Buddhist world"},
+{"name":"Khmer Empire (early)","lat":13.43,"lon":103.87,"strength":1,"note":"Founded 802 by Jayavarman II; Angkor region temple-building begins"}
+]},
+{"start":1000,"end":1250,"label":"1000–1250 CE","empires":[
+{"name":"Song China","lat":34.79,"lon":114.35,"strength":3,"note":"Economic revolution: paper money, gunpowder, compass, porcelain, printing"},
+{"name":"Seljuk Empire","lat":32.65,"lon":51.67,"strength":2,"note":"Turks take Baghdad 1055, beat Byzantium at Manzikert 1071"},
+{"name":"Fatimid then Ayyubid Egypt","lat":30.05,"lon":31.24,"strength":2,"note":"Cairo and al-Azhar founded; Saladin retakes Jerusalem 1187"},
+{"name":"Khmer Empire","lat":13.43,"lon":103.87,"strength":2,"note":"Angkor Wat built c.1150; vast reservoirs, largest preindustrial city"},
+{"name":"Chola Empire","lat":10.79,"lon":79.14,"strength":2,"note":"South Indian naval power to Srivijaya; bronze Nataraja statues"},
+{"name":"Byzantine Empire","lat":41.01,"lon":28.98,"strength":2,"note":"Basil II peak c.1025; sacked by Fourth Crusade 1204"},
+{"name":"Almoravid/Almohad Empires","lat":31.63,"lon":-7.99,"strength":1,"note":"Berber empires span Morocco and Spain; Marrakesh, Giralda minaret"},
+{"name":"Cahokia","lat":38.66,"lon":-90.06,"strength":1,"note":"Mississippian mound city near St. Louis; Monks Mound, peak c.1100"}
+]},
+{"start":1250,"end":1500,"label":"1250–1500 CE","empires":[
+{"name":"Mongol Empire / Yuan","lat":47.20,"lon":102.85,"strength":3,"note":"Largest land empire ever; Kublai rules China 1271; Pax Mongolica trade"},
+{"name":"Ming China","lat":39.90,"lon":116.40,"strength":3,"note":"From 1368; Forbidden City, Zheng He voyages, blue-white porcelain"},
+{"name":"Ottoman Empire (rising)","lat":41.01,"lon":28.98,"strength":2,"note":"Takes Constantinople 1453 with cannon; ends Byzantium"},
+{"name":"Mali Empire","lat":16.77,"lon":-3.01,"strength":2,"note":"Mansa Musa's 1324 gold hajj; Timbuktu manuscripts and mosques"},
+{"name":"Aztec Empire","lat":19.43,"lon":-99.13,"strength":2,"note":"Triple Alliance from 1428; Tenochtitlan's chinampas, Templo Mayor"},
+{"name":"Inca Empire","lat":-13.53,"lon":-71.97,"strength":2,"note":"Rapid expansion from c.1438; Machu Picchu, quipu, royal roads"},
+{"name":"Timurid Empire","lat":39.65,"lon":66.96,"strength":2,"note":"Timur's conquests c.1370–1405; Samarkand's blue-tiled Registan"},
+{"name":"Majapahit","lat":-7.55,"lon":112.38,"strength":1,"note":"Java-based maritime empire; peak under Gajah Mada c.1350"}
+]},
+{"start":1500,"end":1750,"label":"1500–1750 CE","empires":[
+{"name":"Ottoman Empire","lat":41.01,"lon":28.98,"strength":3,"note":"Suleiman the Magnificent (d.1566); Vienna sieges, Iznik tiles"},
+{"name":"Spanish Empire","lat":40.42,"lon":-3.70,"strength":3,"note":"Conquers Aztec 1521, Inca 1533; American silver funds first global empire"},
+{"name":"Ming then Qing China","lat":39.90,"lon":116.40,"strength":3,"note":"Qing from 1644; Kangxi and Qianlong rule world's largest economy"},
+{"name":"Mughal Empire","lat":27.18,"lon":78.02,"strength":3,"note":"Akbar to Aurangzeb; Taj Mahal 1653, miniature painting"},
+{"name":"Safavid Persia","lat":32.65,"lon":51.67,"strength":2,"note":"Shia Iran; Shah Abbas's Isfahan 'half the world', carpets"},
+{"name":"Songhai Empire","lat":16.27,"lon":-0.04,"strength":1,"note":"West Africa's largest empire; falls to Moroccan muskets 1591"},
+{"name":"Tokugawa Japan","lat":35.68,"lon":139.69,"strength":2,"note":"Unified 1603; sakoku isolation, castle towns, ukiyo-e prints begin"},
+{"name":"France (Bourbon)","lat":48.86,"lon":2.35,"strength":2,"note":"Louis XIV 'Sun King'; Versailles, dominant European army"}
+]},
+{"start":1750,"end":2000,"label":"1750–2000 CE","empires":[
+{"name":"British Empire","lat":51.51,"lon":-0.13,"strength":3,"note":"Industrial Revolution; by 1920 rules quarter of the world"},
+{"name":"United States","lat":38.90,"lon":-77.04,"strength":3,"note":"Independent 1776; industrial giant, superpower after 1945"},
+{"name":"Russian Empire / USSR","lat":55.76,"lon":37.62,"strength":3,"note":"Spans Eurasia; 1917 revolution; Cold War superpower, Sputnik 1957"},
+{"name":"Qing China / PRC","lat":39.90,"lon":116.40,"strength":2,"note":"Qing decline via Opium Wars; PRC founded 1949, reforms after 1978"},
+{"name":"France","lat":48.86,"lon":2.35,"strength":2,"note":"1789 Revolution; Napoleon dominates Europe 1799–1815; colonial empire"},
+{"name":"German Empire / Germany","lat":52.52,"lon":13.40,"strength":2,"note":"Unified 1871; industrial-scientific leader; central to both World Wars"},
+{"name":"Empire of Japan","lat":35.68,"lon":139.69,"strength":2,"note":"Meiji modernization 1868; defeats Russia 1905; postwar economic power"},
+{"name":"Ottoman Empire (late)","lat":41.01,"lon":28.98,"strength":1,"note":"'Sick man of Europe'; Tanzimat reforms; dissolved 1922"}
+]}
+]}
