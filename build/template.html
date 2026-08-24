@@ -99,6 +99,30 @@
     border-radius:8px; padding:8px 11px; font-size:12.5px; max-width:290px; z-index:50;
     display:none; box-shadow:0 4px 18px rgba(0,0,0,.5); color:var(--ink-2)}
   #tip b{color:var(--ink); display:block; margin-bottom:2px; font-size:13px}
+  .qhead{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:10px}
+  .qhead .qn{font-size:12px; color:var(--muted); font-weight:600}
+  .qhead .qs{font-size:13px; color:var(--ink-2); font-variant-numeric:tabular-nums}
+  .qprompt{font-size:14.5px; font-weight:600; line-height:1.45; margin:6px 0 12px}
+  .qopts{display:flex; flex-direction:column; gap:7px}
+  .qopt{text-align:left; font:inherit; font-size:13.5px; color:var(--ink); background:var(--surface-2);
+    border:1px solid var(--ring); border-radius:9px; padding:9px 12px; cursor:pointer}
+  .qopt:hover{border-color:var(--ink-2)}
+  .qopt.correct{border-color:#0ca30c; box-shadow:inset 0 0 0 1px #0ca30c}
+  .qopt.wrong{border-color:#d03b3b; box-shadow:inset 0 0 0 1px #d03b3b; opacity:.85}
+  .qopt:disabled{cursor:default}
+  .qverdict{font-size:14px; font-weight:650; margin:12px 0 4px}
+  .qverdict.good{color:#0ca30c}
+  .qverdict.bad{color:#e66767}
+  .qnote{font-size:12.5px; color:var(--ink-2); background:var(--surface-2); border-radius:8px;
+    padding:9px 11px; margin:8px 0}
+  .qbtn{font:inherit; font-size:13.5px; font-weight:600; color:var(--page); background:var(--ink-2);
+    border:none; border-radius:9px; padding:9px 16px; cursor:pointer; margin-top:10px}
+  .qbtn:hover{background:var(--ink)}
+  .qpin-hint{font-size:12.5px; color:var(--other); margin:8px 0; font-weight:600}
+  .qrow{display:flex; justify-content:space-between; font-size:12.5px; color:var(--ink-2); padding:3px 0;
+    border-bottom:1px solid var(--ring)}
+  .qtotal{font-size:22px; font-weight:700; margin:10px 0 2px}
+  .quiz-cursor{cursor:crosshair !important}
   #tip .tsub{color:var(--muted); font-size:11.5px}
 </style>
 </head>
@@ -110,6 +134,7 @@
     <button data-tab="empires">Empires</button>
     <button data-tab="materials">Materials</button>
     <button data-tab="instruments">Instruments</button>
+    <button data-tab="quiz">Quiz</button>
   </nav>
   <div id="eraReadout"></div>
 </header>
@@ -118,7 +143,7 @@
   <div id="mapwrap">
     <svg id="map"></svg>
     <div id="maplegendbox"></div>
-    <div id="maphint">drag to pan · scroll to zoom · ←/→ era · 1–4 tabs</div>
+    <div id="maphint">drag to pan · scroll to zoom · ←/→ era · 1–5 tabs</div>
   </div>
   <aside id="side"></aside>
 </main>
@@ -191,7 +216,7 @@ const STRATEGY = {
   ],
 };
 
-const state = { tab:"hotspots", era:null, mat:"stone", sub:null, matMode:"pct", exWop:false };
+const state = { tab:"hotspots", era:null, mat:"stone", sub:null, itype:null, matMode:"pct", exWop:false };
 
 /* sub-material index: p.S[era][sid] = count */
 const SUBM = AGG.meta.submats;
@@ -206,6 +231,28 @@ function gsubVal(sid, era){
   let v = 0; for (const e in GSUB) v += GSUB[e][sid] || 0; return v;
 }
 const subsOfCat = catKey => SUBM.map((s, i) => ({ ...s, sid:i })).filter(s => s.cat === catKey);
+
+/* instrument types: p.I[era][tid] = count */
+const ITY = AGG.meta.instypes || [];
+for (const p of AGG.places){ p.I = {}; for (const e in (p.inst || {})) p.I[e] = Object.fromEntries(p.inst[e]); }
+const GINST = {}; for (const e in (AGG.ginst || {})) GINST[e] = Object.fromEntries(AGG.ginst[e]);
+function ityVal(p, tid, era){
+  if (era != null) return (p.I[era] && p.I[era][tid]) || 0;
+  let v = 0; for (const e in p.I) v += p.I[e][tid] || 0; return v;
+}
+function gityVal(tid, era){
+  if (era != null) return (GINST[era] && GINST[era][tid]) || 0;
+  let v = 0; for (const e in GINST) v += GINST[e][tid] || 0; return v;
+}
+function placeItyBreakdown(p, n = 6){
+  const acc = {};
+  for (const e in p.I){
+    if (state.era != null && e !== String(state.era)) continue;
+    for (const tid in p.I[e]) acc[tid] = (acc[tid] || 0) + p.I[e][tid];
+  }
+  return Object.entries(acc).sort((a, b) => b[1] - a[1]).slice(0, n)
+    .map(([tid, v]) => ({ tid:+tid, v, label:(ITY[tid] || {}).label || "?" }));
+}
 
 /* material priors — the mindmap hooks */
 const SUBNOTES = {
@@ -361,7 +408,10 @@ function currentValFn(){
     if (state.sub != null) return p => subVal(p, state.sub, state.era);
     return p => placeVal(p, c.ci, state.era, false);
   }
-  if (state.tab === "instruments") return p => placeVal(p, 5, state.era, false);
+  if (state.tab === "instruments"){
+    if (state.itype != null) return p => ityVal(p, state.itype, state.era);
+    return p => placeVal(p, 5, state.era, false);
+  }
   return p => placeVal(p, 0, state.era, state.exWop);
 }
 function placeSubBreakdown(p, catKey, n = 6){
@@ -384,6 +434,11 @@ function renderDots(){
   gDots.innerHTML = ""; gLabels.innerHTML = "";
   const k = Math.sqrt(378 / vb.w);
   let items = [];
+  if (state.tab === "quiz"){
+    const Q = state.quiz;
+    if (Q && Q.phase === "reveal" && Q.marks) drawQuizMarks(Q.marks, k);
+    return;
+  }
   if (state.tab === "empires"){
     const era = state.era ?? 12;
     for (const e of EMPIRES.eras[era].empires) items.push({ emp:e });
@@ -419,8 +474,12 @@ function renderDots(){
     const c = el("circle",{ cx:p.lon, cy:-p.lat, r:r0 / k, class:"dot", fill, "fill-opacity":.62 });
     c.dataset.r0 = r0; c.dataset.place = p.name;
     let extra = "";
-    if (state.tab === "instruments" && p.instr.length)
-      extra = `<div class="tsub" style="margin-top:3px">instruments: ${esc(p.instr.join(", "))}</div>`;
+    if (state.tab === "instruments"){
+      const bd = placeItyBreakdown(p);
+      const cur = state.itype != null ? `<div class="tsub">${esc((ITY[state.itype] || {}).label || "")}: <b style="color:var(--ink)">${fmtN(v)}</b></div>` : "";
+      extra = cur + (bd.length ? `<div class="tsub" style="margin-top:3px">types here: ${bd.map(b => `${esc(b.label)} ${fmtN(b.v)}`).join(" · ")}</div>` : "") +
+        (p.instr.length ? `<div class="tsub" style="margin-top:3px">e.g. ${esc(p.instr.slice(0, 4).join(", "))}</div>` : "");
+    }
     if (state.tab === "materials"){
       const bd = placeSubBreakdown(p, state.mat);
       const cur = state.sub != null ? `<div class="tsub">${esc(SUBM[state.sub].label)}: <b style="color:var(--ink)">${fmtN(v)}</b></div>` : "";
@@ -450,7 +509,16 @@ svg.addEventListener("pointermove", ev => {
   vb.y = drag.vy - (ev.clientY - drag.y) * sc;
   applyVB();
 });
-svg.addEventListener("pointerup", () => { drag = null; svg.classList.remove("dragging"); });
+svg.addEventListener("pointerup", ev => {
+  const wasClick = drag && Math.abs(ev.clientX - drag.x) < 5 && Math.abs(ev.clientY - drag.y) < 5;
+  drag = null; svg.classList.remove("dragging");
+  if (wasClick && state.tab === "quiz" && state.quiz && state.quiz.phase === "ask" && state.quiz.qs[state.quiz.idx].kind === "pin"){
+    const r = svg.getBoundingClientRect();
+    const lon = vb.x + (ev.clientX - r.left) / r.width * vb.w;
+    const lat = -(vb.y + (ev.clientY - r.top) / r.height * vb.h);
+    answerPin(lon, lat);
+  }
+});
 svg.addEventListener("wheel", ev => {
   ev.preventDefault();
   const f = ev.deltaY > 0 ? 1.18 : 1 / 1.18;
@@ -493,7 +561,7 @@ function renderTimeline(){
     tl.append(c);
   }
 }
-function setEra(i){ state.era = i; renderAll(); }
+function setEra(i){ if (state.tab === "quiz") return; state.era = i; renderAll(); }
 
 /* ---------- sidebar ---------- */
 function rankedList(ci, opts = {}){
@@ -551,6 +619,7 @@ function matChart(){
 function renderSide(){
   const s = $("#side");
   const eraTxt = state.era == null ? "all eras" : eraLabel(state.era);
+  if (state.tab === "quiz"){ renderQuizSide(s); return; }
   if (state.tab === "hotspots"){
     s.innerHTML = `
       <h2>Where artifacts come from <span style="color:var(--muted); font-weight:400">· ${eraTxt}</span></h2>
@@ -647,14 +716,47 @@ function renderSide(){
     });
     mc.addEventListener("mouseleave", hideTip);
   } else {
+    const IC = "#9085e9";
+    const types = ITY.map((t, i) => ({ ...t, tid:i, v:gityVal(i, state.era) })).sort((a, b) => b.v - a.v);
+    const ttot = types.reduce((a, x) => a + x.v, 0) || 1;
+    const tmax = types.length ? Math.max(1, types[0].v) : 1;
+    const selLabel = state.itype != null ? (ITY[state.itype] || {}).label : "all instruments";
+    const ityChartHtml = state.itype != null ? (() => {
+      const vals = []; for (let i = 0; i < 20; i++) vals.push(gityVal(state.itype, i));
+      const m = Math.max(1, ...vals), W = 322, H = 56, cw = (W - 38) / 20;
+      return `<h3>When ${esc(selLabel.toLowerCase())} appear</h3>
+        <svg id="itychart" width="${W}" height="${H + 14}" viewBox="0 0 ${W} ${H + 14}">
+        ${vals.map((v, i) => { const h = v ? Math.max(2, H * Math.sqrt(v / m)) : 0;
+          return `<rect x="${i * (cw + 2)}" y="${H - h}" width="${cw}" height="${h}" rx="1" fill="${IC}" data-era="${i}" style="cursor:pointer" ${state.era === i ? 'stroke="#fff" stroke-width="1"' : ""}></rect>`; }).join("")}
+        <text x="0" y="${H + 11}" font-size="9.5" fill="var(--muted)">3000 BCE</text>
+        <text x="${W - 40}" y="${H + 11}" font-size="9.5" fill="var(--muted)">2000 CE</text></svg>`;
+    })() : "";
     s.innerHTML = `
       <h2>Musical instruments <span style="color:var(--muted); font-weight:400">· ${eraTxt}</span></h2>
-      <div class="note" style="margin-bottom:8px">${fmtN(AGG.global.reduce((a, r) => a + r[5], 0))} instruments in the Met collection. Hover a circle to see the typical instrument types of each place.</div>
-      <h3>Top places</h3>
-      ${rankedList(5, { n:16, color:"#9085e9", instr:true })}
+      <h3>By instrument family <span style="text-transform:none; letter-spacing:0">(${eraTxt})</span></h3>
+      <div class="rowlist" id="itylist">
+        <div class="rrow ${state.itype == null ? "sel" : ""}" data-ity="">
+          <span class="rk"></span><span class="nm" style="font-weight:600">All instruments</span>
+          <span class="ct">${fmtN(ttot)}</span>
+        </div>
+        ${types.filter(x => x.v > 0).map((x, i) => `
+        <div class="rrow ${state.itype === x.tid ? "sel" : ""}" data-ity="${x.tid}">
+          <span class="rk">${i + 1}</span>
+          <span class="nm">${esc(x.label)}</span>
+          <span class="ct">${fmtN(x.v)} · ${Math.round(100 * x.v / ttot)}%</span>
+          <div class="bar" style="width:${Math.max(2, 100 * x.v / tmax)}%; background:${IC}"></div>
+        </div>`).join("")}
+      </div>
+      ${ityChartHtml}
+      <h3>Top places for ${esc(selLabel.toLowerCase())}</h3>
+      ${rankedList(5, { n:14, color:IC, instr:true, val: currentValFn() })}
       <h3>How to use this</h3>
       ${notesHtml(STRATEGY.instruments)}
       ${factsHtml()}`;
+    for (const r of s.querySelectorAll("#itylist .rrow"))
+      r.onclick = () => { state.itype = r.dataset.ity === "" ? null : +r.dataset.ity; renderAll(); };
+    const ic = s.querySelector("#itychart");
+    if (ic) ic.addEventListener("click", ev => { const r = ev.target.closest("rect"); if (r) setEra(+r.dataset.era); });
   }
   for (const row of s.querySelectorAll("[data-lon]"))
     row.addEventListener("click", () => {
@@ -664,9 +766,197 @@ function renderSide(){
     });
 }
 
+/* ---------- quiz mode ---------- */
+const EXCLUDE_SUBS = new Set(["stone_other","metal_other","unspecified","textile","ceramic"]);
+function havKm(a, b){
+  const R = 6371, rad = x => x * Math.PI / 180;
+  const dLat = rad(b.lat - a.lat), dLon = rad(b.lon - a.lon);
+  const s = Math.sin(dLat/2)**2 + Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(dLon/2)**2;
+  return 2 * R * Math.asin(Math.sqrt(s));
+}
+function pinPts(d){ return d <= 300 ? 5000 : Math.round(5000 * Math.exp(-(d - 300) / 1800)); }
+const rand = a => a[Math.floor(Math.random() * a.length)];
+function shuffle(a){ a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+function buildQuizPools(){
+  const pools = { pinMat:[], pinEmp:[], mcEmpEra:[], mcPlaceMat:[], mcMatPlace:[] };
+  // pin-material: (submat, era) where one place clearly dominates
+  for (let sid = 0; sid < SUBM.length; sid++){
+    if (EXCLUDE_SUBS.has(SUBM[sid].key)) continue;
+    for (let e = 0; e < 20; e++){
+      const g = gsubVal(sid, e); if (g < 25) continue;
+      let best = null, bv = 0;
+      for (const p of AGG.places){ const v = subVal(p, sid, e); if (v > bv){ bv = v; best = p; } }
+      if (best && bv >= 12 && bv / g >= 0.45) pools.pinMat.push({ sid, era:e, place:best });
+    }
+  }
+  // pin-empire
+  EMPIRES.eras.forEach((E, ei) => { for (const em of E.empires) if (em.strength >= 2) pools.pinEmp.push({ era:ei, emp:em }); });
+  // mc empire-era: eras where an empire name was strength 3
+  const byName = {};
+  EMPIRES.eras.forEach((E, ei) => { for (const em of E.empires) if (em.strength === 3){ const n = em.name.replace(/ \(.*\)$/, ""); (byName[n] = byName[n] || { eras:[], note:em.note }).eras.push(ei); } });
+  for (const n in byName) pools.mcEmpEra.push({ name:n, eras:byName[n].eras, note:byName[n].note });
+  // mc place-material: which submat dominates <place>'s <category> in <era>
+  for (const p of AGG.places){
+    for (const e in p.S){
+      for (const c of CATS){
+        let tot = 0, best = null, bv = 0;
+        for (const sid in p.S[e]){
+          if (SUBM[sid].cat !== c.key || EXCLUDE_SUBS.has(SUBM[sid].key)) continue;
+          const v = p.S[e][sid]; tot += v; if (v > bv){ bv = v; best = +sid; }
+        }
+        if (best != null && bv >= 15 && bv / tot >= 0.5) pools.mcPlaceMat.push({ place:p, era:+e, cat:c, sid:best });
+      }
+    }
+  }
+  // mc material-place: classic all-eras source of a submat
+  for (let sid = 0; sid < SUBM.length; sid++){
+    if (EXCLUDE_SUBS.has(SUBM[sid].key) || SUBM[sid].key === "paper") continue;
+    const g = gsubVal(sid, null); if (g < 40) continue;
+    let best = null, bv = 0;
+    for (const p of AGG.places){ const v = subVal(p, sid, null); if (v > bv){ bv = v; best = p; } }
+    if (best && bv / g >= 0.5) pools.mcMatPlace.push({ sid, place:best });
+  }
+  return pools;
+}
+
+function makeQuestion(kind, pools){
+  if (kind === "pinMat"){
+    const c = rand(pools.pinMat);
+    return { kind:"pin", era:c.era, target:{ lat:c.place.lat, lon:c.place.lon, name:c.place.name },
+      prompt:`Drop a pin: where were most <b>${esc(SUBM[c.sid].label.toLowerCase())}</b> objects of <b>${eraLabel(c.era)}</b> made?`,
+      note:SUBNOTES[SUBM[c.sid].key] || "" };
+  }
+  if (kind === "pinEmp"){
+    const c = rand(pools.pinEmp);
+    return { kind:"pin", era:c.era, target:{ lat:c.emp.lat, lon:c.emp.lon, name:c.emp.name },
+      prompt:`Drop a pin on the power center of the <b>${esc(c.emp.name)}</b> (${EMPIRES.eras[c.era].label}).`,
+      note:c.emp.note };
+  }
+  if (kind === "mcEmpEra"){
+    const c = rand(pools.mcEmpEra);
+    const correct = rand(c.eras);
+    const wrongs = shuffle([...Array(20).keys()].filter(e => c.eras.every(x => Math.abs(x - e) >= 2))).slice(0, 3);
+    const opts = shuffle([correct, ...wrongs]);
+    return { kind:"mc", era:null, revealEra:correct, options:opts.map(eraLabel), correctIdx:opts.indexOf(correct),
+      prompt:`When was <b>${esc(c.name)}</b> at its height (a superpower of its era)?`, note:c.note };
+  }
+  if (kind === "mcPlaceMat"){
+    const c = rand(pools.mcPlaceMat);
+    const others = shuffle(subsOfCat(c.cat.key).filter(s => s.sid !== c.sid && !EXCLUDE_SUBS.has(s.key) && gsubVal(s.sid, null) > 30)).slice(0, 3);
+    const opts = shuffle([c.sid, ...others.map(o => o.sid)]);
+    return { kind:"mc", era:c.era, options:opts.map(s => SUBM[s].label), correctIdx:opts.indexOf(c.sid),
+      prompt:`In <b>${eraLabel(c.era)}</b>, most of <b>${esc(c.place.name)}</b>’s ${c.cat.label.toLowerCase()} objects are made of…`,
+      note:SUBNOTES[SUBM[c.sid].key] || "" };
+  }
+  const c = rand(pools.mcMatPlace);
+  const others = shuffle(AGG.places.filter(p => p !== c.place && p.total > 800)).slice(0, 3);
+  const opts = shuffle([c.place, ...others]);
+  return { kind:"mc", era:null, options:opts.map(p => p.name), correctIdx:opts.indexOf(c.place),
+    prompt:`Which place is the collection’s classic source of <b>${esc(SUBM[c.sid].label.toLowerCase())}</b> objects?`,
+    note:SUBNOTES[SUBM[c.sid].key] || "" };
+}
+
+function newQuiz(){
+  const pools = buildQuizPools();
+  const kinds = shuffle(["pinMat","pinMat","pinMat","pinEmp","pinEmp","mcEmpEra","mcEmpEra","mcPlaceMat","mcPlaceMat","mcMatPlace"]);
+  state.quiz = { qs:kinds.map(k => makeQuestion(k, pools)), idx:0, score:0, phase:"ask", marks:null, results:[] };
+  startQuestion();
+}
+function startQuestion(){
+  const Q = state.quiz, q = Q.qs[Q.idx];
+  Q.phase = "ask"; Q.marks = null;
+  state.era = q.era; // borders give period context
+  svg.classList.toggle("quiz-cursor", q.kind === "pin");
+  renderAll();
+}
+function answerPin(lon, lat){
+  const Q = state.quiz, q = Q.qs[Q.idx];
+  const d = Math.round(havKm({ lat, lon }, q.target));
+  const pts = pinPts(d);
+  Q.score += pts; Q.phase = "reveal";
+  Q.results.push({ prompt:q.prompt, pts });
+  Q.lastVerdict = { pts, detail:`${fmtN(d)} km from ${q.target.name}` };
+  Q.marks = [
+    { lat:q.target.lat, lon:q.target.lon, color:"#0ca30c", label:`✓ ${q.target.name}` },
+    { lat, lon, color:"#d03b3b", label:`your pin · ${fmtN(d)} km` },
+  ];
+  svg.classList.remove("quiz-cursor");
+  renderAll();
+}
+function answerMC(i){
+  const Q = state.quiz, q = Q.qs[Q.idx];
+  const ok = i === q.correctIdx;
+  const pts = ok ? 5000 : 0;
+  Q.score += pts; Q.phase = "reveal"; Q.pickedIdx = i;
+  Q.results.push({ prompt:q.prompt, pts });
+  Q.lastVerdict = { pts, detail: ok ? "Correct!" : `Answer: ${q.options[q.correctIdx]}` };
+  if (q.revealEra != null) state.era = q.revealEra;
+  renderAll();
+}
+function nextQuestion(){
+  const Q = state.quiz;
+  if (Q.idx >= 9){ Q.phase = "done"; renderAll(); return; }
+  Q.idx++; startQuestion();
+}
+function drawQuizMarks(marks, k){
+  if (marks.length === 2){
+    const l = el("line",{ x1:marks[0].lon, y1:-marks[0].lat, x2:marks[1].lon, y2:-marks[1].lat,
+      stroke:"var(--muted)", "stroke-dasharray":"2 2", "stroke-width":1, "vector-effect":"non-scaling-stroke" });
+    gDots.append(l);
+  }
+  for (const m of marks){
+    const c = el("circle",{ cx:m.lon, cy:-m.lat, r:4.5 / k, fill:m.color, "fill-opacity":.9, class:"dot" });
+    c.dataset.r0 = 4.5; gDots.append(c);
+    const t = el("text",{ x:m.lon, y:-m.lat - 4.5 / k - 2.2 / k, "text-anchor":"middle", class:"maplabel", "font-size":3.4 / k });
+    t.dataset.f0 = 3.4; t.__c = { y:-m.lat, r0:4.5 }; t.textContent = m.label;
+    gLabels.append(t);
+  }
+}
+function renderQuizSide(s){
+  if (!state.quiz) newQuiz();
+  const Q = state.quiz, q = Q.qs[Q.idx];
+  if (Q.phase === "done"){
+    const pct = Math.round(100 * Q.score / 50000);
+    const grade = Q.score >= 42000 ? "Master curator" : Q.score >= 34000 ? "Senior curator" : Q.score >= 25000 ? "Field researcher" : Q.score >= 15000 ? "Apprentice" : "Visitor";
+    s.innerHTML = `<h2>Round complete</h2>
+      <div class="qtotal">${fmtN(Q.score)} <span style="font-size:13px; color:var(--muted); font-weight:400">/ 50,000 · ${pct}%</span></div>
+      <div style="color:var(--ink-2); font-size:13px; margin-bottom:12px">${grade}</div>
+      ${Q.results.map((r, i) => `<div class="qrow"><span>Q${i + 1}</span><span style="color:${r.pts >= 4000 ? "#0ca30c" : r.pts > 0 ? "var(--other)" : "#e66767"}">${fmtN(r.pts)}</span></div>`).join("")}
+      <button class="qbtn" id="qagain">Play again</button>
+      <div class="note" style="margin-top:14px">Scoring mirrors the real game: 5,000/question, full points within ~300 km on pin drops.</div>`;
+    s.querySelector("#qagain").onclick = () => { state.quiz = null; newQuiz(); };
+    return;
+  }
+  const head = `<div class="qhead"><span class="qn">Question ${Q.idx + 1} / 10</span><span class="qs">${fmtN(Q.score)} pts</span></div>`;
+  if (Q.phase === "ask"){
+    s.innerHTML = head + `<div class="qprompt">${q.prompt}</div>` +
+      (q.kind === "pin"
+        ? `<div class="qpin-hint">◎ Click the map to drop your pin</div><div class="note">Borders show ${q.era != null ? eraLabel(q.era) : "the modern world"} — use them like in the real game.</div>`
+        : `<div class="qopts">${q.options.map((o, i) => `<button class="qopt" data-i="${i}">${esc(o)}</button>`).join("")}</div>`);
+    for (const b of s.querySelectorAll(".qopt")) b.onclick = () => answerMC(+b.dataset.i);
+  } else {
+    const v = Q.lastVerdict, good = v.pts >= 4000;
+    s.innerHTML = head + `<div class="qprompt">${q.prompt}</div>` +
+      (q.kind === "mc" ? `<div class="qopts">${q.options.map((o, i) =>
+        `<button class="qopt ${i === q.correctIdx ? "correct" : i === Q.pickedIdx ? "wrong" : ""}" disabled>${esc(o)}</button>`).join("")}</div>` : "") +
+      `<div class="qverdict ${good ? "good" : "bad"}">${good ? "✓" : v.pts > 0 ? "◐" : "✗"} ${fmtN(v.pts)} pts · ${esc(v.detail)}</div>` +
+      (q.note ? `<div class="qnote">${q.note}</div>` : "") +
+      `<button class="qbtn" id="qnext">${Q.idx >= 9 ? "See results" : "Next question"} →</button>`;
+    s.querySelector("#qnext").onclick = nextQuestion;
+  }
+}
+
 /* ---------- legend box ---------- */
 function renderLegend(){
   const box = $("#maplegendbox");
+  if (state.tab === "quiz"){
+    const Q = state.quiz;
+    box.innerHTML = Q && Q.phase !== "done"
+      ? `<b>Quiz · Q${Q.idx + 1}/10</b><div class="tsub">${Q.qs[Q.idx].kind === "pin" && Q.phase === "ask" ? "click the map to answer" : fmtN(Q.score) + " pts so far"}</div>`
+      : `<b>Quiz</b><div class="tsub">round complete</div>`;
+    return;
+  }
   if (state.tab === "hotspots")
     box.innerHTML = `<b>Circle = objects made there</b><div class="tsub" style="margin-top:2px">size & shade ∝ count · borders are ${state.era == null ? "modern (select an era!)" : "period-correct for " + eraLabel(state.era)}</div>`;
   else if (state.tab === "empires")
@@ -677,7 +967,7 @@ function renderLegend(){
     const sel = state.sub != null ? SUBM[state.sub].label : c.label;
     box.innerHTML = `<b style="color:${c.hex}">${esc(sel)}</b><div class="tsub">where objects of this material were made${state.era != null ? " · " + eraLabel(state.era) : ""}</div><div class="tsub">hover a circle for that place’s material mix</div>`;
   } else
-    box.innerHTML = `<b style="color:#9085e9">Musical instruments</b><div class="tsub">Met Musical Instruments dept.${state.era != null ? " · " + eraLabel(state.era) : ""}</div>`;
+    box.innerHTML = `<b style="color:#9085e9">${state.itype != null ? esc((ITY[state.itype] || {}).label || "") : "Musical instruments"}</b><div class="tsub">Met Musical Instruments dept.${state.era != null ? " · " + eraLabel(state.era) : ""}</div><div class="tsub">hover a circle for that place’s instrument mix</div>`;
 }
 
 /* ---------- tabs / render ---------- */
@@ -698,7 +988,7 @@ addEventListener("keydown", ev => {
   if (ev.target.tagName === "INPUT") return;
   if (ev.key === "ArrowRight") setEra(state.era == null ? 0 : Math.min(19, state.era + 1));
   else if (ev.key === "ArrowLeft") setEra(state.era == null ? 19 : (state.era === 0 ? null : state.era - 1));
-  else if (/^[1-4]$/.test(ev.key)) document.querySelectorAll("#tabs button")[+ev.key - 1].click();
+  else if (/^[1-5]$/.test(ev.key)) document.querySelectorAll("#tabs button")[+ev.key - 1].click();
 });
 /* URL hash: #tab=materials&era=13&mat=metal — bookmarkable views */
 (function(){
@@ -710,10 +1000,23 @@ addEventListener("keydown", ev => {
     const i = SUBM.findIndex(x => x.key === h.get("sub"));
     if (i >= 0){ state.sub = i; state.mat = SUBM[i].cat; }
   }
+  if (h.get("itype") != null && h.get("itype") !== ""){
+    const i = ITY.findIndex(x => x.key === h.get("itype"));
+    if (i >= 0) state.itype = i;
+  }
   for (const x of document.querySelectorAll("#tabs button")) x.classList.toggle("on", x.dataset.tab === state.tab);
 })();
 renderAll();
 applyVB();
+/* headless smoke test: #qtest=1 answers Q1 as a pin near Cairo */
+if (new URLSearchParams(location.hash.slice(1)).get("qtest")){
+  document.querySelector('[data-tab="quiz"]').click();
+  const Q = state.quiz;
+  Q.qs[0] = { kind:"pin", era:8, target:{ lat:26.8, lon:30.8, name:"Egypt" },
+    prompt:"TEST: pin Egypt", note:"test note" };
+  startQuestion();
+  answerPin(31.2, 30.0);
+}
 </script>
 </body>
 </html>

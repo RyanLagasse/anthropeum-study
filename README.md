@@ -8,7 +8,8 @@ Tabs:
 - **Hotspots** — where the Met's 484,956 open-access objects were made, per 250-year era, with a toggle to exclude works on paper
 - **Empires** — dominant powers per era over period-correct historical borders
 - **Materials** — stone / metal / perishables / ceramic+glass, each drilling into ~46 specific materials (limestone, marble, jade, bronze, silk, linen, plant-fiber cordage, faience, porcelain…) with per-place material mixes and regional prior notes
-- **Instruments** — the Met's musical instruments by place and era
+- **Instruments** — the Met's musical instruments by place and era, drilling into 14 instrument families (drums, zithers, plucked lutes, bells & gongs…)
+- **Quiz** — 10-question practice rounds: pin-drop questions scored by distance (like the real game) plus multiple choice on empires and material priors
 
 Keyboard: `1–4` tabs · `←/→` eras. Bookmarkable views via URL hash, e.g. `#tab=materials&era=4&sub=limestone`.
 

@@ -159,6 +159,59 @@ def matcat(medium):
             best, bestpos = (cat, i), mm.start()
     return best if best else ("other", UNSPEC)
 
+# --- instrument-type taxonomy (Musical Instruments dept): (key, label, regex) ---
+# classified by earliest regex match on lowercased Object Name; ties -> earlier entry
+INSTYPES = [
+ ("bowed","Bowed strings", r"violin|violon|cello|viola|\bviols?\b|fiddle|rebab|rebec|rabab|erhu|erxian|sarangi|s[āa]rind|kemangeh|kamanch|kamanja|gusle\b|hurdy|tromba marina|pochette|gadulka|tsii|ta[ūu]s|mayuri|gamba|saw u|nyckelharpa|\bbows?\b"),
+ ("plucked","Plucked lutes & guitars", r"guitar|\blutes?\b|sitar|\bpipa\b|shamisen|samisen|sanxian|sangen|banjo|mandolin|mandola|mandora|mandore|pandurina|bandur|\b[ūu]d\b|\boud\b|tanbur|tambura|\btambur\b|tanbour|setar|dutar|dombra|\btar\b|vina\b|veena|biwa|cittern|gittern|citole|balalaika|charango|ukulele|theorbo|chitarr|hasapi|sgra|rubab|quwaytara|cavaco|guenbri|gunibri|gimbri|gnbri|qanbus|\bsaz\b|harp guitar|lyre guitar|musical bow|pluriarc"),
+ ("zither","Zithers & dulcimers", r"zither|\bkoto\b|qin\b|dulcimer|psalter|kanun|qanun|q[āa]n[ūu]n|santur|santoor|cimbalom|kantele|gusli|langeleik|[ée]pinette|aeolian harp|bell harp|ichigen|genkin|yokin|\bmvet\b|mi-gyaung|migyaung|kayag|guzheng|valiha"),
+ ("harp","Harps & lyres", r"harps?\b|lyre|saung|\barpa\b|\bkora\b|\bnanga\b"),
+ ("keyboard","Keyboards", r"piano|harpsichord|clavi|clavecin|organ|spinet|virginal|melodeon|harmonium|celesta|regal\b"),
+ ("flute","Flutes & whistles", r"flute|piccolo|recorder|whistl|ocarina|panpipe|\bfife\b|flageolet|shakuhachi|\bdizi\b|\bxiao\b|kaval|\bnay\b|\bney\b|quena|\bkena\b|suling|syrinx|stopped pipe|ko-tze|\bgore\b|sk-a'na|wat-sa-pua|svirel|dvojnice|algoja|bansuri|choquela|osobuki"),
+ ("reed","Reeds & bagpipes", r"oboe|clarinet|bassoon|shawm|bagpipe|saxophone|chalumeau|hornpipe|zurna|sorna|surna|suona|sopila|english horn|basset horn|cor anglais|cornemuse|musette|zampogna|gaita|uilleann|aulos|hautbois|crumhorn|krummhorn|rackett|dulcian|launeddas|meijiwiz|p[ūu]ng[īi]|reed pipe|reedpipe"),
+ ("freereed","Free reeds & mouth organs", r"sheng|harmonica|accordion|concertina|khaen|khene|\bkhen\b|mouth organ|\bsho\b|bandoneon"),
+ ("brass","Trumpets & horns", r"trumpet|trombone|horn|tuba\b|cornet|bugle|conch|shofar|saxhorn|ophicleide|serpent|clarion|rkangling|dung ?chen|didgeridoo|sousaphone|euphonium|\boko\b"),
+ ("drum","Drums", r"drum|tabla\b|damaru|darabuk|darbuk|\bdaira\b|naqqar|nakers|tombak|taiko|daiko|tambour|timpani|timbal|bongo|conga|mridang|dhol|ngoma|mbejn|teponaztli|mokugyo|\bgu\b|huagu|\bozi\b|\bbaz\b|tab'l|\bnonga\b|ndungu|dundun|djembe"),
+ ("bell","Bells, gongs & cymbals", r"bell|gong|cymbal|chime|crotal|\bzil\b|densho|dobachi|\bkane\b|zhong|suzu|zangul|carillon|\blo\b|\bkei\b|\bpo\b|mandira|tam-?tam|\brei\b|chan chung"),
+ ("rattle","Rattles, scrapers & lamellophones", r"rattle|sansa|zanze|sanza|mbira|likembe|kalimba|xylophone|marimba|ranat|balafon|scraper|\brasps?\b|ratchet|g[üu]iro|sistrum|sistra|clapper|castanet|qarqabu|jew.?s.harp|maraca|shak shak|shekere|angklung|anklang|rudieng|\bclaves\b|lamellophone|gasda-we-sa"),
+ ("mech","Tuning & mechanical devices", r"tuning fork|pitch ?pipe|metronome|music(al)? box|serinette|tonometer|tonangeber|megaphone|speaking trumpet|tuning wrench"),
+ ("other","Other / unclassified", r"$^"),
+]
+INSTC = [(i, re.compile(rx)) for i,(k,l,rx) in enumerate(INSTYPES)]
+INST_OTHER = len(INSTYPES)-1
+
+IKEY = {k: i for i,(k,l,rx) in enumerate(INSTYPES)}
+def clsinst(c):
+    # fallback on the Met's Hornbostel-Sachs-style Classification field
+    c = (c or '').lower()
+    if c.startswith('chordophone'):
+        if 'bowed' in c: return IKEY['bowed']
+        if 'lute' in c or 'musical bow' in c: return IKEY['plucked']
+        if 'zither' in c: return IKEY['zither']
+        if 'harp' in c or 'lyre' in c: return IKEY['harp']
+    elif c.startswith('aerophone'):
+        if 'organ' in c: return IKEY['keyboard']
+        if 'blow hole' in c or 'whistle' in c or 'flute' in c: return IKEY['flute']
+        if 'reed vibrated' in c: return IKEY['reed']
+        if 'free reed' in c: return IKEY['freereed']
+        if 'lip vibrated' in c: return IKEY['brass']
+    elif c.startswith('membranophone'): return IKEY['drum']
+    elif c.startswith('idiophone'):
+        if 'struck' in c or 'concussion' in c: return IKEY['bell']
+        if 'shaken' in c or 'plucked' in c or 'scraped' in c or 'friction' in c: return IKEY['rattle']
+    return INST_OTHER
+
+def matinst(name, cls=''):
+    best, bestpos = INST_OTHER, 10**9
+    if name:
+        s = name.lower()
+        for i, rx in INSTC:
+            mm = rx.search(s)
+            if mm and mm.start() < bestpos:
+                best, bestpos = i, mm.start()
+    if best == INST_OTHER: best = clsinst(cls)
+    return best
+
 ERAS = list(range(-3000, 2000, 250))  # 20 buckets
 def era_idx(b, e):
     try: b = int(b); e = int(e)
@@ -183,6 +236,8 @@ topcul = collections.defaultdict(collections.Counter)
 gtot = [[0]*7 for _ in range(20)]
 subd = collections.defaultdict(lambda: collections.defaultdict(collections.Counter))
 gsub = collections.defaultdict(collections.Counter)
+instd = collections.defaultdict(lambda: collections.defaultdict(collections.Counter))
+ginst = collections.defaultdict(collections.Counter)
 n = resolved = dated = 0
 
 with open('MetObjects.csv', encoding='utf-8-sig', newline='') as f:
@@ -204,22 +259,29 @@ with open('MetObjects.csv', encoding='utf-8-sig', newline='') as f:
         if isin:
             cell[5] += 1; gtot[ei][5] += 1
             if row['Object Name']: topinstr[i][row['Object Name'].strip().lower()] += 1
+            iname = (row['Object Name'] or '').strip() or (row['Title'] or '').strip() or (row['Medium'] or '').strip()
+            tid = matinst(iname, row['Classification'])
+            instd[i][ei][tid] += 1; ginst[ei][tid] += 1
         if row['Object Name']: topobj[i][row['Object Name'].strip().split('|')[0].lower()] += 1
         cul = (row['Culture'] or '').split('|')[0].split(',')[0].strip()
         if cul: topcul[i][cul] += 1
 
 out = {
- "meta": {"rows": n, "resolved": resolved, "dated": dated, "eras": ERAS, "cats": ["total"]+CATS+["instruments","worksOnPaper"], "submats": [{"cat":c,"key":k,"label":l} for c,k,l,_ in SUBMATS]},
+ "meta": {"rows": n, "resolved": resolved, "dated": dated, "eras": ERAS, "cats": ["total"]+CATS+["instruments","worksOnPaper"], "submats": [{"cat":c,"key":k,"label":l} for c,k,l,_ in SUBMATS], "instypes": [{"key":k,"label":l} for k,l,_ in INSTYPES]},
  "places": [{"name": nm, "lat": la, "lon": lo,
              "total": sum(c[0] for c in data[pidx[nm]]),
              "top": [f"{k} ({v})" for k,v in topobj[pidx[nm]].most_common(6)],
              "cultures": [k for k,_ in topcul[pidx[nm]].most_common(4)],
              "instr": [f"{k} ({v})" for k,v in topinstr[pidx[nm]].most_common(5)],
              "sub": {str(e): sorted(subd[pidx[nm]][e].items(), key=lambda kv:-kv[1]) for e in sorted(subd[pidx[nm]])},
+             "inst": {str(e): sorted(instd[pidx[nm]][e].items(), key=lambda kv:-kv[1]) for e in sorted(instd[pidx[nm]])} if pidx[nm] in instd else {},
              "counts": data[pidx[nm]]} for (nm,la,lo) in placelist],
  "global": gtot,
  "gsub": {str(e): sorted(gsub[e].items(), key=lambda kv:-kv[1]) for e in sorted(gsub)},
+ "ginst": {str(e): sorted(ginst[e].items(), key=lambda kv:-kv[1]) for e in sorted(ginst)},
 }
+for p in out["places"]:
+    if not p["inst"]: del p["inst"]
 out["places"].sort(key=lambda p: -p["total"])
 with open('aggregate.json','w') as f: json.dump(out, f)
 print(f"rows={n} resolved={resolved} ({resolved/n:.0%}) dated={dated} places={len(placelist)}")
