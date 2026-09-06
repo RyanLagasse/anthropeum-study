@@ -144,6 +144,64 @@ SUBMATS = [
  ("other","ceramic","Ceramic (unspecified) / glazed", r"ceramic|pottery|clay|glaze"),
  ("other","unspecified","Unspecified / mixed", r"$^"),
 ]
+
+# --- animals: (group, key, label, depiction_regex, material_regex) ---
+ANIMALS = [
+ ("Livestock & work animals","horse","Horses", r"\bhorses?\b|\bmares?\b|stallion|equestrian|\bpony\b|\bponies\b|\bfoal", r"horse ?hair"),
+ ("Livestock & work animals","cattle","Cattle, oxen & bulls (hide, parchment)", r"\bcows?\b|\bcattle\b|\boxe?n?\b|\bbulls?\b|\bcalf\b|\bcalves\b|bovine|\bzebu\b|\bapis\b", r"cowhide|calfskin|oxhide|\bparchment\b|\bvellum\b"),
+ ("Livestock & work animals","sheep","Sheep & rams (wool)", r"\bsheep\b|\brams?\b|\blambs?\b|\bewes?\b", r"\bwool|fleece|sheepskin|\bfelt\b"),
+ ("Livestock & work animals","goat","Goats & ibex (mohair, cashmere)", r"\bgoats?\b|\bibex\b|\bibexes\b", r"goat ?hair|mohair|cashmere|goatskin|kidskin"),
+ ("Livestock & work animals","pig","Pigs & boars", r"\bpigs?\b|\bboars?\b|\bhogs?\b|\bswine\b|\bsows?\b", r"pigskin|boar bristle|hog bristle"),
+ ("Livestock & work animals","donkey","Donkeys & mules", r"\bdonkeys?\b|\bmules?\b|\bass\b|\basses\b", None),
+ ("Livestock & work animals","camel","Camels (camel hair)", r"\bcamels?\b|dromedar|bactrian", r"camel(?!id)"),
+ ("Livestock & work animals","buffalo","Water buffalo & yak", r"buffalo|\byaks?\b", r"buffalo horn|\byak\b"),
+ ("Livestock & work animals","llama","Llamas & alpacas (camelid fiber)", r"\bllamas?\b|alpaca|vicu[nñ]a|guanaco|camelid", r"alpaca|vicu[nñ]a|camelid|\bllama"),
+ ("Livestock & work animals","dog","Dogs, wolves & jackals", r"\bdogs?\b|\bhounds?\b|\bjackals?\b|\bwolf\b|\bwolves\b|\bfox(es)?\b|coyote|\banubis\b", r"wolf fur|fox fur|dog hair"),
+ ("Livestock & work animals","cat","Cats", r"\bcats?\b|\bkittens?\b|\bbastet\b", None),
+ ("Wild mammals","elephant","Elephants (ivory)", r"elephants?|\bganesh", r"\bivory\b"),
+ ("Wild mammals","lion","Lions", r"\blions?\b|lioness|\bsekhmet\b", None),
+ ("Wild mammals","tiger","Tigers", r"\btigers?\b", r"tiger skin"),
+ ("Wild mammals","leopard","Leopards, cheetahs & panthers", r"leopards?|cheetah|panthers?|\bocelot", r"leopard (skin|fur|pelt)"),
+ ("Wild mammals","jaguar","Jaguars, pumas & felines (Americas)", r"jaguars?|\bpumas?\b|\bcougar|\bfelines?\b|were-jaguar", r"jaguar (skin|pelt)"),
+ ("Wild mammals","deer","Deer, antelope & gazelle", r"\bdeer\b|\bstags?\b|antelope|gazelle|\belk\b|\bmoose\b|reindeer|caribou|\bfawns?\b|\bhinds?\b", r"buckskin|deerskin|deer hide|antler"),
+ ("Wild mammals","bear","Bears", r"\bbears?\b", r"bearskin|bear fur"),
+ ("Wild mammals","monkey","Monkeys & apes", r"monkeys?|\bapes?\b|baboon|gibbon|macaque|langur|\bhanuman\b", None),
+ ("Wild mammals","rabbit","Rabbits & hares", r"rabbits?|\bhares?\b", r"rabbit fur|hare fur"),
+ ("Wild mammals","small","Small mammals (rodents, bats, beavers)", r"\bmice\b|\bmouse\b|\brats?\b|squirrel|beaver|\bbats?\b|hedgehog|porcupine", r"beaver (fur|felt)|porcupine quill"),
+ ("Wild mammals","fur","Fur-bearers (ermine, sable, seal, walrus)", r"\bermines?\b|\bsable\b|\bmink\b|\botters?\b|walrus|weasel|marten|\bsea lions?\b", r"\bermine|\bsable\b|\bmink\b|otter fur|sealskin|seal fur|walrus"),
+ ("Wild mammals","hippo","Hippopotamus", r"hippopotam", r"hippopotamus ivory|hippo ivory"),
+ ("Wild mammals","rhino","Rhinoceros", r"rhinoceros|\brhino\b", r"rhinoceros horn"),
+ ("Wild mammals","giraffe","Giraffe", r"giraffe", None),
+ ("Reptiles & amphibians","crocodile","Crocodiles & alligators", r"crocodil|alligator|caiman|\bsobek\b", r"crocodile skin|alligator"),
+ ("Reptiles & amphibians","snake","Snakes & serpents", r"\bsnakes?\b|serpent|\bcobras?\b|\bvipers?\b|\bnagas?\b|python|uraeus|\bwadjet\b", r"snakeskin|python skin"),
+ ("Reptiles & amphibians","turtle","Turtles & tortoises (tortoiseshell)", r"turtles?|tortoise", r"tortoise ?shell|turtle shell"),
+ ("Reptiles & amphibians","frog","Frogs & toads", r"\bfrogs?\b|\btoads?\b", None),
+ ("Reptiles & amphibians","lizard","Lizards", r"lizard|gecko|chameleon|iguana|salamander", None),
+ ("Fish & sea life","fish","Fish, whales & dolphins", r"\bfish(es)?\b|\bcarp\b|\bsalmon|\btrout|\bsharks?\b|\bdolphins?\b|\bwhales?\b|\bsea ?horses?\b|\beels?\b|catfish", r"fish ?skin|shagreen|whalebone|baleen|whale ivory|shark skin|ray skin|sperm whale"),
+ ("Fish & sea life","shellfish","Shellfish & mollusks (shell, pearl)", r"\bshells?\b|\bsnails?\b|\bconch|\boysters?\b|\bmussels?\b|\bclams?\b|spondylus|nautilus|octopus|squid|\bcrabs?\b|lobster|scallop|cowrie", r"\bshell\b|mother[- ]of[- ]pearl|nacre|\bpearls?\b|conch|cowrie|spondylus|abalone|nautilus"),
+ ("Fish & sea life","coral","Coral", r"\bcoral", r"\bcoral"),
+ ("Insects","scarab","Scarabs & beetles", r"scarab|\bbeetles?\b", None),
+ ("Insects","bee","Bees & wasps (beeswax)", r"\bbees?\b|\bwasps?\b|\bhornets?\b", r"beeswax"),
+ ("Insects","insect","Butterflies, dragonflies & other insects", r"butterfl|\bmoths?\b|dragonfl|cicada|grasshopper|locust|\binsects?\b|scorpion|spiders?", None),
+ ("Insects","silkworm","Silkworm (silk)", r"silkworm|sericulture", r"\bsilks?\b|silken|silk thread"),
+ ("Birds","bird","Birds (general) & feathers", r"\bbirds?\b|\bfowl\b|sparrow|finch|songbird|magpie|\bcrows?\b|\bravens?\b|hummingbird|kingfisher|woodpecker|quail|pheasant|partridge|hoopoe", r"feather|plume|\bquill"),
+ ("Birds","raptor","Eagles, falcons, hawks & owls", r"\beagles?\b|\bfalcons?\b|\bhawks?\b|vulture|\bowls?\b|osprey|\bhorus\b|kestrel", None),
+ ("Birds","waterbird","Ducks, geese, swans, cranes & ibis", r"\bducks?\b|\bgeese\b|\bgoose\b|\bswans?\b|\bcranes?\b|\bherons?\b|\bibis\b|\bstorks?\b|egret|pelican|flamingo|\bgulls?\b|cormorant|\bthoth\b", None),
+ ("Birds","peacock","Peacocks", r"peacock|peafowl|peahen", r"peacock feather"),
+ ("Birds","parrot","Parrots, macaws & quetzals", r"parrots?|macaws?|cockatoo|parakeet|toucan|quetzal", r"macaw|parrot feather|quetzal"),
+ ("Birds","chicken","Roosters & chickens", r"roosters?|\bcocks?\b|\bhens?\b|chickens?|cockerel", None),
+ ("Birds","dove","Doves & pigeons", r"\bdoves?\b|pigeons?", None),
+ ("Birds","ostrich","Ostrich, emu & cassowary", r"ostrich|\bemus?\b|cassowary", r"ostrich|cassowary"),
+ ("Mythical creatures","dragon","Dragons", r"dragons?", None),
+ ("Mythical creatures","phoenix","Phoenix, simurgh & garuda", r"phoenix|fenghuang|simurgh|garuda|firebird", None),
+ ("Mythical creatures","griffin","Griffins", r"griffin|gryphon|griffon", None),
+ ("Mythical creatures","sphinx","Sphinxes", r"sphinx|sphinges", None),
+ ("Mythical creatures","hybrid","Other hybrids (centaur, makara, qilin, mermaid…)", r"unicorn|centaur|pegasus|hippocamp|chimera|\bhydra\b|cerberus|minotaur|satyr|mermaid|makara|\bkirin|qilin|basilisk|wyvern|\bkinnara|\bsea monster|\blamassu|\bshedu", None),
+]
+ANIC = [(i, re.compile(d), (re.compile(m) if m else None)) for i,(g,k,l,d,m) in enumerate(ANIMALS)]
+ANY_DEP = re.compile("|".join(f"(?:{d})" for g,k,l,d,m in ANIMALS))
+ANY_MAT = re.compile("|".join(f"(?:{m})" for g,k,l,d,m in ANIMALS if m))
+
 SUBC = [(i, cat, re.compile(rx if isinstance(rx,str) else rx[0])) for i,(cat,key,label,rx) in enumerate(SUBMATS)]
 CATS = ["stone","metal","perish","other"]
 UNSPEC = len(SUBMATS)-1
@@ -236,6 +294,10 @@ topcul = collections.defaultdict(collections.Counter)
 gtot = [[0]*7 for _ in range(20)]
 subd = collections.defaultdict(lambda: collections.defaultdict(collections.Counter))
 gsub = collections.defaultdict(collections.Counter)
+anid = collections.defaultdict(lambda: collections.defaultdict(collections.Counter))
+anim = collections.defaultdict(lambda: collections.defaultdict(collections.Counter))
+gani = collections.defaultdict(collections.Counter); gam = collections.defaultdict(collections.Counter)
+aniw = collections.defaultdict(lambda: collections.defaultdict(collections.Counter)); gaw = collections.defaultdict(collections.Counter)
 instd = collections.defaultdict(lambda: collections.defaultdict(collections.Counter))
 ginst = collections.defaultdict(collections.Counter)
 n = resolved = dated = 0
@@ -251,6 +313,15 @@ with open('MetObjects.csv', encoding='utf-8-sig', newline='') as f:
         dated += 1
         i = pid(p); cat, sid = matcat(row['Medium']); ci = 1 + CATS.index(cat)
         subd[i][ei][sid] += 1; gsub[ei][sid] += 1
+        atext = ((row.get('Tags') or '') + ' | ' + (row.get('Title') or '') + ' | ' + (row.get('Object Name') or '')).lower()
+        amed = (row['Medium'] or '').lower()
+        if ANY_DEP.search(atext) or ANY_MAT.search(amed):
+            for aid, drx, mrx in ANIC:
+                mm = mrx.search(amed) if mrx else None
+                if mm or drx.search(atext):
+                    anid[i][ei][aid] += 1; gani[ei][aid] += 1
+                    if mm: anim[i][ei][aid] += 1; gam[ei][aid] += 1
+                    if row['Department'] in ('Drawings and Prints','Photographs'): aniw[i][ei][aid] += 1; gaw[ei][aid] += 1
         cell = data[i][ei]; cell[0] += 1; cell[ci] += 1
         gtot[ei][0] += 1; gtot[ei][ci] += 1
         if row['Department'] in ('Drawings and Prints','Photographs'):
@@ -267,7 +338,7 @@ with open('MetObjects.csv', encoding='utf-8-sig', newline='') as f:
         if cul: topcul[i][cul] += 1
 
 out = {
- "meta": {"rows": n, "resolved": resolved, "dated": dated, "eras": ERAS, "cats": ["total"]+CATS+["instruments","worksOnPaper"], "submats": [{"cat":c,"key":k,"label":l} for c,k,l,_ in SUBMATS], "instypes": [{"key":k,"label":l} for k,l,_ in INSTYPES]},
+ "meta": {"rows": n, "resolved": resolved, "dated": dated, "eras": ERAS, "cats": ["total"]+CATS+["instruments","worksOnPaper"], "submats": [{"cat":c,"key":k,"label":l} for c,k,l,_ in SUBMATS], "animals": [{"group":g,"key":k,"label":l} for g,k,l,_,_ in ANIMALS], "instypes": [{"key":k,"label":l} for k,l,_ in INSTYPES]},
  "places": [{"name": nm, "lat": la, "lon": lo,
              "total": sum(c[0] for c in data[pidx[nm]]),
              "top": [f"{k} ({v})" for k,v in topobj[pidx[nm]].most_common(6)],
@@ -275,8 +346,10 @@ out = {
              "instr": [f"{k} ({v})" for k,v in topinstr[pidx[nm]].most_common(5)],
              "sub": {str(e): sorted(subd[pidx[nm]][e].items(), key=lambda kv:-kv[1]) for e in sorted(subd[pidx[nm]])},
              "inst": {str(e): sorted(instd[pidx[nm]][e].items(), key=lambda kv:-kv[1]) for e in sorted(instd[pidx[nm]])} if pidx[nm] in instd else {},
+             "ani": {str(e): sorted([[a, n, anim[pidx[nm]][e][a], aniw[pidx[nm]][e][a]] for a,n in anid[pidx[nm]][e].items()], key=lambda x:-x[1]) for e in sorted(anid[pidx[nm]])},
              "counts": data[pidx[nm]]} for (nm,la,lo) in placelist],
  "global": gtot,
+ "gani": {str(e): sorted([[a, n, gam[e][a], gaw[e][a]] for a,n in gani[e].items()], key=lambda x:-x[1]) for e in sorted(gani)},
  "gsub": {str(e): sorted(gsub[e].items(), key=lambda kv:-kv[1]) for e in sorted(gsub)},
  "ginst": {str(e): sorted(ginst[e].items(), key=lambda kv:-kv[1]) for e in sorted(ginst)},
 }

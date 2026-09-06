@@ -123,6 +123,7 @@
     border-bottom:1px solid var(--ring)}
   .qtotal{font-size:22px; font-weight:700; margin:10px 0 2px}
   .quiz-cursor{cursor:crosshair !important}
+  .grp{font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; margin:10px 0 3px 6px}
   #tip .tsub{color:var(--muted); font-size:11.5px}
 </style>
 </head>
@@ -134,6 +135,7 @@
     <button data-tab="empires">Empires</button>
     <button data-tab="materials">Materials</button>
     <button data-tab="instruments">Instruments</button>
+    <button data-tab="animals">Animals</button>
     <button data-tab="quiz">Quiz</button>
   </nav>
   <div id="eraReadout"></div>
@@ -143,7 +145,7 @@
   <div id="mapwrap">
     <svg id="map"></svg>
     <div id="maplegendbox"></div>
-    <div id="maphint">drag to pan · scroll to zoom · ←/→ era · 1–5 tabs</div>
+    <div id="maphint">drag to pan · scroll to zoom · ←/→ era · 1–6 tabs</div>
   </div>
   <aside id="side"></aside>
 </main>
@@ -206,6 +208,15 @@ const STRATEGY = {
     "Ancient instruments are rare and precious: Egyptian harps and sistra, Roman/Greek auloi. A very old-looking instrument is most likely Egypt.",
     "Materials give it away: gourd resonators → Africa; lacquered wood → East Asia; ivory inlay → courtly Europe or Mughal India; ceramic whistles → Mesoamerica/Andes.",
   ],
+  animals: [
+    "Animals are some of the sharpest region clues in the game: llama/alpaca = Andes only; jaguar or “feline” = Mesoamerica/Andes; scarab, ibis, hippo, uraeus cobra = Egypt; dragon = China/Japan (Europe’s dragons look like lizards with wings); griffin = Persia/Greece/Scythia; sphinx = Egypt (Greek sphinxes have wings).",
+    "Animal MATERIALS carry dating and place info: silk = East Asia until ~550 CE, then Byzantium/Persia/Islamic/Europe; wool = Near East, Europe, Egypt (Coptic); camelid fiber = Andes; feathers = Andes/Mesoamerica/Pacific/Native America; ivory = Africa/India source but carved everywhere (Gothic France, Japan netsuke, Byzantium).",
+    "True camel-hair textiles are rare in the Met (about a dozen) — but camel DEPICTIONS are a strong Persia / Central Asia / Tang China (Bactrian camel figurines) / Egypt signal.",
+    "Horses: steppe cultures (Scythian gold), Tang China figurines, Greek vases, Roman/European equestrian statues, Japanese samurai gear, Plains Native America (post-1600 only!). No horses in the Americas before Europeans arrived — a horse on a pre-1500 American object is a red flag.",
+    "Elephants: India (Ganesh, royal howdahs), Southeast Asia, Africa, Roman/Carthaginian. Tigers: India, China, Korea, Japan — never Africa or the Americas. Lions: Mesopotamia, Persia, Egypt, Greece, medieval European heraldry, Benin.",
+    "Cattle & bulls: Egypt (Apis, Hathor), Minoan Crete (bull-leaping), Mesopotamia (Lamassu bull-men), Indus seals, India (Nandi). Sheep/rams: Egypt (Amun), Mesopotamia, Greek/Roman sacrifice scenes.",
+    "Use the ‘exclude prints’ toggle (on by default): thousands of European/American prints and photographs depict animals and swamp the ancient signal.",
+  ],
   facts: [
     "10 artifacts/day · 10,000 pts each = 5,000 location + 5,000 era · 100,000 max.",
     "Location: full 5,000 within ~50 km of the making-place, then decays with distance on period-correct borders.",
@@ -216,7 +227,7 @@ const STRATEGY = {
   ],
 };
 
-const state = { tab:"hotspots", era:null, mat:"stone", sub:null, itype:null, matMode:"pct", exWop:false };
+const state = { tab:"hotspots", era:null, mat:"stone", sub:null, itype:null, animal:null, aniMat:false, aniExWop:true, matMode:"pct", exWop:false };
 
 /* sub-material index: p.S[era][sid] = count */
 const SUBM = AGG.meta.submats;
@@ -252,6 +263,28 @@ function placeItyBreakdown(p, n = 6){
   }
   return Object.entries(acc).sort((a, b) => b[1] - a[1]).slice(0, n)
     .map(([tid, v]) => ({ tid:+tid, v, label:(ITY[tid] || {}).label || "?" }));
+}
+
+/* animals: p.A[era][aid] = [aid, n, nMaterial, nWorksOnPaper] */
+const ANI = AGG.meta.animals || [];
+const ANI_COLOR = "#d55181";
+for (const p of AGG.places){ p.A = {}; for (const e in (p.ani || {})){ p.A[e] = {}; for (const r of p.ani[e]) p.A[e][r[0]] = r; } }
+const GANI = {}; for (const e in (AGG.gani || {})){ GANI[e] = {}; for (const r of AGG.gani[e]) GANI[e][r[0]] = r; }
+function aniRowVal(r){ if (!r) return 0; if (state.aniMat) return r[2]; return Math.max(0, r[1] - (state.aniExWop ? r[3] : 0)); }
+function aniVal(p, aid, era){
+  if (era != null) return aniRowVal(p.A[era] && p.A[era][aid]);
+  let v = 0; for (const e in p.A) v += aniRowVal(p.A[e][aid]); return v;
+}
+function ganiVal(aid, era){
+  if (era != null) return aniRowVal(GANI[era] && GANI[era][aid]);
+  let v = 0; for (const e in GANI) v += aniRowVal(GANI[e][aid]); return v;
+}
+function aniAllVal(p, era){ let v = 0; for (let a = 0; a < ANI.length; a++) v += aniVal(p, a, era); return v; }
+function aniDepVal(p, aid){ let v = 0; for (const e in p.A){ const r = p.A[e][aid]; if (r) v += r[1] - r[3]; } return v; }
+function placeAniBreakdown(p, n = 6){
+  const acc = [];
+  for (let a = 0; a < ANI.length; a++){ const v = aniVal(p, a, state.era); if (v > 0) acc.push({ aid:a, v, label:ANI[a].label }); }
+  return acc.sort((x, y) => y.v - x.v).slice(0, n);
 }
 
 /* material priors — the mindmap hooks */
@@ -408,6 +441,10 @@ function currentValFn(){
     if (state.sub != null) return p => subVal(p, state.sub, state.era);
     return p => placeVal(p, c.ci, state.era, false);
   }
+  if (state.tab === "animals"){
+    if (state.animal != null) return p => aniVal(p, state.animal, state.era);
+    return p => aniAllVal(p, state.era);
+  }
   if (state.tab === "instruments"){
     if (state.itype != null) return p => ityVal(p, state.itype, state.era);
     return p => placeVal(p, 5, state.era, false);
@@ -466,7 +503,7 @@ function renderDots(){
   items.sort((a, b) => b.v - a.v);
   const vmax = items.length ? items[0].v : 1;
   const catColor = state.tab === "materials" ? CATS.find(c => c.key === state.mat).hex
-                 : state.tab === "instruments" ? "#9085e9" : null;
+                 : state.tab === "instruments" ? "#9085e9" : state.tab === "animals" ? ANI_COLOR : null;
   items.forEach((it, i) => {
     const { p, v } = it;
     const r0 = Math.max(0.9, 14 * Math.sqrt(v / vmax));
@@ -479,6 +516,11 @@ function renderDots(){
       const cur = state.itype != null ? `<div class="tsub">${esc((ITY[state.itype] || {}).label || "")}: <b style="color:var(--ink)">${fmtN(v)}</b></div>` : "";
       extra = cur + (bd.length ? `<div class="tsub" style="margin-top:3px">types here: ${bd.map(b => `${esc(b.label)} ${fmtN(b.v)}`).join(" · ")}</div>` : "") +
         (p.instr.length ? `<div class="tsub" style="margin-top:3px">e.g. ${esc(p.instr.slice(0, 4).join(", "))}</div>` : "");
+    }
+    if (state.tab === "animals"){
+      const bd = placeAniBreakdown(p);
+      const cur = state.animal != null ? `<div class="tsub">${esc(ANI[state.animal].label)}: <b style="color:var(--ink)">${fmtN(v)}</b>${state.aniMat ? " (as material)" : ""}</div>` : "";
+      extra = cur + (bd.length ? `<div class="tsub" style="margin-top:3px">animals here: ${bd.map(b => `${esc(b.label.replace(/ \(.*\)$/, ""))} ${fmtN(b.v)}`).join(" · ")}</div>` : "");
     }
     if (state.tab === "materials"){
       const bd = placeSubBreakdown(p, state.mat);
@@ -620,6 +662,7 @@ function renderSide(){
   const s = $("#side");
   const eraTxt = state.era == null ? "all eras" : eraLabel(state.era);
   if (state.tab === "quiz"){ renderQuizSide(s); return; }
+  if (state.tab === "animals"){ renderAnimalsSide(s, eraTxt); return; }
   if (state.tab === "hotspots"){
     s.innerHTML = `
       <h2>Where artifacts come from <span style="color:var(--muted); font-weight:400">· ${eraTxt}</span></h2>
@@ -817,6 +860,14 @@ function buildQuizPools(){
     for (const p of AGG.places){ const v = subVal(p, sid, null); if (v > bv){ bv = v; best = p; } }
     if (best && bv / g >= 0.5) pools.mcMatPlace.push({ sid, place:best });
   }
+  // animals: classic place for a depicted animal (prints excluded)
+  pools.animal = [];
+  for (let aid = 0; aid < ANI.length; aid++){
+    if (["silkworm","bird","sheep","cattle","fur","small","insect","shellfish","hybrid"].includes(ANI[aid].key)) continue;
+    let g = 0, best = null, bv = 0;
+    for (const p of AGG.places){ const v = aniDepVal(p, aid); g += v; if (v > bv){ bv = v; best = p; } }
+    if (best && g >= 30 && bv / g >= 0.35) pools.animal.push({ aid, place:best });
+  }
   return pools;
 }
 
@@ -826,6 +877,16 @@ function makeQuestion(kind, pools){
     return { kind:"pin", era:c.era, target:{ lat:c.place.lat, lon:c.place.lon, name:c.place.name },
       prompt:`Drop a pin: where were most <b>${esc(SUBM[c.sid].label.toLowerCase())}</b> objects of <b>${eraLabel(c.era)}</b> made?`,
       note:SUBNOTES[SUBM[c.sid].key] || "" };
+  }
+  if (kind === "pinAnimal" || kind === "mcAnimal"){
+    const c = rand(pools.animal), lab = ANI[c.aid].label.replace(/ \(.*\)$/, "").toLowerCase();
+    if (kind === "pinAnimal")
+      return { kind:"pin", era:null, target:{ lat:c.place.lat, lon:c.place.lon, name:c.place.name },
+        prompt:`Drop a pin: where do most objects depicting <b>${esc(lab)}</b> come from?`, note:ANIMALNOTES[ANI[c.aid].key] || "" };
+    const others = shuffle(AGG.places.filter(p => p !== c.place && p.total > 800)).slice(0, 3);
+    const opts = shuffle([c.place, ...others]);
+    return { kind:"mc", era:null, options:opts.map(p => p.name), correctIdx:opts.indexOf(c.place),
+      prompt:`Which place is the collection’s classic home of <b>${esc(lab)}</b> imagery?`, note:ANIMALNOTES[ANI[c.aid].key] || "" };
   }
   if (kind === "pinEmp"){
     const c = rand(pools.pinEmp);
@@ -859,7 +920,7 @@ function makeQuestion(kind, pools){
 
 function newQuiz(){
   const pools = buildQuizPools();
-  const kinds = shuffle(["pinMat","pinMat","pinMat","pinEmp","pinEmp","mcEmpEra","mcEmpEra","mcPlaceMat","mcPlaceMat","mcMatPlace"]);
+  const kinds = shuffle(["pinMat","pinMat","pinAnimal","pinEmp","pinEmp","mcEmpEra","mcEmpEra","mcPlaceMat","mcAnimal","mcMatPlace"]);
   state.quiz = { qs:kinds.map(k => makeQuestion(k, pools)), idx:0, score:0, phase:"ask", marks:null, results:[] };
   startQuestion();
 }
@@ -947,6 +1008,104 @@ function renderQuizSide(s){
   }
 }
 
+/* ---------- animals ---------- */
+const ANIMALNOTES = {
+  horse:"Steppe (Scythian gold plaques), Tang China glazed figurines, Greek vase riders, Roman & Baroque equestrian bronzes, Japanese samurai tack, Plains Native America after ~1600. No horses in pre-Columbian America.",
+  cattle:"Egypt (Apis bull, Hathor cow, cattle-counting tomb models), Minoan Crete bull-leaping, Mesopotamia (bull-headed lyres, lamassu), Indus seals (zebu), India (Nandi), Dutch pastoral painting. Parchment/vellum = European & Islamic manuscripts.",
+  sheep:"Wool textiles: Coptic Egypt (300–800 CE), Near Eastern & Persian carpets, European tapestry & costume, Navajo weaving (post-1600 sheep). Rams: Amun (Egypt), Mesopotamian ‘Ram in a Thicket’, Greek/Roman sacrifice.",
+  goat:"Ibex on Luristan & Iranian bronzes and Susa pottery; goats on Greek vases; cashmere shawls = Kashmir 1700+; mohair = Ottoman Anatolia.",
+  pig:"Boar hunts: Greek vases, Sasanian plates, European tapestries; pigs in Chinese zodiac art and Han tomb models; boar tusks in Papua New Guinea ornaments.",
+  donkey:"Egyptian tomb scenes, Greek satyr/Dionysos imagery, biblical scenes (Flight into Egypt, Entry into Jerusalem) in European art.",
+  camel:"Depictions: Persia & Central Asia (Sasanian silver, Islamic ceramics), Tang China Bactrian camel figurines, Egypt, Ottoman Turkey, Orientalist Europe. Camel-hair cloth itself is rare in the Met — Iran/Syria/Afghanistan when it appears.",
+  buffalo:"Water buffalo = China (boys riding buffalo, jade carvings), Southeast Asia, Philippines; yak = Tibet; American bison hides = Plains robes.",
+  llama:"= the Andes, full stop. Camelid fiber (alpaca/vicuña) textiles from Paracas (500 BCE) to Inca; silver and gold llama figurines (Inca); painted Moche vessels. If you see a camelid, pin Peru/Bolivia.",
+  dog:"Colima (Mexico) fattened dog figurines, Egyptian Anubis jackals, Chinese Fo dogs & Han tomb dogs, Greek hunting hounds, European portraits with dogs, Japanese kitsune foxes, Inuit sled dogs.",
+  cat:"Egypt (Bastet bronzes, mummified cats) dominates ancient cats; then Japanese prints (Kuniyoshi), European genre painting.",
+  elephant:"Depictions: India (Ganesh, royal processions), Southeast Asia (Thai/Burmese), Africa (Benin, Asante), Roman/Carthaginian, Mughal painting. Ivory carved everywhere it was traded: Gothic France, Byzantium, Benin/Loango, Japanese netsuke, Mughal India, US decorative arts.",
+  lion:"Mesopotamia & Assyria (lion hunts), Achaemenid Persia, Egypt (Sekhmet), Mycenaean Lion Gate, Greek/Roman, medieval heraldry & Romanesque, Benin & Ethiopia, Chinese guardian lions.",
+  tiger:"India (Mughal hunts, Tipu), China (zodiac, Han/Tang art), Korea (folk paintings), Japan (screen paintings, netsuke). Never Africa or the Americas.",
+  leopard:"Benin Kingdom (Nigeria) royal leopards, Egyptian priest leopard skins, Dionysos’ panthers (Greece), Persian & Mughal hunts, Art Deco.",
+  jaguar:"Mesoamerica & Andes: Olmec were-jaguars, Maya rulers on jaguar thrones, Aztec Jaguar Warriors, Chavín & Moche ‘feline’ imagery, Costa Rican metates. A ‘feline’ in the Met catalogue almost always = pre-Columbian.",
+  deer:"Scythian recumbent stag plaques, Japanese Nara deer & Kasuga mandalas, Chinese longevity symbols, Persian hunts, Native American buckskin garments, European hunting scenes. Antler = prehistoric tools.",
+  bear:"Inuit & Alaska Native carvings, Ainu Japan, Northwest Coast, Russian folk art, Swiss/German Renaissance heraldry.",
+  monkey:"Japan (Shōjō, three wise monkeys, netsuke), China (Journey to the West), India (Hanuman), Egypt (baboon of Thoth), Mesoamerica (howler-monkey vessels), Bali.",
+  rabbit:"East Asia (moon rabbit, zodiac — Japanese netsuke & prints), Dürer/European prints, Aztec pulque rabbits, medieval marginalia.",
+  small:"Bats = Chinese good-luck motif (wufu) and Zapotec bat gods; beavers & porcupine quills = Native North America; mice/rats = Japanese netsuke & zodiac.",
+  fur:"Ermine = royal/judicial European portraiture (1400–1800); walrus ivory = Arctic Inuit & medieval Norse/English; otters & seals = Northwest Coast & Inuit.",
+  hippo:"= Egypt: faience hippos (‘William’, Middle Kingdom), Taweret amulets, hunting scenes; hippo ivory for Predynastic carvings.",
+  rhino:"Indian & Mughal painting, Dürer’s 1515 print and its copies, African art, Chinese rhinoceros-horn cups (Ming/Qing).",
+  giraffe:"African art and Egyptian Punt/Nubian tribute scenes; Ming records of a giraffe gift (Zheng He).",
+  crocodile:"Egypt (Sobek, crocodile mummies & amulets), Papua New Guinea (Sepik crocodile ancestors on canoes & drums), Mesoamerica (earth monster), Australia.",
+  snake:"Egypt (uraeus cobra on crowns), India (nagas, Shiva), Mesoamerica (feathered serpent Quetzalcoatl), Greece (Asklepios, Medusa), Benin bronzes, Australia (Rainbow Serpent).",
+  turtle:"Tortoiseshell = 1600–1900 European/American combs, boxes & Boulle furniture; turtles = China/Japan (longevity), Pacific Islands, Native North America (Turtle Island), Maya.",
+  frog:"Aztec & Panamanian gold frogs (Coclé), Egypt (Heqet, birth amulets), Japan (Hokusai, netsuke), Chinese three-legged toad.",
+  lizard:"Australia & Pacific carvings, Native North American pottery (Mimbres), Japanese netsuke, Indus/Harappan.",
+  fish:"Japan (carp prints, samurai fish motifs), China (goldfish, carp = success), Peru Moche fishing scenes, Egyptian tilapia (rebirth), Christian symbolism in Europe, Inuit. Whalebone/baleen = Arctic and 19th-c. scrimshaw.",
+  shellfish:"Spondylus (red shell) = sacred in the Andes; conch trumpets = Maya/Aztec/Andes/Tibet/Pacific; cowrie = Africa & Oceania currency; mother-of-pearl inlay = Islamic, Korean, Sumerian (Ur); wampum = Northeast Native America; nautilus cups = Dutch 1600s.",
+  coral:"Mediterranean coral: Italian (Trapani) jewelry & amulets, Tibetan & Mongolian headdresses, Native American Southwest jewelry, Renaissance necklaces.",
+  scarab:"= Egypt (3,000+ in the collection: heart scarabs, seals, amulets in steatite/faience), copied by Phoenicians, Etruscans and Greeks (scarab gems).",
+  bee:"Minoan gold bee pendant (Crete), Napoleon’s bees (France), Egyptian royal titulary, Maya bee god; beeswax = encaustic & lost-wax.",
+  insect:"Butterflies & dragonflies = Japan (Rinpa, netsuke), Art Nouveau France, Mexico; cicadas = Chinese jade (Han burial); scorpions = Mesopotamia/Egypt (Serket).",
+  silkworm:"Silk itself: China (Han onward, ~2,800 objects), Japan (kimono, Noh robes), Byzantine & Sasanian, Islamic (tiraz), Italy (Lucca, Venice 1300+), France (Lyon 1700s), India (Banaras). Silk before 500 CE outside China = Silk Road elite.",
+  bird:"Feathers = Andes (featherwork panels), Aztec, Hawai‘i (cloaks), Amazonia, Native North America (war bonnets, fans), Pacific Islands. Bird imagery everywhere — look for species clues.",
+  raptor:"Egypt (Horus falcon), Mesopotamia/Assyria (eagle-headed genies), Roman legions & imperial eagles, Aztec eagle warriors, Native North America (thunderbird, eagle feathers), US Federal-period eagles, Byzantine/Holy Roman double eagle.",
+  waterbird:"Egypt (ibis of Thoth, Nile ducks), China & Japan (cranes = longevity, geese in ink painting), Greek swan of Zeus, Roman & Dutch still lifes.",
+  peacock:"India & Mughal art, Persia (Peacock Throne), Chinese Qing rank badges, Byzantine mosaics, Aesthetic-movement Britain (Whistler) and Tiffany.",
+  parrot:"Macaw & quetzal feathers = Andes, Aztec & Maya (Mesoamerica); parrots in Mughal and Rajput painting, Dutch still life, Chinese Tang & Qing porcelain.",
+  chicken:"Roosters = Japanese prints (Itō Jakuchū), Chinese zodiac, Greek fighting-cock vases, French Gallic rooster, Portuguese Barcelos.",
+  dove:"Christian Holy Spirit (Europe), Greek Aphrodite, Roman mosaics, Egyptian offering scenes, Picasso.",
+  ostrich:"Ostrich eggs & feathers = Africa, Egypt, Punic Mediterranean; cassowary = Papua New Guinea (bone daggers, feather headdresses); emu = Australia.",
+  dragon:"China (imperial robes, porcelain, jade — 5-clawed = emperor), Japan (temple carvings, sword fittings), Korea; European dragons appear in St. George scenes and heraldry but look reptilian/winged.",
+  phoenix:"China (fenghuang, empress emblem), Japan (hō-ō), Persia (simurgh on Sasanian & Islamic textiles), India/SE Asia (Garuda).",
+  griffin:"Achaemenid & Scythian gold, Greek vases & bronzes, Minoan frescoes, Romanesque & Gothic Europe, Renaissance heraldry.",
+  sphinx:"Egypt (royal sphinxes, Giza type — no wings), Greece & Cyprus (winged female sphinxes), Mesopotamia/Phoenicia, Egyptomania Europe 1750–1900.",
+  hybrid:"Centaurs/satyrs = Greece & Rome; makara = India/SE Asia; qilin/kirin = China/Japan; lamassu = Assyria; mermaids = medieval & Renaissance Europe, Pacific; unicorns = medieval Europe (tapestries).",
+};
+function renderAnimalsSide(s, eraTxt){
+  const items = ANI.map((a, i) => ({ ...a, aid:i, v:ganiVal(i, state.era) }));
+  const tot = items.reduce((x, y) => x + y.v, 0) || 1;
+  const vmax = Math.max(1, ...items.map(x => x.v));
+  const groups = [...new Set(ANI.map(a => a.group))];
+  const sel = state.animal != null ? ANI[state.animal] : null;
+  const chart = sel ? (() => {
+    const vals = []; for (let i = 0; i < 20; i++) vals.push(ganiVal(state.animal, i));
+    const m = Math.max(1, ...vals), W = 322, H = 56, cw = (W - 38) / 20;
+    return `<h3>When ${esc(sel.label.replace(/ \(.*\)$/, "").toLowerCase())} appear</h3>
+      <svg id="anichart" width="${W}" height="${H + 14}" viewBox="0 0 ${W} ${H + 14}">
+      ${vals.map((v, i) => { const h = v ? Math.max(2, H * Math.sqrt(v / m)) : 0;
+        return `<rect x="${i * (cw + 2)}" y="${H - h}" width="${cw}" height="${h}" rx="1" fill="${ANI_COLOR}" data-era="${i}" style="cursor:pointer" ${state.era === i ? 'stroke="#fff" stroke-width="1"' : ""}></rect>`; }).join("")}
+      <text x="0" y="${H + 11}" font-size="9.5" fill="var(--muted)">3000 BCE</text>
+      <text x="${W - 40}" y="${H + 11}" font-size="9.5" fill="var(--muted)">2000 CE</text></svg>`;
+  })() : "";
+  s.innerHTML = `
+    <h2>Animals in artifacts <span style="color:var(--muted); font-weight:400">· ${eraTxt}</span></h2>
+    <label class="ctl"><input type="checkbox" id="animat" ${state.aniMat ? "checked" : ""}><span>Animal-derived <b>materials</b> only (wool, silk, ivory, camel hair, feathers, shell…)</span></label>
+    <label class="ctl" ${state.aniMat ? 'style="opacity:.5"' : ""}><input type="checkbox" id="aniwop" ${state.aniExWop ? "checked" : ""} ${state.aniMat ? "disabled" : ""}> Exclude prints, drawings & photos (they swamp the ancient signal)</label>
+    <h3>By animal <span style="text-transform:none; letter-spacing:0">(${eraTxt} · click to map)</span></h3>
+    <div class="rowlist" id="anilist">
+      <div class="rrow ${state.animal == null ? "sel" : ""}" data-ani=""><span class="rk"></span><span class="nm" style="font-weight:600">All animals</span><span class="ct">${fmtN(tot)}</span></div>
+      ${groups.map(g => { const rows = items.filter(x => x.group === g && x.v > 0).sort((a, b) => b.v - a.v);
+        return rows.length ? `<div class="grp">${esc(g)}</div>` + rows.map(x => `
+        <div class="rrow ${state.animal === x.aid ? "sel" : ""}" data-ani="${x.aid}">
+          <span class="rk"></span><span class="nm">${esc(x.label)}</span>
+          <span class="ct">${fmtN(x.v)}</span>
+          <div class="bar" style="width:${Math.max(2, 100 * x.v / vmax)}%; background:${ANI_COLOR}"></div>
+        </div>`).join("") : ""; }).join("")}
+    </div>
+    ${sel && ANIMALNOTES[sel.key] ? `<div class="note" style="margin-top:8px; border-left:2px solid ${ANI_COLOR}; padding-left:10px"><b style="color:var(--ink)">${esc(sel.label)}:</b> ${ANIMALNOTES[sel.key]}</div>` : ""}
+    ${chart}
+    <h3>Top places for ${sel ? esc(sel.label.replace(/ \(.*\)$/, "").toLowerCase()) : "animals"}</h3>
+    ${rankedList(0, { n:12, color:ANI_COLOR, val: currentValFn() })}
+    <h3>How to use this</h3>
+    ${notesHtml(STRATEGY.animals)}
+    ${factsHtml()}`;
+  $("#animat").onchange = ev => { state.aniMat = ev.target.checked; renderAll(); };
+  $("#aniwop").onchange = ev => { state.aniExWop = ev.target.checked; renderAll(); };
+  for (const r of s.querySelectorAll("#anilist .rrow")) r.onclick = () => { state.animal = r.dataset.ani === "" ? null : +r.dataset.ani; renderAll(); };
+  const ac = s.querySelector("#anichart");
+  if (ac) ac.addEventListener("click", ev => { const r = ev.target.closest("rect"); if (r) setEra(+r.dataset.era); });
+}
+
 /* ---------- legend box ---------- */
 function renderLegend(){
   const box = $("#maplegendbox");
@@ -955,6 +1114,10 @@ function renderLegend(){
     box.innerHTML = Q && Q.phase !== "done"
       ? `<b>Quiz · Q${Q.idx + 1}/10</b><div class="tsub">${Q.qs[Q.idx].kind === "pin" && Q.phase === "ask" ? "click the map to answer" : fmtN(Q.score) + " pts so far"}</div>`
       : `<b>Quiz</b><div class="tsub">round complete</div>`;
+    return;
+  }
+  if (state.tab === "animals"){
+    box.innerHTML = `<b style="color:${ANI_COLOR}">${state.animal != null ? esc(ANI[state.animal].label) : "All animals"}</b><div class="tsub">${state.aniMat ? "animal-derived materials only" : "depicted or used as material"}${state.aniExWop && !state.aniMat ? " · prints/photos excluded" : ""}${state.era != null ? " · " + eraLabel(state.era) : ""}</div><div class="tsub">hover a circle for that place’s animal mix</div>`;
     return;
   }
   if (state.tab === "hotspots")
@@ -988,7 +1151,7 @@ addEventListener("keydown", ev => {
   if (ev.target.tagName === "INPUT") return;
   if (ev.key === "ArrowRight") setEra(state.era == null ? 0 : Math.min(19, state.era + 1));
   else if (ev.key === "ArrowLeft") setEra(state.era == null ? 19 : (state.era === 0 ? null : state.era - 1));
-  else if (/^[1-5]$/.test(ev.key)) document.querySelectorAll("#tabs button")[+ev.key - 1].click();
+  else if (/^[1-6]$/.test(ev.key)) document.querySelectorAll("#tabs button")[+ev.key - 1].click();
 });
 /* URL hash: #tab=materials&era=13&mat=metal — bookmarkable views */
 (function(){
@@ -1004,6 +1167,8 @@ addEventListener("keydown", ev => {
     const i = ITY.findIndex(x => x.key === h.get("itype"));
     if (i >= 0) state.itype = i;
   }
+  if (h.get("animal")){ const i = ANI.findIndex(x => x.key === h.get("animal")); if (i >= 0) state.animal = i; }
+  if (h.get("animat")) state.aniMat = true;
   for (const x of document.querySelectorAll("#tabs button")) x.classList.toggle("on", x.dataset.tab === state.tab);
 })();
 renderAll();
