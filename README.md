@@ -12,7 +12,7 @@ Tabs:
 - **Animals** — 50 animals in 7 groups (livestock, camels, elephants, horses, big cats, birds, mythical creatures…) as depicted subjects or as animal-derived materials (wool, silk, ivory, camel hair, feathers), by place and era, with regional prior notes
 - **Quiz** — 10-question practice rounds: pin-drop questions scored by distance (like the real game) plus multiple choice on empires and material priors
 
-Keyboard: `1–4` tabs · `←/→` eras. Bookmarkable views via URL hash, e.g. `#tab=materials&era=4&sub=limestone`.
+Keyboard: `1–6` tabs · `←/→` eras. Bookmarkable views via URL hash, e.g. `#tab=materials&era=4&sub=limestone`.
 
 ## Rebuilding
 
