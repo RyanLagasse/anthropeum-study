@@ -124,6 +124,8 @@
     border-bottom:1px solid var(--ring)}
   .qtotal{font-size:22px; font-weight:700; margin:10px 0 2px}
   .quiz-cursor{cursor:crosshair !important}
+  body.era-pick #timeline .cell:not(.all){border-color:var(--other); cursor:pointer}
+  body.era-pick #timeline .cell:not(.all):hover{box-shadow:inset 0 0 0 1px var(--other)}
   .grp{font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; margin:10px 0 3px 6px}
   #tip .tsub{color:var(--muted); font-size:11.5px}
 </style>
@@ -598,7 +600,7 @@ function renderTimeline(){
     const s = eraStart(i);
     c.innerHTML = `<div class="fillbar" style="height:${h}px; opacity:.28"></div>
       <span class="yr">${s === 0 ? 1 : Math.abs(s)}</span><span class="bce">${s < 0 ? "BCE" : "CE"}</span>`;
-    c.onclick = () => setEra(i);
+    c.onclick = () => { if (state.tab === "quiz" && state.quiz && state.quiz.phase === "era") answerEra(i); else setEra(i); };
     c.addEventListener("mousemove", ev => showTip(ev, `<b>${eraLabel(i)}</b><div>${fmtN(totals[i])} objects in collection</div>`));
     c.addEventListener("mouseleave", hideTip);
     tl.append(c);
@@ -812,160 +814,250 @@ function renderSide(){
 
 /* ---------- quiz mode ---------- */
 const EXCLUDE_SUBS = new Set(["stone_other","metal_other","unspecified","textile","ceramic"]);
+const EXCLUDE_ANI = new Set(["silkworm","bird","sheep","cattle","fur","small","insect","shellfish","hybrid"]);
+const QMODES = {
+  easy: { label:"Easy", desc:"Dominant answers only, generous pins (full points within 300 km), obvious distractors, era given in the prompt.",
+    pinFull:300, pinScale:1800, shareMin:.45, shareMax:1.01, minCount:12, eraGap:2, confusable:false, empMin:2, askEra:false, pmShare:.5, mpShare:.5,
+    kinds:["pinMat","pinMat","pinAnimal","pinEmp","pinEmp","mcEmpEra","mcEmpEra","mcPlaceMat","mcAnimal","mcMatPlace"] },
+  hard: { label:"Hard", desc:"Pin AND era on every pin question (full points within 100 km). Contested answers (25–60% share), distractors are the real runners-up, adjacent-era choices, instrument families, regional cultures.",
+    pinFull:100, pinScale:900, shareMin:.25, shareMax:.6, minCount:8, eraGap:1, confusable:true, empMin:1, askEra:true, pmShare:.35, mpShare:.3,
+    kinds:["pinMat","pinMat","pinAnimal","pinEmp","mcEmpEra","mcPlaceMat","mcMatPlace","mcSubEra","mcInstr","mcFirstEra"] },
+  extreme: { label:"Extremely hard", desc:"Real-game pins (full points within 50 km, steep decay). The least obvious answers (15–45% share), obscure cultures and materials, runner-up distractors only, era always asked.",
+    pinFull:50, pinScale:500, shareMin:.15, shareMax:.45, minCount:5, eraGap:1, confusable:true, empMin:1, askEra:true, pmShare:.25, mpShare:.2,
+    kinds:["pinMat","pinMat","pinMat","pinAnimal","pinEmp","pinEmp","mcSubEra","mcSubEra","mcInstr","mcFirstEra"] },
+};
 function havKm(a, b){
   const R = 6371, rad = x => x * Math.PI / 180;
   const dLat = rad(b.lat - a.lat), dLon = rad(b.lon - a.lon);
   const s = Math.sin(dLat/2)**2 + Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(dLon/2)**2;
   return 2 * R * Math.asin(Math.sqrt(s));
 }
-function pinPts(d){ return d <= 300 ? 5000 : Math.round(5000 * Math.exp(-(d - 300) / 1800)); }
+function pinPts(d, M){ return d <= M.pinFull ? 5000 : Math.round(5000 * Math.exp(-(d - M.pinFull) / M.pinScale)); }
+function eraPts(guess, eraSet){ let best = 99; for (const e of eraSet) best = Math.min(best, Math.abs(e - guess)); return best === 0 ? 5000 : best === 1 ? 2500 : best === 2 ? 1000 : 0; }
 const rand = a => a[Math.floor(Math.random() * a.length)];
 function shuffle(a){ a = a.slice(); for (let i = a.length - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+const rankPlaces = valFn => AGG.places.map(p => ({ p, v:valFn(p) })).filter(x => x.v > 0).sort((a, b) => b.v - a.v);
+const shortLabel = s => s.replace(/ \(.*\)$/, "");
+function nearEras(correct, avoidSet, n, gap){
+  const cand = [...Array(20).keys()].filter(e => !avoidSet.has(e) && Math.abs(e - correct) >= gap);
+  cand.sort((a, b) => Math.abs(a - correct) - Math.abs(b - correct) || Math.random() - .5);
+  return gap >= 2 ? shuffle(cand).slice(0, n) : cand.slice(0, n);
+}
+function aniDepEra(p, aid, e){ const r = p.A[e] && p.A[e][aid]; return r ? r[1] - r[3] : 0; }
 
-function buildQuizPools(){
-  const pools = { pinMat:[], pinEmp:[], mcEmpEra:[], mcPlaceMat:[], mcMatPlace:[] };
-  // pin-material: (submat, era) where one place clearly dominates
+function buildQuizPools(M){
+  const pools = { pinMat:[], pinEmp:[], mcEmpEra:[], mcPlaceMat:[], mcMatPlace:[], animal:[], mcSubEra:[], mcInstr:[], mcFirstEra:[] };
+  // pin-material
   for (let sid = 0; sid < SUBM.length; sid++){
     if (EXCLUDE_SUBS.has(SUBM[sid].key)) continue;
-    for (let e = 0; e < 20; e++){
-      const g = gsubVal(sid, e); if (g < 25) continue;
-      let best = null, bv = 0;
-      for (const p of AGG.places){ const v = subVal(p, sid, e); if (v > bv){ bv = v; best = p; } }
-      if (best && bv >= 12 && bv / g >= 0.45) pools.pinMat.push({ sid, era:e, place:best });
+    const per = []; let tot = 0; for (let e = 0; e < 20; e++){ per.push(gsubVal(sid, e)); tot += per[e]; }
+    if (!tot) continue;
+    const eras = M.askEra ? [per.indexOf(Math.max(...per))].filter(pe => per[pe] / tot >= .3) : [...Array(20).keys()];
+    for (const e of eras){
+      const g = per[e]; if (g < M.minCount * 2) continue;
+      const rk = rankPlaces(p => subVal(p, sid, e)); if (!rk.length) continue;
+      const share = rk[0].v / g;
+      if (rk[0].v >= M.minCount && share >= M.shareMin && share < M.shareMax)
+        pools.pinMat.push({ sid, era:e, place:rk[0].p, runners:rk.slice(1, 5).map(x => x.p) });
     }
   }
-  // pin-empire
-  EMPIRES.eras.forEach((E, ei) => { for (const em of E.empires) if (em.strength >= 2) pools.pinEmp.push({ era:ei, emp:em }); });
-  // mc empire-era: eras where an empire name was strength 3
-  const byName = {};
-  EMPIRES.eras.forEach((E, ei) => { for (const em of E.empires) if (em.strength === 3){ const n = em.name.replace(/ \(.*\)$/, ""); (byName[n] = byName[n] || { eras:[], note:em.note }).eras.push(ei); } });
-  for (const n in byName) pools.mcEmpEra.push({ name:n, eras:byName[n].eras, note:byName[n].note });
-  // mc place-material: which submat dominates <place>'s <category> in <era>
-  for (const p of AGG.places){
-    for (const e in p.S){
-      for (const c of CATS){
-        let tot = 0, best = null, bv = 0;
-        for (const sid in p.S[e]){
-          if (SUBM[sid].cat !== c.key || EXCLUDE_SUBS.has(SUBM[sid].key)) continue;
-          const v = p.S[e][sid]; tot += v; if (v > bv){ bv = v; best = +sid; }
-        }
-        if (best != null && bv >= 15 && bv / tot >= 0.5) pools.mcPlaceMat.push({ place:p, era:+e, cat:c, sid:best });
-      }
-    }
+  // empires: pins + era MC
+  const byName = {}, eraSets = {};
+  EMPIRES.eras.forEach((E, ei) => { for (const em of E.empires){
+    const n = shortLabel(em.name); (eraSets[n] = eraSets[n] || new Set()).add(ei);
+    if (em.strength >= M.empMin) pools.pinEmp.push({ era:ei, emp:em, eraSet:null, name:n });
+    if (em.strength >= (M.confusable ? 2 : 3)) (byName[n] = byName[n] || { eras:[], note:em.note }).eras.push(ei);
+  } });
+  for (const c of pools.pinEmp) c.eraSet = eraSets[c.name];
+  for (const n in byName) pools.mcEmpEra.push({ name:n, eras:byName[n].eras, all:eraSets[n], note:byName[n].note });
+  // place-material MC
+  for (const p of AGG.places) for (const e in p.S) for (const c of CATS){
+    let tot = 0; const rows = [];
+    for (const sid in p.S[e]){ if (SUBM[sid].cat !== c.key || EXCLUDE_SUBS.has(SUBM[sid].key)) continue; tot += p.S[e][sid]; rows.push({ sid:+sid, v:p.S[e][sid] }); }
+    rows.sort((a, b) => b.v - a.v);
+    if (rows.length && rows[0].v >= M.minCount && rows[0].v / tot >= M.pmShare)
+      pools.mcPlaceMat.push({ place:p, era:+e, cat:c, sid:rows[0].sid, runners:rows.slice(1, 4).map(r => r.sid) });
   }
-  // mc material-place: classic all-eras source of a submat
+  // material → place MC
   for (let sid = 0; sid < SUBM.length; sid++){
     if (EXCLUDE_SUBS.has(SUBM[sid].key) || SUBM[sid].key === "paper") continue;
     const g = gsubVal(sid, null); if (g < 40) continue;
-    let best = null, bv = 0;
-    for (const p of AGG.places){ const v = subVal(p, sid, null); if (v > bv){ bv = v; best = p; } }
-    if (best && bv / g >= 0.5) pools.mcMatPlace.push({ sid, place:best });
+    const rk = rankPlaces(p => subVal(p, sid, null));
+    if (rk.length && rk[0].v / g >= M.mpShare) pools.mcMatPlace.push({ sid, place:rk[0].p, runners:rk.slice(1, 5).map(x => x.p) });
   }
-  // animals: classic place for a depicted animal (prints excluded)
-  pools.animal = [];
+  // animals
   for (let aid = 0; aid < ANI.length; aid++){
-    if (["silkworm","bird","sheep","cattle","fur","small","insect","shellfish","hybrid"].includes(ANI[aid].key)) continue;
-    let g = 0, best = null, bv = 0;
-    for (const p of AGG.places){ const v = aniDepVal(p, aid); g += v; if (v > bv){ bv = v; best = p; } }
-    if (best && g >= 30 && bv / g >= 0.35) pools.animal.push({ aid, place:best });
+    if (EXCLUDE_ANI.has(ANI[aid].key)) continue;
+    if (!M.askEra){
+      const rk = rankPlaces(p => aniDepVal(p, aid)); const g = rk.reduce((a, x) => a + x.v, 0);
+      if (rk.length && g >= 30 && rk[0].v / g >= .35) pools.animal.push({ aid, era:null, place:rk[0].p, runners:rk.slice(1, 5).map(x => x.p) });
+    } else {
+      const per = []; let tot = 0; for (let e = 0; e < 20; e++){ per.push(AGG.places.reduce((a, p) => a + aniDepEra(p, aid, e), 0)); tot += per[e]; }
+      if (tot < 30) continue; const pe = per.indexOf(Math.max(...per)); if (per[pe] / tot < .25) continue;
+      const rk = rankPlaces(p => aniDepEra(p, aid, pe)); if (!rk.length) continue;
+      const share = rk[0].v / per[pe];
+      if (rk[0].v >= M.minCount && share >= M.shareMin) pools.animal.push({ aid, era:pe, place:rk[0].p, runners:rk.slice(1, 5).map(x => x.p) });
+    }
+  }
+  // sub-material peak era for a place
+  for (const p of AGG.places){
+    if (p.total < 300) continue;
+    for (let sid = 0; sid < SUBM.length; sid++){
+      if (EXCLUDE_SUBS.has(SUBM[sid].key)) continue;
+      const per = []; let tot = 0; for (let e = 0; e < 20; e++){ per.push(subVal(p, sid, e)); tot += per[e]; }
+      if (tot < M.minCount * 2) continue;
+      const pe = per.indexOf(Math.max(...per));
+      if (per[pe] / tot >= .35) pools.mcSubEra.push({ place:p, sid, era:pe });
+    }
+  }
+  // instrument family → place
+  for (let tid = 0; tid < ITY.length; tid++){
+    if (["other","mech"].includes(ITY[tid].key)) continue;
+    const g = gityVal(tid, null); if (g < 30) continue;
+    const rk = rankPlaces(p => ityVal(p, tid, null));
+    if (rk.length && rk[0].v / g >= .12) pools.mcInstr.push({ tid, place:rk[0].p, runners:rk.slice(1, 5).map(x => x.p) });
+  }
+  // first era a material appears in bulk
+  for (let sid = 0; sid < SUBM.length; sid++){
+    if (EXCLUDE_SUBS.has(SUBM[sid].key)) continue;
+    const tot = gsubVal(sid, null); if (tot < 200) continue;
+    for (let e = 0; e < 20; e++) if (gsubVal(sid, e) >= .03 * tot){ pools.mcFirstEra.push({ sid, era:e }); break; }
   }
   return pools;
 }
 
-function makeQuestion(kind, pools){
+function placeOpts(correct, runners, M){
+  const pool = M.confusable && runners.length >= 3 ? runners.slice(0, 3)
+    : shuffle(AGG.places.filter(p => p !== correct && !runners.includes(p) && p.total > 800)).slice(0, 3 - Math.min(3, runners.length)).concat(runners.slice(0, 3));
+  const opts = shuffle([correct, ...pool.slice(0, 3)]);
+  return { options:opts.map(p => p.name), correctIdx:opts.indexOf(correct) };
+}
+function eraOpts(correct, avoid, M){
+  const opts = shuffle([correct, ...nearEras(correct, avoid, 3, M.eraGap)]);
+  return { options:opts.map(eraLabel), correctIdx:opts.indexOf(correct) };
+}
+
+function makeQuestion(kind, pools, M){
+  const order = [kind, "pinMat", "mcPlaceMat", "mcEmpEra", "pinEmp", "mcMatPlace", "animal", "mcSubEra", "mcInstr", "mcFirstEra"];
+  kind = order.find(k => (pools[k === "pinAnimal" || k === "mcAnimal" ? "animal" : k] || []).length);
+  const ask = M.askEra;
   if (kind === "pinMat"){
-    const c = rand(pools.pinMat);
-    return { kind:"pin", era:c.era, target:{ lat:c.place.lat, lon:c.place.lon, name:c.place.name },
-      prompt:`Drop a pin: where were most <b>${esc(SUBM[c.sid].label.toLowerCase())}</b> objects of <b>${eraLabel(c.era)}</b> made?`,
+    const c = rand(pools.pinMat), lab = SUBM[c.sid].label.toLowerCase();
+    return { kind:"pin", askEra:ask, era:ask ? null : c.era, eraSet:new Set([c.era]), revealEra:c.era, target:{ lat:c.place.lat, lon:c.place.lon, name:c.place.name },
+      prompt: ask ? `Where <b>and when</b> were most <b>${esc(lab)}</b> objects made? Drop a pin, then pick the era.`
+                  : `Drop a pin: where were most <b>${esc(lab)}</b> objects of <b>${eraLabel(c.era)}</b> made?`,
       note:SUBNOTES[SUBM[c.sid].key] || "" };
   }
-  if (kind === "pinAnimal" || kind === "mcAnimal"){
-    const c = rand(pools.animal), lab = ANI[c.aid].label.replace(/ \(.*\)$/, "").toLowerCase();
-    if (kind === "pinAnimal")
-      return { kind:"pin", era:null, target:{ lat:c.place.lat, lon:c.place.lon, name:c.place.name },
-        prompt:`Drop a pin: where do most objects depicting <b>${esc(lab)}</b> come from?`, note:ANIMALNOTES[ANI[c.aid].key] || "" };
-    const others = shuffle(AGG.places.filter(p => p !== c.place && p.total > 800)).slice(0, 3);
-    const opts = shuffle([c.place, ...others]);
-    return { kind:"mc", era:null, options:opts.map(p => p.name), correctIdx:opts.indexOf(c.place),
+  if (kind === "pinAnimal" || kind === "mcAnimal" || kind === "animal"){
+    const c = rand(pools.animal), lab = shortLabel(ANI[c.aid].label).toLowerCase();
+    if (kind !== "mcAnimal")
+      return { kind:"pin", askEra:ask && c.era != null, era:null, eraSet:new Set([c.era]), revealEra:c.era, target:{ lat:c.place.lat, lon:c.place.lon, name:c.place.name },
+        prompt: ask && c.era != null ? `Where <b>and when</b> do most objects depicting <b>${esc(lab)}</b> come from? Pin, then pick the era.`
+                                     : `Drop a pin: where do most objects depicting <b>${esc(lab)}</b> come from?`,
+        note:ANIMALNOTES[ANI[c.aid].key] || "" };
+    return { kind:"mc", era:null, ...placeOpts(c.place, c.runners, M),
       prompt:`Which place is the collection’s classic home of <b>${esc(lab)}</b> imagery?`, note:ANIMALNOTES[ANI[c.aid].key] || "" };
   }
   if (kind === "pinEmp"){
     const c = rand(pools.pinEmp);
-    return { kind:"pin", era:c.era, target:{ lat:c.emp.lat, lon:c.emp.lon, name:c.emp.name },
-      prompt:`Drop a pin on the power center of the <b>${esc(c.emp.name)}</b> (${EMPIRES.eras[c.era].label}).`,
+    return { kind:"pin", askEra:ask, era:ask ? null : c.era, eraSet:c.eraSet, revealEra:c.era, target:{ lat:c.emp.lat, lon:c.emp.lon, name:c.emp.name },
+      prompt: ask ? `Pin the power center of the <b>${esc(c.emp.name)}</b>, then pick an era when it was a ${STRENGTH_LABEL[c.emp.strength].replace(" of its era", "")}.`
+                  : `Drop a pin on the power center of the <b>${esc(c.emp.name)}</b> (${EMPIRES.eras[c.era].label}).`,
       note:c.emp.note };
   }
   if (kind === "mcEmpEra"){
-    const c = rand(pools.mcEmpEra);
-    const correct = rand(c.eras);
-    const wrongs = shuffle([...Array(20).keys()].filter(e => c.eras.every(x => Math.abs(x - e) >= 2))).slice(0, 3);
-    const opts = shuffle([correct, ...wrongs]);
-    return { kind:"mc", era:null, revealEra:correct, options:opts.map(eraLabel), correctIdx:opts.indexOf(correct),
-      prompt:`When was <b>${esc(c.name)}</b> at its height (a superpower of its era)?`, note:c.note };
+    const c = rand(pools.mcEmpEra), correct = rand(c.eras);
+    return { kind:"mc", era:null, revealEra:correct, ...eraOpts(correct, c.all, M),
+      prompt:`When was <b>${esc(c.name)}</b> at its height?`, note:c.note };
   }
   if (kind === "mcPlaceMat"){
     const c = rand(pools.mcPlaceMat);
-    const others = shuffle(subsOfCat(c.cat.key).filter(s => s.sid !== c.sid && !EXCLUDE_SUBS.has(s.key) && gsubVal(s.sid, null) > 30)).slice(0, 3);
-    const opts = shuffle([c.sid, ...others.map(o => o.sid)]);
+    const fill = shuffle(subsOfCat(c.cat.key).filter(s => s.sid !== c.sid && !c.runners.includes(s.sid) && !EXCLUDE_SUBS.has(s.key) && gsubVal(s.sid, null) > 30)).map(s => s.sid);
+    const dis = (M.confusable ? c.runners.concat(fill) : fill).slice(0, 3);
+    const opts = shuffle([c.sid, ...dis]);
     return { kind:"mc", era:c.era, options:opts.map(s => SUBM[s].label), correctIdx:opts.indexOf(c.sid),
-      prompt:`In <b>${eraLabel(c.era)}</b>, most of <b>${esc(c.place.name)}</b>’s ${c.cat.label.toLowerCase()} objects are made of…`,
-      note:SUBNOTES[SUBM[c.sid].key] || "" };
+      prompt:`In <b>${eraLabel(c.era)}</b>, most of <b>${esc(c.place.name)}</b>’s ${c.cat.label.toLowerCase()} objects are made of…`, note:SUBNOTES[SUBM[c.sid].key] || "" };
   }
-  const c = rand(pools.mcMatPlace);
-  const others = shuffle(AGG.places.filter(p => p !== c.place && p.total > 800)).slice(0, 3);
-  const opts = shuffle([c.place, ...others]);
-  return { kind:"mc", era:null, options:opts.map(p => p.name), correctIdx:opts.indexOf(c.place),
-    prompt:`Which place is the collection’s classic source of <b>${esc(SUBM[c.sid].label.toLowerCase())}</b> objects?`,
-    note:SUBNOTES[SUBM[c.sid].key] || "" };
+  if (kind === "mcMatPlace"){
+    const c = rand(pools.mcMatPlace);
+    return { kind:"mc", era:null, ...placeOpts(c.place, c.runners, M),
+      prompt:`Which place is the collection’s classic source of <b>${esc(SUBM[c.sid].label.toLowerCase())}</b> objects?`, note:SUBNOTES[SUBM[c.sid].key] || "" };
+  }
+  if (kind === "mcSubEra"){
+    const c = rand(pools.mcSubEra);
+    return { kind:"mc", era:null, revealEra:c.era, ...eraOpts(c.era, new Set([c.era]), M),
+      prompt:`When were most of <b>${esc(c.place.name)}</b>’s <b>${esc(SUBM[c.sid].label.toLowerCase())}</b> objects made?`, note:SUBNOTES[SUBM[c.sid].key] || "" };
+  }
+  if (kind === "mcInstr"){
+    const c = rand(pools.mcInstr);
+    return { kind:"mc", era:null, ...placeOpts(c.place, c.runners, M),
+      prompt:`Which place holds the most <b>${esc(ITY[c.tid].label.toLowerCase())}</b> in the collection?`, note:STRATEGY.instruments[1] };
+  }
+  const c = rand(pools.mcFirstEra);
+  return { kind:"mc", era:null, revealEra:c.era, ...eraOpts(c.era, new Set([c.era]), M),
+    prompt:`In which era do <b>${esc(SUBM[c.sid].label.toLowerCase())}</b> objects first appear in bulk in the collection?`, note:SUBNOTES[SUBM[c.sid].key] || "" };
 }
 
-function newQuiz(){
-  const pools = buildQuizPools();
-  const kinds = shuffle(["pinMat","pinMat","pinAnimal","pinEmp","pinEmp","mcEmpEra","mcEmpEra","mcPlaceMat","mcAnimal","mcMatPlace"]);
-  state.quiz = { qs:kinds.map(k => makeQuestion(k, pools)), idx:0, score:0, phase:"ask", marks:null, results:[] };
+function newQuiz(mode){
+  const M = QMODES[mode] || QMODES.easy;
+  const pools = buildQuizPools(M);
+  const qs = shuffle(M.kinds).map(k => makeQuestion(k, pools, M));
+  state.quiz = { mode, M, qs, idx:0, score:0, max:qs.reduce((a, q) => a + (q.askEra ? 10000 : 5000), 0), phase:"ask", marks:null, results:[], pending:null };
   startQuestion();
 }
 function startQuestion(){
   const Q = state.quiz, q = Q.qs[Q.idx];
-  Q.phase = "ask"; Q.marks = null;
-  state.era = q.era; // borders give period context
+  Q.phase = "ask"; Q.marks = null; Q.pending = null;
+  state.era = q.era;
   svg.classList.toggle("quiz-cursor", q.kind === "pin");
+  renderAll();
+}
+function finishPin(){
+  const Q = state.quiz, q = Q.qs[Q.idx], P = Q.pending;
+  const total = P.pts + (P.ePts || 0), max = q.askEra ? 10000 : 5000;
+  Q.score += total; Q.phase = "reveal";
+  Q.results.push({ pts:total, max });
+  let detail = `${fmtN(P.d)} km from ${q.target.name} (+${fmtN(P.pts)})`;
+  if (q.askEra) detail += ` · era ${P.eraGuess != null ? eraLabel(P.eraGuess) : "?"}: ${P.ePts === 5000 ? "exact" : P.ePts ? "close" : "wrong"} (+${fmtN(P.ePts)})`;
+  Q.lastVerdict = { pts:total, max, detail };
+  Q.marks = [
+    { lat:q.target.lat, lon:q.target.lon, color:"#0ca30c", label:`✓ ${q.target.name}` },
+    { lat:P.lat, lon:P.lon, color:"#d03b3b", label:`your pin · ${fmtN(P.d)} km` },
+  ];
+  if (q.revealEra != null) state.era = q.revealEra;
+  svg.classList.remove("quiz-cursor");
   renderAll();
 }
 function answerPin(lon, lat){
   const Q = state.quiz, q = Q.qs[Q.idx];
   const d = Math.round(havKm({ lat, lon }, q.target));
-  const pts = pinPts(d);
-  Q.score += pts; Q.phase = "reveal";
-  Q.results.push({ prompt:q.prompt, pts });
-  Q.lastVerdict = { pts, detail:`${fmtN(d)} km from ${q.target.name}` };
-  Q.marks = [
-    { lat:q.target.lat, lon:q.target.lon, color:"#0ca30c", label:`✓ ${q.target.name}` },
-    { lat, lon, color:"#d03b3b", label:`your pin · ${fmtN(d)} km` },
-  ];
-  svg.classList.remove("quiz-cursor");
-  renderAll();
+  Q.pending = { lat, lon, d, pts:pinPts(d, Q.M) };
+  if (q.askEra){ Q.phase = "era"; svg.classList.remove("quiz-cursor"); renderAll(); return; }
+  finishPin();
+}
+function answerEra(i){
+  const Q = state.quiz, q = Q.qs[Q.idx];
+  Q.pending.eraGuess = i; Q.pending.ePts = eraPts(i, q.eraSet);
+  finishPin();
 }
 function answerMC(i){
   const Q = state.quiz, q = Q.qs[Q.idx];
-  const ok = i === q.correctIdx;
-  const pts = ok ? 5000 : 0;
+  const ok = i === q.correctIdx, pts = ok ? 5000 : 0;
   Q.score += pts; Q.phase = "reveal"; Q.pickedIdx = i;
-  Q.results.push({ prompt:q.prompt, pts });
-  Q.lastVerdict = { pts, detail: ok ? "Correct!" : `Answer: ${q.options[q.correctIdx]}` };
+  Q.results.push({ pts, max:5000 });
+  Q.lastVerdict = { pts, max:5000, detail: ok ? "Correct!" : `Answer: ${q.options[q.correctIdx]}` };
   if (q.revealEra != null) state.era = q.revealEra;
   renderAll();
 }
 function nextQuestion(){
   const Q = state.quiz;
-  if (Q.idx >= 9){ Q.phase = "done"; renderAll(); return; }
+  if (Q.idx >= Q.qs.length - 1){ Q.phase = "done"; document.body.classList.remove("era-pick"); renderAll(); return; }
   Q.idx++; startQuestion();
 }
 function drawQuizMarks(marks, k){
   if (marks.length === 2){
-    const l = el("line",{ x1:marks[0].lon, y1:-marks[0].lat, x2:marks[1].lon, y2:-marks[1].lat,
-      stroke:"var(--muted)", "stroke-dasharray":"2 2", "stroke-width":1, "vector-effect":"non-scaling-stroke" });
-    gDots.append(l);
+    gDots.append(el("line",{ x1:marks[0].lon, y1:-marks[0].lat, x2:marks[1].lon, y2:-marks[1].lat,
+      stroke:"var(--muted)", "stroke-dasharray":"2 2", "stroke-width":1, "vector-effect":"non-scaling-stroke" }));
   }
   for (const m of marks){
     const c = el("circle",{ cx:m.lon, cy:-m.lat, r:4.5 / k, fill:m.color, "fill-opacity":.9, class:"dot" });
@@ -975,36 +1067,48 @@ function drawQuizMarks(marks, k){
     gLabels.append(t);
   }
 }
+function renderQuizMenu(s){
+  s.innerHTML = `<h2>Quiz</h2><div class="note" style="margin-bottom:10px">Ten questions. Pin questions score by distance like the real game; era questions give partial credit for adjacent blocks.</div>
+    <div class="qopts">${Object.entries(QMODES).map(([k, m]) => `<button class="qopt" data-mode="${k}"><b>${m.label}</b><div class="tsub" style="margin-top:3px">${m.desc}</div></button>`).join("")}</div>`;
+  for (const b of s.querySelectorAll("[data-mode]")) b.onclick = () => newQuiz(b.dataset.mode);
+}
 function renderQuizSide(s){
-  if (!state.quiz) newQuiz();
-  const Q = state.quiz, q = Q.qs[Q.idx];
+  const Q = state.quiz;
+  document.body.classList.toggle("era-pick", !!(Q && Q.phase === "era"));
+  if (!Q || Q.phase === "menu"){ renderQuizMenu(s); return; }
+  const q = Q.qs[Q.idx], modeTag = `<span style="color:var(--muted); font-weight:400">· ${Q.M.label}</span>`;
   if (Q.phase === "done"){
-    const pct = Math.round(100 * Q.score / 50000);
-    const grade = Q.score >= 42000 ? "Master curator" : Q.score >= 34000 ? "Senior curator" : Q.score >= 25000 ? "Field researcher" : Q.score >= 15000 ? "Apprentice" : "Visitor";
-    s.innerHTML = `<h2>Round complete</h2>
-      <div class="qtotal">${fmtN(Q.score)} <span style="font-size:13px; color:var(--muted); font-weight:400">/ 50,000 · ${pct}%</span></div>
+    const pct = Math.round(100 * Q.score / Q.max);
+    const grade = pct >= 84 ? "Master curator" : pct >= 68 ? "Senior curator" : pct >= 50 ? "Field researcher" : pct >= 30 ? "Apprentice" : "Visitor";
+    s.innerHTML = `<h2>Round complete ${modeTag}</h2>
+      <div class="qtotal">${fmtN(Q.score)} <span style="font-size:13px; color:var(--muted); font-weight:400">/ ${fmtN(Q.max)} · ${pct}%</span></div>
       <div style="color:var(--ink-2); font-size:13px; margin-bottom:12px">${grade}</div>
-      ${Q.results.map((r, i) => `<div class="qrow"><span>Q${i + 1}</span><span style="color:${r.pts >= 4000 ? "#0ca30c" : r.pts > 0 ? "var(--other)" : "#e66767"}">${fmtN(r.pts)}</span></div>`).join("")}
-      <button class="qbtn" id="qagain">Play again</button>
-      <div class="note" style="margin-top:14px">Scoring mirrors the real game: 5,000/question, full points within ~300 km on pin drops.</div>`;
-    s.querySelector("#qagain").onclick = () => { state.quiz = null; newQuiz(); };
+      ${Q.results.map((r, i) => `<div class="qrow"><span>Q${i + 1}</span><span style="color:${r.pts >= .8 * r.max ? "#0ca30c" : r.pts > 0 ? "var(--other)" : "#e66767"}">${fmtN(r.pts)} / ${fmtN(r.max)}</span></div>`).join("")}
+      <button class="qbtn" id="qagain">Play again</button> <button class="qbtn" id="qmode" style="background:var(--surface-2); color:var(--ink)">Change mode</button>`;
+    s.querySelector("#qagain").onclick = () => newQuiz(Q.mode);
+    s.querySelector("#qmode").onclick = () => { state.quiz = { phase:"menu" }; renderAll(); };
     return;
   }
-  const head = `<div class="qhead"><span class="qn">Question ${Q.idx + 1} / 10</span><span class="qs">${fmtN(Q.score)} pts</span></div>`;
+  const head = `<div class="qhead"><span class="qn">Question ${Q.idx + 1} / ${Q.qs.length} ${modeTag}</span><span class="qs">${fmtN(Q.score)} pts</span></div>`;
   if (Q.phase === "ask"){
     s.innerHTML = head + `<div class="qprompt">${q.prompt}</div>` +
       (q.kind === "pin"
-        ? `<div class="qpin-hint">◎ Click the map to drop your pin</div><div class="note">Borders show ${q.era != null ? eraLabel(q.era) : "the modern world"} — use them like in the real game.</div>`
+        ? `<div class="qpin-hint">◎ Click the map to drop your pin</div><div class="note">${q.askEra ? "Borders show the modern world — no era hints." : `Borders show ${q.era != null ? eraLabel(q.era) : "the modern world"}.`} Full points within ${Q.M.pinFull} km.</div>`
         : `<div class="qopts">${q.options.map((o, i) => `<button class="qopt" data-i="${i}">${esc(o)}</button>`).join("")}</div>`);
     for (const b of s.querySelectorAll(".qopt")) b.onclick = () => answerMC(+b.dataset.i);
+  } else if (Q.phase === "era"){
+    s.innerHTML = head + `<div class="qprompt">${q.prompt}</div>
+      <div class="qpin-hint">◷ Pin placed (${fmtN(Q.pending.d)} km — score hidden until you pick the era). Now click an era block on the timeline above.</div>
+      <div class="qopts" style="margin-top:8px">${[...Array(20).keys()].map(i => `<button class="qopt" data-era="${i}" style="padding:5px 10px; font-size:12.5px">${eraLabel(i)}</button>`).join("")}</div>`;
+    for (const b of s.querySelectorAll("[data-era]")) b.onclick = () => answerEra(+b.dataset.era);
   } else {
-    const v = Q.lastVerdict, good = v.pts >= 4000;
+    const v = Q.lastVerdict, good = v.pts >= .8 * v.max;
     s.innerHTML = head + `<div class="qprompt">${q.prompt}</div>` +
       (q.kind === "mc" ? `<div class="qopts">${q.options.map((o, i) =>
         `<button class="qopt ${i === q.correctIdx ? "correct" : i === Q.pickedIdx ? "wrong" : ""}" disabled>${esc(o)}</button>`).join("")}</div>` : "") +
-      `<div class="qverdict ${good ? "good" : "bad"}">${good ? "✓" : v.pts > 0 ? "◐" : "✗"} ${fmtN(v.pts)} pts · ${esc(v.detail)}</div>` +
+      `<div class="qverdict ${good ? "good" : "bad"}">${good ? "✓" : v.pts > 0 ? "◐" : "✗"} ${fmtN(v.pts)} / ${fmtN(v.max)} · ${esc(v.detail)}</div>` +
       (q.note ? `<div class="qnote">${q.note}</div>` : "") +
-      `<button class="qbtn" id="qnext">${Q.idx >= 9 ? "See results" : "Next question"} →</button>`;
+      `<button class="qbtn" id="qnext">${Q.idx >= Q.qs.length - 1 ? "See results" : "Next question"} →</button>`;
     s.querySelector("#qnext").onclick = nextQuestion;
   }
 }
@@ -1112,9 +1216,9 @@ function renderLegend(){
   const box = $("#maplegendbox");
   if (state.tab === "quiz"){
     const Q = state.quiz;
-    box.innerHTML = Q && Q.phase !== "done"
-      ? `<b>Quiz · Q${Q.idx + 1}/10</b><div class="tsub">${Q.qs[Q.idx].kind === "pin" && Q.phase === "ask" ? "click the map to answer" : fmtN(Q.score) + " pts so far"}</div>`
-      : `<b>Quiz</b><div class="tsub">round complete</div>`;
+    box.innerHTML = Q && Q.qs && Q.phase !== "done"
+      ? `<b>Quiz · ${Q.M.label} · Q${Q.idx + 1}/${Q.qs.length}</b><div class="tsub">${Q.phase === "era" ? "pick an era on the timeline" : Q.qs[Q.idx].kind === "pin" && Q.phase === "ask" ? "click the map to answer" : fmtN(Q.score) + " pts so far"}</div>`
+      : `<b>Quiz</b><div class="tsub">${Q && Q.phase === "done" ? "round complete" : "choose a difficulty"}</div>`;
     return;
   }
   if (state.tab === "animals"){
@@ -1170,13 +1274,29 @@ addEventListener("keydown", ev => {
   }
   if (h.get("animal")){ const i = ANI.findIndex(x => x.key === h.get("animal")); if (i >= 0) state.animal = i; }
   if (h.get("animat")) state.aniMat = true;
+  if (h.get("mode") && QMODES[h.get("mode")]) state.quiz = { mode:h.get("mode"), _auto:true };
   for (const x of document.querySelectorAll("#tabs button")) x.classList.toggle("on", x.dataset.tab === state.tab);
 })();
+if (state.quiz && state.quiz._auto){ state.tab = "quiz"; for (const x of document.querySelectorAll("#tabs button")) x.classList.toggle("on", x.dataset.tab === "quiz"); newQuiz(state.quiz.mode); }
 renderAll();
 applyVB();
 /* headless smoke test: #qtest=1 answers Q1 as a pin near Cairo */
-if (new URLSearchParams(location.hash.slice(1)).get("qtest")){
+if (new URLSearchParams(location.hash.slice(1)).get("qpools")){
+  const rows = Object.keys(QMODES).map(m => { const P = buildQuizPools(QMODES[m]); return m + ": " + Object.entries(P).map(([k, v]) => k + "=" + v.length).join(" "); });
+  document.getElementById("side").innerHTML = "<pre id='qpools'>" + rows.join("\n") + "</pre>";
+}
+if (new URLSearchParams(location.hash.slice(1)).get("qtest") === "hard"){
   document.querySelector('[data-tab="quiz"]').click();
+  newQuiz("hard");
+  const Q = state.quiz;
+  Q.qs[0] = { kind:"pin", askEra:true, era:null, eraSet:new Set([8]), revealEra:8, target:{ lat:26.8, lon:30.8, name:"Egypt" }, prompt:"TEST: pin Egypt + era", note:"test note" };
+  Q.max = Q.qs.reduce((a, q) => a + (q.askEra ? 10000 : 5000), 0);
+  startQuestion();
+  answerPin(31.2, 30.0);
+  answerEra(9);
+} else if (new URLSearchParams(location.hash.slice(1)).get("qtest")){
+  document.querySelector('[data-tab="quiz"]').click();
+  newQuiz("easy");
   const Q = state.quiz;
   Q.qs[0] = { kind:"pin", era:8, target:{ lat:26.8, lon:30.8, name:"Egypt" },
     prompt:"TEST: pin Egypt", note:"test note" };

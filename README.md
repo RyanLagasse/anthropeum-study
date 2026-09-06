@@ -10,7 +10,7 @@ Tabs:
 - **Materials** — stone / metal / perishables / ceramic+glass, each drilling into ~46 specific materials (limestone, marble, jade, bronze, silk, linen, plant-fiber cordage, faience, porcelain…) with per-place material mixes and regional prior notes
 - **Instruments** — the Met's musical instruments by place and era, drilling into 14 instrument families (drums, zithers, plucked lutes, bells & gongs…)
 - **Animals** — 50 animals in 7 groups (livestock, camels, elephants, horses, big cats, birds, mythical creatures…) as depicted subjects or as animal-derived materials (wool, silk, ivory, camel hair, feathers), by place and era, with regional prior notes
-- **Quiz** — 10-question practice rounds: pin-drop questions scored by distance (like the real game) plus multiple choice on empires and material priors
+- **Quiz** — 10-question practice rounds in three difficulties. Easy: dominant answers, generous pins. Hard: pin **and** era on every pin question (full points within 100 km), contested answers, runner-up distractors, instrument and era questions. Extremely hard: real-game pins (50 km), the least obvious answers, obscure cultures.
 
 Keyboard: `1–6` tabs · `←/→` eras. Bookmarkable views via URL hash, e.g. `#tab=materials&era=4&sub=limestone`.
 
