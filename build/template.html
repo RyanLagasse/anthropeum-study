@@ -477,6 +477,7 @@ function renderDots(){
   if (state.tab === "quiz"){
     const Q = state.quiz;
     if (Q && Q.phase === "reveal" && Q.marks) drawQuizMarks(Q.marks, k);
+    else if (Q && Q.phase === "era" && Q.pending) drawQuizMarks([{ lat:Q.pending.lat, lon:Q.pending.lon, color:"#c98500", label:"your pin" }], k);
     return;
   }
   if (state.tab === "empires"){
@@ -542,6 +543,11 @@ function renderDots(){
 }
 
 /* ---------- pan / zoom ---------- */
+function svgPoint(clientX, clientY){
+  const pt = svg.createSVGPoint(); pt.x = clientX; pt.y = clientY;
+  const p = pt.matrixTransform(svg.getScreenCTM().inverse());
+  return { x:p.x, y:p.y };
+}
 let drag = null;
 svg.addEventListener("pointerdown", ev => {
   drag = { x:ev.clientX, y:ev.clientY, vx:vb.x, vy:vb.y };
@@ -549,7 +555,7 @@ svg.addEventListener("pointerdown", ev => {
 });
 svg.addEventListener("pointermove", ev => {
   if (!drag) return;
-  const sc = vb.w / svg.clientWidth;
+  const sc = 1 / svg.getScreenCTM().a;
   vb.x = drag.vx - (ev.clientX - drag.x) * sc;
   vb.y = drag.vy - (ev.clientY - drag.y) * sc;
   applyVB();
@@ -558,19 +564,15 @@ svg.addEventListener("pointerup", ev => {
   const wasClick = drag && Math.abs(ev.clientX - drag.x) < 5 && Math.abs(ev.clientY - drag.y) < 5;
   drag = null; svg.classList.remove("dragging");
   if (wasClick && state.tab === "quiz" && state.quiz && state.quiz.phase === "ask" && state.quiz.qs[state.quiz.idx].kind === "pin"){
-    const r = svg.getBoundingClientRect();
-    const lon = vb.x + (ev.clientX - r.left) / r.width * vb.w;
-    const lat = -(vb.y + (ev.clientY - r.top) / r.height * vb.h);
-    answerPin(lon, lat);
+    const p = svgPoint(ev.clientX, ev.clientY);
+    answerPin(p.x, -p.y);
   }
 });
 svg.addEventListener("wheel", ev => {
   ev.preventDefault();
   const f = ev.deltaY > 0 ? 1.18 : 1 / 1.18;
   const nw = Math.min(400, Math.max(14, vb.w * f));
-  const r = svg.getBoundingClientRect();
-  const mx = vb.x + (ev.clientX - r.left) / r.width * vb.w;
-  const my = vb.y + (ev.clientY - r.top) / r.height * vb.h;
+  const { x:mx, y:my } = svgPoint(ev.clientX, ev.clientY);
   const s = nw / vb.w;
   vb.x = mx - (mx - vb.x) * s; vb.y = my - (my - vb.y) * s;
   vb.w = nw; vb.h = vb.h * s;
@@ -816,15 +818,15 @@ function renderSide(){
 const EXCLUDE_SUBS = new Set(["stone_other","metal_other","unspecified","textile","ceramic"]);
 const EXCLUDE_ANI = new Set(["silkworm","bird","sheep","cattle","fur","small","insect","shellfish","hybrid"]);
 const QMODES = {
-  easy: { label:"Easy", desc:"Dominant answers only, generous pins (full points within 300 km), obvious distractors, era given in the prompt.",
+  easy: { label:"Easy", desc:"Mostly empires: pin their heartland (era given, modern borders) and place them in time. Generous pins (full points within 300 km), obvious distractors.",
     pinFull:300, pinScale:1800, shareMin:.45, shareMax:1.01, minCount:12, eraGap:2, confusable:false, empMin:2, askEra:false, pmShare:.5, mpShare:.5,
-    kinds:["pinMat","pinMat","pinAnimal","pinEmp","pinEmp","mcEmpEra","mcEmpEra","mcPlaceMat","mcAnimal","mcMatPlace"] },
-  hard: { label:"Hard", desc:"Pin AND era on every pin question (full points within 100 km). Contested answers (25–60% share), distractors are the real runners-up, adjacent-era choices, instrument families, regional cultures.",
+    kinds:["pinEmp","pinEmp","pinEmp","mcEmpEra","mcEmpEra","mcEmpEra","mcFirstEra","mcFirstEra","pinMat","mcPlaceMat"] },
+  hard: { label:"Hard", desc:"Pin AND era on every pin question (full points within 100 km). Regional cultures included, adjacent-era choices, runner-up distractors.",
     pinFull:100, pinScale:900, shareMin:.25, shareMax:.6, minCount:8, eraGap:1, confusable:true, empMin:1, askEra:true, pmShare:.35, mpShare:.3,
-    kinds:["pinMat","pinMat","pinAnimal","pinEmp","mcEmpEra","mcPlaceMat","mcMatPlace","mcSubEra","mcInstr","mcFirstEra"] },
-  extreme: { label:"Extremely hard", desc:"Real-game pins (full points within 50 km, steep decay). The least obvious answers (15–45% share), obscure cultures and materials, runner-up distractors only, era always asked.",
+    kinds:["pinEmp","pinEmp","pinEmp","pinEmp","mcEmpEra","mcEmpEra","mcFirstEra","mcFirstEra","pinMat","mcPlaceMat"] },
+  extreme: { label:"Extremely hard", desc:"Real-game pins (full points within 50 km, steep decay). Obscure cultures, adjacent-era choices only, era always asked, no borders hints.",
     pinFull:50, pinScale:500, shareMin:.15, shareMax:.45, minCount:5, eraGap:1, confusable:true, empMin:1, askEra:true, pmShare:.25, mpShare:.2,
-    kinds:["pinMat","pinMat","pinMat","pinAnimal","pinEmp","pinEmp","mcSubEra","mcSubEra","mcInstr","mcFirstEra"] },
+    kinds:["pinEmp","pinEmp","pinEmp","pinEmp","pinEmp","mcEmpEra","mcEmpEra","mcFirstEra","mcFirstEra","pinMat"] },
 };
 function havKm(a, b){
   const R = 6371, rad = x => x * Math.PI / 180;
@@ -855,9 +857,12 @@ function buildQuizPools(M){
     const eras = M.askEra ? [per.indexOf(Math.max(...per))].filter(pe => per[pe] / tot >= .3) : [...Array(20).keys()];
     for (const e of eras){
       const g = per[e]; if (g < M.minCount * 2) continue;
-      const rk = rankPlaces(p => subVal(p, sid, e)); if (!rk.length) continue;
-      const share = rk[0].v / g;
-      if (rk[0].v >= M.minCount && share >= M.shareMin && share < M.shareMax)
+      const gt = AGG.global[e][0] || 1;
+      // lift = (share of this material within the place) / (share of this material globally in the era)
+      const rk = AGG.places.map(p => { const v = subVal(p, sid, e), pt = p.counts[e][0] || 1;
+          return { p, v, lift: v >= M.minCount && v / g >= .04 ? (v / pt) / (g / gt) : 0 }; })
+        .filter(x => x.lift > 0).sort((a, b) => b.lift - a.lift);
+      if (rk.length && rk[0].lift >= 2)
         pools.pinMat.push({ sid, era:e, place:rk[0].p, runners:rk.slice(1, 5).map(x => x.p) });
     }
   }
@@ -938,14 +943,14 @@ function eraOpts(correct, avoid, M){
 }
 
 function makeQuestion(kind, pools, M){
-  const order = [kind, "pinMat", "mcPlaceMat", "mcEmpEra", "pinEmp", "mcMatPlace", "animal", "mcSubEra", "mcInstr", "mcFirstEra"];
+  const order = [kind, "pinEmp", "mcEmpEra", "mcFirstEra", "pinMat", "mcPlaceMat", "mcMatPlace", "animal", "mcSubEra", "mcInstr"];
   kind = order.find(k => (pools[k === "pinAnimal" || k === "mcAnimal" ? "animal" : k] || []).length);
   const ask = M.askEra;
   if (kind === "pinMat"){
     const c = rand(pools.pinMat), lab = SUBM[c.sid].label.toLowerCase();
     return { kind:"pin", askEra:ask, era:ask ? null : c.era, eraSet:new Set([c.era]), revealEra:c.era, target:{ lat:c.place.lat, lon:c.place.lon, name:c.place.name },
-      prompt: ask ? `Where <b>and when</b> were most <b>${esc(lab)}</b> objects made? Drop a pin, then pick the era.`
-                  : `Drop a pin: where were most <b>${esc(lab)}</b> objects of <b>${eraLabel(c.era)}</b> made?`,
+      prompt: ask ? `Where <b>and when</b> is <b>${esc(lab)}</b> a signature material — the region whose artifacts are most characteristically made of it? Pin, then pick the era.`
+                  : `Drop a pin: in <b>${eraLabel(c.era)}</b>, which region’s artifacts are most characteristically made of <b>${esc(lab)}</b>?`,
       note:SUBNOTES[SUBM[c.sid].key] || "" };
   }
   if (kind === "pinAnimal" || kind === "mcAnimal" || kind === "animal"){
@@ -960,7 +965,7 @@ function makeQuestion(kind, pools, M){
   }
   if (kind === "pinEmp"){
     const c = rand(pools.pinEmp);
-    return { kind:"pin", askEra:ask, era:ask ? null : c.era, eraSet:c.eraSet, revealEra:c.era, target:{ lat:c.emp.lat, lon:c.emp.lon, name:c.emp.name },
+    return { kind:"pin", askEra:ask, era:null, eraSet:c.eraSet, revealEra:c.era, target:{ lat:c.emp.lat, lon:c.emp.lon, name:c.emp.name },
       prompt: ask ? `Pin the power center of the <b>${esc(c.emp.name)}</b>, then pick an era when it was a ${STRENGTH_LABEL[c.emp.strength].replace(" of its era", "")}.`
                   : `Drop a pin on the power center of the <b>${esc(c.emp.name)}</b> (${EMPIRES.eras[c.era].label}).`,
       note:c.emp.note };
@@ -1093,7 +1098,7 @@ function renderQuizSide(s){
   if (Q.phase === "ask"){
     s.innerHTML = head + `<div class="qprompt">${q.prompt}</div>` +
       (q.kind === "pin"
-        ? `<div class="qpin-hint">◎ Click the map to drop your pin</div><div class="note">${q.askEra ? "Borders show the modern world — no era hints." : `Borders show ${q.era != null ? eraLabel(q.era) : "the modern world"}.`} Full points within ${Q.M.pinFull} km.</div>`
+        ? `<div class="qpin-hint">◎ Click the map to drop your pin</div><div class="note">${q.era != null ? `Borders show ${eraLabel(q.era)}.` : "Borders show the modern world — no period hints."} Full points within ${Q.M.pinFull} km.</div>`
         : `<div class="qopts">${q.options.map((o, i) => `<button class="qopt" data-i="${i}">${esc(o)}</button>`).join("")}</div>`);
     for (const b of s.querySelectorAll(".qopt")) b.onclick = () => answerMC(+b.dataset.i);
   } else if (Q.phase === "era"){
@@ -1285,7 +1290,17 @@ if (new URLSearchParams(location.hash.slice(1)).get("qpools")){
   const rows = Object.keys(QMODES).map(m => { const P = buildQuizPools(QMODES[m]); return m + ": " + Object.entries(P).map(([k, v]) => k + "=" + v.length).join(" "); });
   document.getElementById("side").innerHTML = "<pre id='qpools'>" + rows.join("\n") + "</pre>";
 }
-if (new URLSearchParams(location.hash.slice(1)).get("qtest") === "hard"){
+if (new URLSearchParams(location.hash.slice(1)).get("qtest") === "coord"){
+  document.querySelector('[data-tab="quiz"]').click();
+  newQuiz("hard");
+  const Q = state.quiz;
+  Q.qs[0] = { kind:"pin", askEra:true, era:null, eraSet:new Set([8]), revealEra:8, target:{ lat:30.0, lon:31.2, name:"Cairo" }, prompt:"COORD TEST: click lands where you click?", note:"" };
+  startQuestion();
+  const pt = svg.createSVGPoint(); pt.x = 31.2; pt.y = -30; const sp = pt.matrixTransform(svg.getScreenCTM());
+  try { svg.dispatchEvent(new PointerEvent("pointerdown", { clientX:sp.x, clientY:sp.y, pointerId:1, bubbles:true })); } catch(e){}
+  try { svg.dispatchEvent(new PointerEvent("pointerup", { clientX:sp.x, clientY:sp.y, pointerId:1, bubbles:true })); } catch(e){}
+  document.getElementById("maphint").textContent = Q.pending ? `COORDTEST lon=${Q.pending.lon.toFixed(2)} lat=${Q.pending.lat.toFixed(2)} d=${Q.pending.d}km phase=${Q.phase} marks=${gDots.children.length}` : "COORDTEST no pending pin";
+} else if (new URLSearchParams(location.hash.slice(1)).get("qtest") === "hard"){
   document.querySelector('[data-tab="quiz"]').click();
   newQuiz("hard");
   const Q = state.quiz;
