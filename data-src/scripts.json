@@ -1,0 +1,4956 @@
+{
+ "fontsCss": "https://fonts.googleapis.com/css2?family=Noto+Serif+TC&family=Ma+Shan+Zheng&family=Zhi+Mang+Xing&family=Liu+Jian+Mao+Cao&family=Noto+Kufi+Arabic&family=Noto+Naskh+Arabic&family=Noto+Nastaliq+Urdu&family=Cinzel&family=Uncial+Antiqua&family=UnifrakturMaguntia&family=EB+Garamond&family=Pinyon+Script&family=Noto+Serif&family=Noto+Sans+Egyptian+Hieroglyphs&family=Noto+Sans+Cuneiform&family=Noto+Serif+JP&family=Yuji+Syuku&family=Noto+Serif+Devanagari&family=Noto+Serif+KR&family=Noto+Serif+Tibetan&family=Noto+Serif+Hebrew&family=Ruslan+Display&family=Aref+Ruqaa&family=Noto+Sans+Brahmi&family=Noto+Sans+Kharoshthi&family=Noto+Sans+Coptic&family=Noto+Sans+Phoenician&family=Noto+Sans+Imperial+Aramaic&family=Noto+Sans+Palmyrene&family=Noto+Sans+Nabataean&family=Noto+Sans+Syriac&family=Noto+Sans+Syriac+Western&family=Noto+Sans+Syriac+Eastern&family=Noto+Sans+Inscriptional+Pahlavi&family=Noto+Sans+Inscriptional+Parthian&family=Noto+Sans+Avestan&family=Noto+Sans+Old+South+Arabian&family=Noto+Sans+Old+Italic&family=Noto+Sans+Runic&family=Noto+Serif+Armenian&family=Noto+Serif+Georgian&family=Noto+Sans+Georgian&family=Noto+Serif+Ethiopic&family=Noto+Sans+Linear+B&family=Noto+Sans+Cypriot&family=Noto+Sans+Old+Persian&family=Noto+Sans+Ugaritic&family=Noto+Sans+Meroitic&family=Noto+Serif+Khmer&family=Noto+Serif+Thai&family=Noto+Serif+Lao&family=Noto+Sans+Myanmar&family=Noto+Sans+Javanese&family=Noto+Sans+Kawi&family=Noto+Sans+Balinese&family=Noto+Serif+Tamil&family=Noto+Serif+Telugu&family=Noto+Serif+Kannada&family=Noto+Sans+Grantha&family=Noto+Serif+Malayalam&family=Noto+Serif+Bengali&family=Noto+Serif+Sinhala&family=Noto+Serif+Gurmukhi&family=Noto+Sans+Siddham&family=Noto+Sans+Mongolian&family=Noto+Sans+PhagsPa&family=Noto+Serif+Tangut&family=Noto+Sans+Sogdian&family=Noto+Sans+Old+Turkic&family=Noto+Sans+Glagolitic&family=Noto+Sans+Ogham&family=Noto+Sans+Cham&family=Noto+Sans+Cherokee&display=swap",
+ "scripts": [
+  {
+   "id": "chinese",
+   "name": "Chinese characters (Hanzi)",
+   "family": "Sinitic",
+   "sample": "大明宣德年製 開元通寶",
+   "sampleMeaning": "'Made in the Xuande reign of the Great Ming' (a porcelain reign mark) + 'Kaiyuan tongbao' (the standard Tang coin legend)",
+   "font": "Noto Serif TC",
+   "dir": "ttb",
+   "from": -1250,
+   "to": 2000,
+   "areas": [
+    {
+     "label": "North China heartland (Shang, Zhou)",
+     "lat": 35.0,
+     "lon": 113.0,
+     "r_km": 650,
+     "from": -1250,
+     "to": -221,
+     "region": "eas"
+    },
+    {
+     "label": "China",
+     "lat": 32.5,
+     "lon": 111.0,
+     "r_km": 1400,
+     "from": -221,
+     "to": 2000,
+     "region": "eas"
+    },
+    {
+     "label": "Korea (hanja)",
+     "lat": 36.8,
+     "lon": 127.8,
+     "r_km": 350,
+     "from": -100,
+     "to": 1900,
+     "region": "eas"
+    },
+    {
+     "label": "Japan (kanji / kanbun)",
+     "lat": 35.5,
+     "lon": 136.5,
+     "r_km": 650,
+     "from": 400,
+     "to": 2000,
+     "region": "eas"
+    },
+    {
+     "label": "Vietnam (chữ Hán)",
+     "lat": 19.0,
+     "lon": 106.0,
+     "r_km": 600,
+     "from": -100,
+     "to": 1920,
+     "region": "sea"
+    },
+    {
+     "label": "Silk Road oases (Dunhuang, Turfan)",
+     "lat": 41.0,
+     "lon": 90.0,
+     "r_km": 800,
+     "from": -100,
+     "to": 1000,
+     "region": "cas"
+    }
+   ],
+   "look": [
+    "Square, self-contained characters of equal size, each built from several strokes inside an invisible box",
+    "Traditionally in vertical columns read top to bottom, columns running right to left",
+    "No alphabet-like repetition: hundreds of different shapes, no word spaces",
+    "Often paired with red square seal impressions on paintings and calligraphy",
+    "Reign marks on ceramics are 4 or 6 characters in a double ring or square, usually ending 年製 'made in the years of'"
+   ],
+   "onWhat": "Oracle bones, ritual bronzes, coins (round with square hole), seals, stelae, porcelain bases, lacquer, jade, paintings and hand scrolls, sutras, printed books, textiles.",
+   "infer": "Places the object in the Chinese cultural sphere, but not automatically in China: Korea, Japan and Vietnam all wrote in Chinese characters. The script style and the object type do the dating: uneven pictographic bronze script is Shang or Zhou, squat clerical script is Han, and flowing brush hands on paper or silk are 4th century onward. A reign mark gives a claimed emperor (many are later tributes). Kana mixed in means Japan; Hangul mixed in means Korea.",
+   "confusables": [
+    {
+     "id": "japanese",
+     "how": "Japanese text mixes the square characters with simple curvy kana (の, し, を); pure-character text on a Japanese object cannot be told apart by script alone."
+    },
+    {
+     "id": "hangul",
+     "how": "Hangul blocks are made of a few geometric parts (circles, straight bars) that repeat constantly; Korean objects before 1900 mostly use Chinese characters anyway."
+    },
+    {
+     "id": "tangut",
+     "how": "Tangut looks Chinese at a distance but every character is unreadable, denser, and full of repeated diagonal strokes."
+    },
+    {
+     "id": "chu-nom",
+     "how": "Chữ Nôm mixes ordinary Chinese characters with unfamiliar, heavier compounds invented for Vietnamese words."
+    },
+    {
+     "id": "phags-pa",
+     "how": "'Phags-pa on Yuan coins and seals is squared and vertical like seal script but made of a small set of repeating alphabet letters."
+    }
+   ],
+   "styles": [
+    {
+     "name": "Oracle-bone and bronze script (jiǎgǔwén, jīnwén)",
+     "sample": "",
+     "font": "",
+     "from": -1250,
+     "to": -221,
+     "where": "Shang and Zhou: Anyang oracle bones, cast inscriptions inside ritual bronzes",
+     "look": "Pictographic and irregular: characters of unequal size, visible animals, hands, eyes; thin scratched lines on bone, rounded swelling lines when cast in bronze. No web font renders this.",
+     "noFont": true
+    },
+    {
+     "name": "Seal script (zhuànshū)",
+     "sample": "",
+     "font": "",
+     "from": -500,
+     "to": 2000,
+     "where": "Warring States and Qin inscriptions, Qin-Han coins and weights; afterwards seals, stele titles and archaising inscriptions of every later period",
+     "look": "Even-width curving lines with no thick-thin contrast, tall symmetric forms, rounded corners. On a seal it tells you little about date; as the main text of an object it suggests Qin or earlier. No web font on Google Fonts.",
+     "noFont": true
+    },
+    {
+     "name": "Clerical script (lìshū)",
+     "sample": "",
+     "font": "",
+     "from": -200,
+     "to": 220,
+     "where": "Han dynasty stelae, bamboo and wooden slips, mirrors; revived by Qing calligraphers",
+     "look": "Squat, wide characters with flaring 'silkworm head, wild-goose tail' horizontal strokes. No web font on Google Fonts.",
+     "noFont": true
+    },
+    {
+     "name": "Regular script (kǎishū)",
+     "sample": "天下太平",
+     "font": "Ma Shan Zheng",
+     "from": 300,
+     "to": 2000,
+     "where": "Standard from the Tang onward: stelae, sutras, reign marks, coin legends",
+     "look": "Upright, clearly separated strokes with brush-shaped ends, each stroke lifted. Sample reads 'peace under heaven'. This web font is a modern brush kaishu, a fair approximation."
+    },
+    {
+     "name": "Printed Song/Ming typeface (sòngtǐ)",
+     "sample": "大明宣德年製",
+     "font": "Noto Serif TC",
+     "from": 1000,
+     "to": 2000,
+     "where": "Woodblock-printed books, later banknotes and printed labels",
+     "look": "Thin horizontals, thick verticals, small triangles at stroke ends: the look of woodblock printing, so Song or later."
+    },
+    {
+     "name": "Running script (xíngshū)",
+     "sample": "天下太平",
+     "font": "Zhi Mang Xing",
+     "from": 300,
+     "to": 2000,
+     "where": "Letters, colophons on paintings, poems on scrolls and fans",
+     "look": "Regular-script shapes written fast: strokes link, corners round off, characters lean. The web font is a modern approximation."
+    },
+    {
+     "name": "Cursive script (cǎoshū)",
+     "sample": "天下太平",
+     "font": "Liu Jian Mao Cao",
+     "from": 200,
+     "to": 2000,
+     "where": "Calligraphy scrolls, especially Tang, Song, Ming and Qing literati work",
+     "look": "Characters collapse into a few sweeping loops, often joined down the column; nearly illegible without training. The web font is a modern approximation."
+    }
+   ]
+  },
+  {
+   "id": "arabic-kufic",
+   "name": "Arabic: Kufic (angular) styles",
+   "family": "Arabic-script styles",
+   "sample": "بركة لصاحبه",
+   "sampleMeaning": "'Blessing to its owner' (baraka li-ṣāḥibihi), the stock good-wish inscription on early Islamic ceramics and metalwork",
+   "font": "Noto Kufi Arabic",
+   "dir": "rtl",
+   "from": 650,
+   "to": 1500,
+   "areas": [
+    {
+     "label": "Syria, Iraq & Arabia",
+     "lat": 32.5,
+     "lon": 42.0,
+     "r_km": 1000,
+     "from": 650,
+     "to": 1250,
+     "region": "wan"
+    },
+    {
+     "label": "Egypt & Ifriqiya",
+     "lat": 30.5,
+     "lon": 24.0,
+     "r_km": 1200,
+     "from": 650,
+     "to": 1200,
+     "region": "egy"
+    },
+    {
+     "label": "Iran",
+     "lat": 33.5,
+     "lon": 53.5,
+     "r_km": 750,
+     "from": 700,
+     "to": 1300,
+     "region": "wan"
+    },
+    {
+     "label": "Khurasan & Transoxiana (Nishapur, Samarkand)",
+     "lat": 38.5,
+     "lon": 64.0,
+     "r_km": 600,
+     "from": 750,
+     "to": 1250,
+     "region": "cas"
+    },
+    {
+     "label": "al-Andalus & Maghreb",
+     "lat": 36.0,
+     "lon": -4.5,
+     "r_km": 600,
+     "from": 711,
+     "to": 1300,
+     "region": "eur_s"
+    }
+   ],
+   "look": [
+    "Angular and geometric: a strong flat baseline with straight verticals rising at right angles",
+    "Letters stretched horizontally, wide gaps, few or no dots; early Qur'ans mark vowels with red dots",
+    "On Qur'an leaves: horizontal-format parchment pages with only a few lines of thick dark-brown script",
+    "Later versions sprout leaves (foliated), flowers (floriated) or knots in the tall strokes",
+    "The web font here is a modern, simplified Kufic; historical Kufic is heavier and more stretched"
+   ],
+   "onWhat": "Early Qur'an leaves on parchment, coins (dinars and dirhams, entirely epigraphic), tiraz textile bands, slip-painted bowls, lustreware, carved wood and ivory, tombstones, architectural friezes.",
+   "infer": "Kufic as the main script points to roughly 650-1200. Purely epigraphic gold and silver coins are Umayyad or Abbasid (after 696). Black Kufic on a white slip bowl is Samanid Nishapur or Samarkand, 10th century. Foliated Kufic on textiles, rock crystal or lustre is Fatimid Egypt (10th-12th century). After 1200 Kufic survives only for headings and architecture, with cursive carrying the main text.",
+   "confusables": [
+    {
+     "id": "arabic-naskh",
+     "how": "Naskh and thuluth are rounded and flowing with full dots; Kufic is ruled, right-angled and sparse."
+    },
+    {
+     "id": "arabic-maghribi",
+     "how": "Maghribi keeps some Kufic stiffness but has deep swooping bowls below the line and is found on later western manuscripts."
+    },
+    {
+     "id": "syriac",
+     "how": "Estrangela Syriac is also blocky and right-to-left but has no tall parallel verticals; letters are short and boxy with a dot-and-bar texture."
+    },
+    {
+     "id": "pahlavi",
+     "how": "Arab-Sasanian coins carry a Sasanian king's bust with short Kufic words in the margin next to Pahlavi; pure Islamic coins have no image."
+    }
+   ],
+   "styles": [
+    {
+     "name": "Early Abbasid Kufic",
+     "sample": "",
+     "font": "",
+     "from": 750,
+     "to": 950,
+     "where": "Qur'an leaves on parchment, Syria, Iraq, Egypt, North Africa",
+     "look": "Thick, horizontally stretched letters on a wide page, three to nine lines; red and green vowel dots; gold verse markers. No web font matches.",
+     "noFont": true
+    },
+    {
+     "name": "Eastern Kufic ('New Style', broken cursive)",
+     "sample": "",
+     "font": "",
+     "from": 950,
+     "to": 1200,
+     "where": "Iran and Central Asia: Qur'ans on paper, Samanid epigraphic pottery",
+     "look": "Tall, slender verticals with sharp diagonal breaks and thin-to-thick contrast; triangular letter heads. Signals Iran or Khurasan, 10th-12th century. No web font matches.",
+     "noFont": true
+    },
+    {
+     "name": "Foliated and floriated Kufic",
+     "sample": "",
+     "font": "",
+     "from": 900,
+     "to": 1200,
+     "where": "Fatimid Egypt, also Iran and Anatolia: tiraz, tombstones, woodwork",
+     "look": "Letter ends split into half-palmettes and tendrils; floral scrolls fill the upper band.",
+     "noFont": true
+    },
+    {
+     "name": "Square Kufic (bannā'ī)",
+     "sample": "",
+     "font": "",
+     "from": 1200,
+     "to": 1500,
+     "where": "Brick and tile architecture of Iran and Central Asia (Ilkhanid, Timurid, Safavid); Mamluk Cairo; continues in architecture after 1500",
+     "look": "Words turned into a maze-like square grid, often repeating Allah, Muhammad, Ali.",
+     "noFont": true
+    },
+    {
+     "name": "Pseudo-Kufic",
+     "sample": "",
+     "font": "",
+     "from": 950,
+     "to": 1500,
+     "where": "Byzantine churches, Italian and Spanish textiles, Renaissance painting haloes",
+     "look": "Kufic-looking strokes that spell nothing: a decorative imitation, so the object is from the Christian Mediterranean.",
+     "noFont": true
+    }
+   ]
+  },
+  {
+   "id": "arabic-naskh",
+   "name": "Arabic: cursive styles (naskh, thuluth, muhaqqaq)",
+   "family": "Arabic-script styles",
+   "sample": "بسم الله الرحمن الرحيم",
+   "sampleMeaning": "'In the name of God, the Merciful, the Compassionate' (the basmala)",
+   "font": "Noto Naskh Arabic",
+   "dir": "rtl",
+   "from": 950,
+   "to": 2000,
+   "areas": [
+    {
+     "label": "Iraq & Iran",
+     "lat": 33.0,
+     "lon": 49.0,
+     "r_km": 1000,
+     "from": 950,
+     "to": 2000,
+     "region": "wan"
+    },
+    {
+     "label": "Egypt & Syria",
+     "lat": 31.0,
+     "lon": 33.5,
+     "r_km": 700,
+     "from": 1000,
+     "to": 2000,
+     "region": "egy"
+    },
+    {
+     "label": "Anatolia",
+     "lat": 39.0,
+     "lon": 33.0,
+     "r_km": 600,
+     "from": 1100,
+     "to": 2000,
+     "region": "wan"
+    },
+    {
+     "label": "Central Asia",
+     "lat": 39.5,
+     "lon": 65.0,
+     "r_km": 800,
+     "from": 1000,
+     "to": 2000,
+     "region": "cas"
+    },
+    {
+     "label": "Indian subcontinent",
+     "lat": 24.0,
+     "lon": 78.0,
+     "r_km": 1200,
+     "from": 1200,
+     "to": 2000,
+     "region": "sas"
+    },
+    {
+     "label": "Maritime Southeast Asia",
+     "lat": 0.0,
+     "lon": 108.0,
+     "r_km": 1800,
+     "from": 1300,
+     "to": 2000,
+     "region": "sea"
+    }
+   ],
+   "look": [
+    "Rounded, flowing, joined letters written right to left, with dots above and below",
+    "Naskh: small, even, legible book hand with short verticals",
+    "Thuluth: large, with very tall verticals, sweeping curves and letters stacked and interlaced, used for display",
+    "Small vowel marks and decorative fillers float between the letters",
+    "Long words swell and thin with the reed pen: thick downstrokes, hairline joins"
+   ],
+   "onWhat": "Qur'ans and books on paper, inlaid brass and bronze (basins, candlesticks, pen boxes), enamelled glass mosque lamps, tiles, carpets and textiles, tombstones, coins after about 1200, mihrabs.",
+   "infer": "Cursive as the main script means after about 1000. Bold thuluth bands with titles such as 'the high authority, the lord' on brass inlaid with silver or on enamelled glass are Mamluk Egypt or Syria (1250-1517). Small naskh in lustre tile borders is Kashan, Iran, 13th-14th century. Naskh alone does not separate regions: use the companion scripts (nasta'liq means Iran or India, a tughra means Ottoman) and the object type.",
+   "confusables": [
+    {
+     "id": "arabic-kufic",
+     "how": "Kufic is angular with a ruled baseline; these hands are rounded and dotted."
+    },
+    {
+     "id": "nastaliq",
+     "how": "Nasta'liq words slide diagonally down toward the left and look 'hanging'; naskh sits level on the line."
+    },
+    {
+     "id": "arabic-maghribi",
+     "how": "Maghribi has huge open bowls below the line and dots fa with one dot below, qaf with one dot above."
+    },
+    {
+     "id": "ottoman-diwani",
+     "how": "Divani is a dense chancery hand whose lines climb to the left, with letters knotted together and no spaces."
+    },
+    {
+     "id": "syriac",
+     "how": "Serto Syriac is also cursive and right-to-left but is smaller, lower and lacks the tall alif-lam verticals."
+    }
+   ],
+   "styles": [
+    {
+     "name": "Naskh",
+     "sample": "بسم الله الرحمن الرحيم",
+     "font": "Noto Naskh Arabic",
+     "from": 950,
+     "to": 2000,
+     "where": "Book hand everywhere from Spain to India; small inscriptions on tiles and metalwork",
+     "look": "Compact, clear, level; the default copying hand after Ibn Muqla and Ibn al-Bawwab (10th-11th century)."
+    },
+    {
+     "name": "Thuluth",
+     "sample": "عز لمولانا السلطان",
+     "font": "",
+     "from": 1100,
+     "to": 2000,
+     "where": "Monumental and display script: Mamluk metalwork and glass, mosque lamps, Qur'an headings, architecture, Ottoman panels",
+     "look": "Sample reads 'Glory to our lord the sultan', the standard Mamluk formula. Tall uprights, deep curves, words overlapping in two tiers. No true thuluth web font on Google Fonts; a naskh font only hints at it.",
+     "noFont": true
+    },
+    {
+     "name": "Muhaqqaq and rayhani",
+     "sample": "",
+     "font": "",
+     "from": 1250,
+     "to": 1550,
+     "where": "Large Qur'ans of Mamluk Egypt, Ilkhanid and Timurid Iran",
+     "look": "Very large, shallow, sharply pointed sub-line strokes that sweep left; few lines per page. Big-format Qur'an leaves in this hand are 14th-15th century.",
+     "noFont": true
+    },
+    {
+     "name": "Bihari",
+     "sample": "",
+     "font": "",
+     "from": 1350,
+     "to": 1600,
+     "where": "Qur'ans of Sultanate India",
+     "look": "Wedge-shaped, thick horizontal strokes with widely spaced words, often in alternating colours: a strong pre-Mughal India signal.",
+     "noFont": true
+    },
+    {
+     "name": "Sini (Chinese Arabic)",
+     "sample": "",
+     "font": "",
+     "from": 1400,
+     "to": 2000,
+     "where": "Chinese Muslim bronzes, porcelain and mosque panels",
+     "look": "Arabic written with a soft brush, thick tapering strokes like Chinese calligraphy; often on Ming Zhengde blue-and-white.",
+     "noFont": true
+    }
+   ]
+  },
+  {
+   "id": "nastaliq",
+   "name": "Persian nasta'liq (with ta'liq and shikasta)",
+   "family": "Arabic-script styles",
+   "sample": "بنده شاه ولایت عباس",
+   "sampleMeaning": "'Abbas, servant of the King of Sanctity [Ali]', the formula of Shah Abbas I on seals and dedications",
+   "font": "Noto Nastaliq Urdu",
+   "dir": "rtl",
+   "from": 1300,
+   "to": 2000,
+   "areas": [
+    {
+     "label": "Iran",
+     "lat": 32.5,
+     "lon": 53.0,
+     "r_km": 750,
+     "from": 1300,
+     "to": 2000,
+     "region": "wan"
+    },
+    {
+     "label": "Herat, Bukhara & Central Asia",
+     "lat": 37.0,
+     "lon": 64.0,
+     "r_km": 700,
+     "from": 1400,
+     "to": 1920,
+     "region": "cas"
+    },
+    {
+     "label": "Mughal & Deccan India",
+     "lat": 24.0,
+     "lon": 78.0,
+     "r_km": 1200,
+     "from": 1550,
+     "to": 2000,
+     "region": "sas"
+    },
+    {
+     "label": "Ottoman lands (ta'lik)",
+     "lat": 40.5,
+     "lon": 30.0,
+     "r_km": 500,
+     "from": 1500,
+     "to": 1920,
+     "region": "wan"
+    }
+   ],
+   "look": [
+    "Each word hangs diagonally, starting high on the right and sliding down to the left",
+    "Very short verticals, long sweeping horizontal curves, strong thick-thin contrast",
+    "Usually in short poetic lines set in columns or cloud-shaped panels, often on gold-flecked or marbled paper",
+    "Album pages (muraqqa') show a few large lines set diagonally with illuminated corner pieces",
+    "Shikasta ('broken') is a faster, denser version that joins letters normally left separate"
+   ],
+   "onWhat": "Poetry manuscripts (Shahnama, Khamsa, Divan of Hafiz), album calligraphy, miniature-painting captions, Safavid and Mughal coins, seals, carpets with verse cartouches, jade and metalwork with poetry, tiles.",
+   "infer": "Nasta'liq grew out of the ta'liq chancery hand and was perfected in Iran around 1400, so it gives a floor of about 1400 and points to the Persianate world: Timurid Herat, Safavid Iran, Uzbek Bukhara, Mughal and Deccan India, and Ottoman poetry. It is not used for Arabic-language Qur'an text. To choose between Iran and India use the painting style, borders and object type; Urdu and lithographed pages are 19th century.",
+   "confusables": [
+    {
+     "id": "arabic-naskh",
+     "how": "Naskh sits level and upright; nasta'liq slopes down to the left and has almost no tall verticals."
+    },
+    {
+     "id": "ottoman-diwani",
+     "how": "Divani lines climb upward at the left end and are tightly knotted; nasta'liq words descend and are airy."
+    },
+    {
+     "id": "arabic-maghribi",
+     "how": "Maghribi is a western Qur'an and book hand with round bowls; it never hangs diagonally."
+    }
+   ],
+   "styles": [
+    {
+     "name": "Nasta'liq",
+     "sample": "بنده شاه ولایت عباس",
+     "font": "Noto Nastaliq Urdu",
+     "from": 1375,
+     "to": 2000,
+     "where": "Iran, Central Asia, India",
+     "look": "The classic hanging hand; this web font is a faithful modern nasta'liq."
+    },
+    {
+     "name": "Ta'liq",
+     "sample": "",
+     "font": "",
+     "from": 1300,
+     "to": 1600,
+     "where": "Persian chancery documents",
+     "look": "Predecessor of nasta'liq: looping, with extra joins and lines that rise at the end.",
+     "noFont": true
+    },
+    {
+     "name": "Shikasta",
+     "sample": "",
+     "font": "",
+     "from": 1650,
+     "to": 1900,
+     "where": "Iranian and Indian letters, documents and late album pages",
+     "look": "Dense, tangled and rapid; letters fused, lines often written at angles and in margins. Later Safavid, Zand, Qajar or Mughal.",
+     "noFont": true
+    }
+   ]
+  },
+  {
+   "id": "latin",
+   "name": "Latin alphabet",
+   "family": "European",
+   "sample": "SENATVS POPVLVSQVE ROMANVS",
+   "sampleMeaning": "'The Senate and People of Rome' (SPQR)",
+   "font": "Cinzel",
+   "dir": "ltr",
+   "from": -600,
+   "to": 2000,
+   "areas": [
+    {
+     "label": "Italy & western Mediterranean",
+     "lat": 41.5,
+     "lon": 9.0,
+     "r_km": 1000,
+     "from": -600,
+     "to": 2000,
+     "region": "eur_s"
+    },
+    {
+     "label": "Roman North Africa",
+     "lat": 35.0,
+     "lon": 6.0,
+     "r_km": 1000,
+     "from": -146,
+     "to": 700,
+     "region": "egy"
+    },
+    {
+     "label": "Western & Northern Europe",
+     "lat": 49.5,
+     "lon": 4.0,
+     "r_km": 1200,
+     "from": -50,
+     "to": 2000,
+     "region": "eur_nw"
+    },
+    {
+     "label": "Central & Eastern Catholic Europe",
+     "lat": 49.5,
+     "lon": 18.5,
+     "r_km": 650,
+     "from": 1000,
+     "to": 2000,
+     "region": "eur_e"
+    },
+    {
+     "label": "Colonial & modern Latin America",
+     "lat": 12.0,
+     "lon": -85.0,
+     "r_km": 3000,
+     "from": 1520,
+     "to": 2000,
+     "region": "mes"
+    },
+    {
+     "label": "North America",
+     "lat": 40.0,
+     "lon": -85.0,
+     "r_km": 2200,
+     "from": 1600,
+     "to": 2000,
+     "region": "nam"
+    }
+   ],
+   "look": [
+    "The familiar ABC; the question is which letterform family",
+    "Roman inscriptions: capitals only, V for U, no J or W, dots between words, heavy abbreviation (IMP CAES AVG, COS, D M)",
+    "Early medieval: rounded uncial or half-uncial letters, often with interlace initials",
+    "Gothic: tall, narrow, broken strokes packed into a dark picket-fence texture",
+    "Renaissance onward: clear roman and italic letters close to modern print"
+   ],
+   "onWhat": "Roman coins, stone inscriptions, lead pipes, brick stamps, military diplomas; medieval manuscripts, seals, reliquaries, enamels, tomb slabs, bells; later prints, medals, silver hallmarks, clock dials, firearms, scientific instruments.",
+   "infer": "The letterform dates the object. Square capitals with V for U and imperial titles are Roman (roughly 100 BCE-400 CE); uncial is about 300-800; Carolingian minuscule 800-1200; Gothic blackletter 1150-1500 (and in German lands to the 1900s); humanist roman and italic after 1450; copperplate script 1650-1900. The language narrows place: French, German, English, Spanish or Dutch words on a post-medieval object beat any other clue.",
+   "confusables": [
+    {
+     "id": "greek",
+     "how": "Greek shares A B E K M N O T but shows Σ, Π, Δ, Λ, Φ, Ω; Roman-era Greek coins of the East look Latin until you spot these."
+    },
+    {
+     "id": "etruscan",
+     "how": "Etruscan runs right to left with mirrored letters and has no B, D or O."
+    },
+    {
+     "id": "cyrillic",
+     "how": "Cyrillic mixes Latin-looking letters with Д, Ж, И, Ш, Я."
+    },
+    {
+     "id": "runic",
+     "how": "Runes are all straight strokes with no curves or horizontals; Latin capitals have round bowls."
+    },
+    {
+     "id": "coptic",
+     "how": "Coptic looks like Greek uncial plus a few extra letters; it is not Latin."
+    }
+   ],
+   "styles": [
+    {
+     "name": "Roman square capitals",
+     "sample": "IMP CAESAR DIVI F AVGVSTVS",
+     "font": "Cinzel",
+     "from": -100,
+     "to": 500,
+     "where": "Roman empire: stone, bronze, coin legends",
+     "look": "Stately capitals with thick-thin stress and serifs, V for U, interpuncts. Sample is the title of Augustus as it appears on coins."
+    },
+    {
+     "name": "Rustic capitals",
+     "sample": "",
+     "font": "",
+     "from": 0,
+     "to": 600,
+     "where": "Painted notices at Pompeii, early manuscripts, later only for headings",
+     "look": "Tall, narrow, slanted capitals with thin verticals and thick feet.",
+     "noFont": true
+    },
+    {
+     "name": "Uncial, half-uncial and Insular",
+     "sample": "In principio erat verbum",
+     "font": "Uncial Antiqua",
+     "from": 300,
+     "to": 900,
+     "where": "Late antique and early medieval Gospel books; Ireland and Britain kept the Insular form to about 1100",
+     "look": "Rounded letters: curved d, e, m, single-compartment a; Insular pages add interlace and red dots. The web font is a modern display uncial."
+    },
+    {
+     "name": "Carolingian minuscule",
+     "sample": "",
+     "font": "",
+     "from": 780,
+     "to": 1200,
+     "where": "Frankish empire and its successors; Ottonian and Romanesque manuscripts",
+     "look": "Round, clear, well-spaced lower-case with few ligatures, the ancestor of modern print. No dedicated web font; looks like a hand-written roman type.",
+     "noFont": true
+    },
+    {
+     "name": "Gothic blackletter (textura, Fraktur)",
+     "sample": "Ave Maria gratia plena",
+     "font": "UnifrakturMaguntia",
+     "from": 1150,
+     "to": 1600,
+     "where": "Psalters, books of hours, tomb brasses, seals, early printing; Fraktur stays in German-speaking lands to about 1940",
+     "look": "Dense, vertical, angular; letters fused, diamond-shaped feet. The web font is a 16th-century German Fraktur, rounder than medieval textura."
+    },
+    {
+     "name": "Humanist roman and italic",
+     "sample": "Arma virumque cano",
+     "font": "EB Garamond",
+     "from": 1450,
+     "to": 2000,
+     "where": "Italian Renaissance manuscripts and medals, then printing everywhere",
+     "look": "Clear open letters modelled on Carolingian minuscule; revived Roman capitals on medals and architecture. Sample is the opening of the Aeneid."
+    },
+    {
+     "name": "Copperplate / round hand",
+     "sample": "Anno Domini",
+     "font": "Pinyon Script",
+     "from": 1650,
+     "to": 1900,
+     "where": "Engraved silver, trade cards, maps, samplers, letters",
+     "look": "Slanted, looping, hairline-and-swell pen script; typical of 18th-19th century Britain, America and France."
+    }
+   ]
+  },
+  {
+   "id": "greek",
+   "name": "Greek alphabet",
+   "family": "Greek-derived alphabets",
+   "sample": "ΒΑΣΙΛΕΩΣ ΑΛΕΞΑΝΔΡΟΥ",
+   "sampleMeaning": "'[Coin] of King Alexander' (genitive coin legend)",
+   "font": "Noto Serif",
+   "dir": "ltr",
+   "from": -750,
+   "to": 2000,
+   "areas": [
+    {
+     "label": "Greece, Aegean & Magna Graecia",
+     "lat": 38.5,
+     "lon": 21.0,
+     "r_km": 800,
+     "from": -750,
+     "to": 2000,
+     "region": "eur_s"
+    },
+    {
+     "label": "Anatolia & Black Sea",
+     "lat": 39.5,
+     "lon": 32.0,
+     "r_km": 800,
+     "from": -650,
+     "to": 1453,
+     "region": "wan"
+    },
+    {
+     "label": "Levant & Mesopotamia",
+     "lat": 34.0,
+     "lon": 39.0,
+     "r_km": 650,
+     "from": -330,
+     "to": 700,
+     "region": "wan"
+    },
+    {
+     "label": "Egypt",
+     "lat": 28.5,
+     "lon": 31.0,
+     "r_km": 600,
+     "from": -330,
+     "to": 700,
+     "region": "egy"
+    },
+    {
+     "label": "Bactria & Gandhara",
+     "lat": 35.5,
+     "lon": 68.5,
+     "r_km": 650,
+     "from": -320,
+     "to": 700,
+     "region": "cas"
+    },
+    {
+     "label": "Byzantium & the Balkans",
+     "lat": 41.5,
+     "lon": 25.0,
+     "r_km": 700,
+     "from": 330,
+     "to": 1900,
+     "region": "eur_e"
+    }
+   ],
+   "look": [
+    "Capitals with Σ, Π, Δ, Λ, Φ, Ψ, Ω, Θ, Ξ among Latin-looking A, B, E, K, M, N, O, T",
+    "Coin legends in the genitive: words ending -ΟΥ, -ΩΝ, -ΕΩΣ around a head or figure",
+    "Archaic inscriptions may run right to left or back and forth (boustrophedon) with odd letters",
+    "Roman and Byzantine periods use rounded 'lunate' forms: C for sigma, Є for epsilon, ω for omega",
+    "Byzantine icons use pairs of abbreviations with a bar above: IC XC, MP ΘY"
+   ],
+   "onWhat": "Painted vases (names beside figures, 'kalos' inscriptions), coins, stone stelae, gems, lead weights, papyri and mummy labels in Egypt, Byzantine seals, icons, crosses, ivories, enamels, mosaics.",
+   "infer": "Greek letters mean the Greek-speaking world, which after Alexander stretches from Sicily to Afghanistan, so use the object type for place. Painted names on pottery are Archaic or Classical Greece (600-400 BCE). ΒΑΣΙΛΕΩΣ plus a name is Hellenistic (after 330 BCE). Lunate C-shaped sigma means Roman imperial or later. Greek with the extra letter Ϸ is Kushan (Bactria and Gandhara, 100-350 CE). Abbreviations with overbars and saints are Byzantine (after 500) or later Orthodox work.",
+   "confusables": [
+    {
+     "id": "latin",
+     "how": "Latin has no Σ, Π, Δ, Λ, Φ, Ω; watch Roman provincial coins that use Greek for eastern cities."
+    },
+    {
+     "id": "coptic",
+     "how": "Coptic is Greek uncial plus six or seven extra letters (ϣ, ϥ, ϩ, ϫ, ϭ, ϯ) and comes from Egypt."
+    },
+    {
+     "id": "cyrillic",
+     "how": "Early Cyrillic copies Greek uncial but adds Б, Ж, Ш, Ц, Ч, Ъ; on icons, Slavic letters mean Russia or the Balkans."
+    },
+    {
+     "id": "etruscan",
+     "how": "Etruscan uses archaic Greek letter shapes but runs right to left and comes from central Italy."
+    },
+    {
+     "id": "phoenician",
+     "how": "Archaic Greek letters still resemble Phoenician ones, but Greek has vowel letters and soon turns left to right."
+    }
+   ],
+   "styles": [
+    {
+     "name": "Archaic local alphabets",
+     "sample": "ΑΘΕ · Ϙ",
+     "font": "Noto Serif",
+     "from": -750,
+     "to": -400,
+     "where": "Greek city-states, each with its own letter set",
+     "look": "Angular, uneven letters, right-to-left or boustrophedon; extra letters such as koppa (Ϙ, the badge of Corinth) and digamma. Sample shows the abbreviated Athenian coin legend and Corinth's koppa; real archaic shapes are rougher than this font."
+    },
+    {
+     "name": "Classical and Hellenistic capitals",
+     "sample": "ΒΑΣΙΛΕΩΣ ΑΛΕΞΑΝΔΡΟΥ",
+     "font": "Noto Serif",
+     "from": -400,
+     "to": -30,
+     "where": "Stone inscriptions and coins from Sicily to Bactria",
+     "look": "Even, geometric capitals, often in a strict grid (stoichedon); later with small serifs and broken-bar alpha."
+    },
+    {
+     "name": "Roman-period and lunate forms",
+     "sample": "ΑΥΤΟΚΡΑΤΩΡ ΚΑΙϹΑΡ",
+     "font": "Noto Serif",
+     "from": -30,
+     "to": 600,
+     "where": "Roman provincial coins, mummy portraits and labels, papyri",
+     "look": "Sample reads 'Emperor Caesar'. Rounded C for sigma, Є, ω; crowded legends around an imperial bust."
+    },
+    {
+     "name": "Kushan Greek (Bactrian language)",
+     "sample": "ϷΑΟΝΑΝΟϷΑΟ ΚΑΝΗϷΚΙ ΚΟϷΑΝΟ",
+     "font": "Noto Serif",
+     "from": 100,
+     "to": 400,
+     "where": "Kushan gold and copper coins, Bactria, Gandhara and north India",
+     "look": "'King of kings, Kanishka the Kushan'. Blocky Greek with the added letter Ϸ (sh); deity names such as ΜΙΙΡΟ, ΟΗϷΟ, ΒΟΔΔΟ on the reverse."
+    },
+    {
+     "name": "Byzantine uncial and icon abbreviations",
+     "sample": "ΙϹ ΧϹ ΝΙΚΑ · ΜΡ ΘΥ",
+     "font": "Noto Serif",
+     "from": 500,
+     "to": 1900,
+     "where": "Icons, coins, crosses, ivories, enamels, mosaics",
+     "look": "'Jesus Christ conquers' and 'Mother of God'. Letters with overbars, often stacked vertically beside a saint."
+    },
+    {
+     "name": "Byzantine minuscule",
+     "sample": "Κύριε βοήθει τῷ σῷ δούλῳ",
+     "font": "Noto Serif",
+     "from": 850,
+     "to": 1600,
+     "where": "Manuscripts and lead seals",
+     "look": "'Lord, help your servant', the standard seal invocation. Small joined letters with accents and breathings, hanging from a ruled line."
+    }
+   ]
+  },
+  {
+   "id": "egyptian-hieroglyphs",
+   "name": "Egyptian hieroglyphs (with hieratic and demotic)",
+   "family": "Egyptian",
+   "sample": "𓇓𓏏𓊵𓏏𓊪𓏙 𓋹𓍑𓋴",
+   "sampleMeaning": "ḥtp-dj-nsw 'an offering which the king gives' (the funerary offering formula) + ankh, wedja, seneb 'life, prosperity, health'",
+   "font": "Noto Sans Egyptian Hieroglyphs",
+   "dir": "ltr",
+   "from": -3200,
+   "to": 450,
+   "areas": [
+    {
+     "label": "Egypt (Nile valley & Delta)",
+     "lat": 27.5,
+     "lon": 31.0,
+     "r_km": 600,
+     "from": -3200,
+     "to": 450,
+     "region": "egy"
+    },
+    {
+     "label": "Nubia",
+     "lat": 19.5,
+     "lon": 31.0,
+     "r_km": 450,
+     "from": -2000,
+     "to": 350,
+     "region": "egy"
+    },
+    {
+     "label": "Levant (scarabs, Egyptian imports)",
+     "lat": 32.5,
+     "lon": 35.3,
+     "r_km": 300,
+     "from": -1900,
+     "to": -500,
+     "region": "wan"
+    }
+   ],
+   "look": [
+    "Small recognisable pictures: birds, eyes, snakes, reeds, seated people, water ripples",
+    "Signs are grouped into neat invisible squares, in columns or rows, with no word spaces",
+    "Animals and people face the start of the line; right-to-left is the commonest direction",
+    "Royal names sit inside an oval rope ring (cartouche)",
+    "Often carved in sunk relief and painted, or written in black and red ink on papyrus"
+   ],
+   "onWhat": "Tomb and temple reliefs, stelae, coffins, statues, shabtis, scarabs, canopic jars, amulets, faience, papyri (Book of the Dead), ostraca, mummy bandages.",
+   "infer": "Egypt or Nubia, and a 3,500-year range, so use the style. Tall crisp signs with spare layouts are Old or Middle Kingdom; elegant painted detail is New Kingdom (1550-1070 BCE); crowded, small, squat signs with many strange forms are Ptolemaic or Roman (after 332 BCE). Cartouches name the king. Cursive ink versions date too: hieratic for most of the period, demotic only after about 650 BCE. Garbled hieroglyphs on a non-Egyptian object suggest Phoenician, Roman or 19th-century Egyptomania.",
+   "confusables": [
+    {
+     "id": "meroitic",
+     "how": "Meroitic hieroglyphs borrow Egyptian shapes but use only 23 signs, face the opposite way, and separate words with dots."
+    },
+    {
+     "id": "maya",
+     "how": "Maya glyphs are rounded blocks with faces and bars-and-dots in a grid; Egyptian signs are separate, cleanly outlined pictures."
+    },
+    {
+     "id": "indus",
+     "how": "Indus signs are a short row of abstract marks above an animal on a small square seal."
+    },
+    {
+     "id": "linear-b",
+     "how": "Linear B signs are abstract line drawings scratched on clay, not pictures of animals and people."
+    }
+   ],
+   "styles": [
+    {
+     "name": "Hieratic",
+     "sample": "",
+     "font": "",
+     "from": -2700,
+     "to": 300,
+     "where": "Papyri, ostraca, linen, coffin texts; priests' cursive",
+     "look": "Hieroglyphs dissolved into quick brush ligatures, right to left, black with red headings. Not in Unicode.",
+     "noFont": true
+    },
+    {
+     "name": "Demotic",
+     "sample": "",
+     "font": "",
+     "from": -650,
+     "to": 450,
+     "where": "Legal and administrative papyri, ostraca, mummy labels; middle band of the Rosetta Stone",
+     "look": "Tiny, very cursive, comma-like strokes with long horizontal sweeps; looks nothing like pictures. Late Period, Ptolemaic or Roman.",
+     "noFont": true
+    },
+    {
+     "name": "Ptolemaic and Roman hieroglyphs",
+     "sample": "",
+     "font": "",
+     "from": -332,
+     "to": 394,
+     "where": "Temple walls (Edfu, Dendera, Philae), late stelae and coffins",
+     "look": "Crowded lines of small plump signs, many unusual ones, often in raised relief with rounded modelling.",
+     "noFont": true
+    }
+   ],
+   "dirNote": "Unicode hieroglyphs display left to right; ancient texts more often ran right to left with the signs mirrored."
+  },
+  {
+   "id": "cuneiform",
+   "name": "Cuneiform (Sumerian, Akkadian, Hittite, Elamite)",
+   "family": "Mesopotamian",
+   "sample": "𒀭𒂗𒆤 𒈗 𒆳𒆳𒊏",
+   "sampleMeaning": "Sumerian d-en-lil2 lugal kur-kur-ra: 'Enlil, king of the lands'",
+   "font": "Noto Sans Cuneiform",
+   "dir": "ltr",
+   "from": -3300,
+   "to": 75,
+   "areas": [
+    {
+     "label": "Mesopotamia",
+     "lat": 33.0,
+     "lon": 44.4,
+     "r_km": 600,
+     "from": -3300,
+     "to": 75,
+     "region": "wan"
+    },
+    {
+     "label": "Syria & Levant (Ebla, Mari, Ugarit)",
+     "lat": 35.5,
+     "lon": 38.0,
+     "r_km": 450,
+     "from": -2400,
+     "to": -500,
+     "region": "wan"
+    },
+    {
+     "label": "Anatolia (Kültepe, Hattusa)",
+     "lat": 39.3,
+     "lon": 34.6,
+     "r_km": 450,
+     "from": -1950,
+     "to": -1180,
+     "region": "wan"
+    },
+    {
+     "label": "Elam & Persia",
+     "lat": 31.5,
+     "lon": 49.5,
+     "r_km": 600,
+     "from": -2300,
+     "to": -330,
+     "region": "wan"
+    },
+    {
+     "label": "Urartu (Lake Van)",
+     "lat": 38.7,
+     "lon": 43.5,
+     "r_km": 350,
+     "from": -850,
+     "to": -590,
+     "region": "wan"
+    },
+    {
+     "label": "Egypt (Amarna letters)",
+     "lat": 27.6,
+     "lon": 30.9,
+     "r_km": 150,
+     "from": -1360,
+     "to": -1330,
+     "region": "egy"
+    }
+   ],
+   "look": [
+    "Clusters of wedge-shaped (nail-like) impressions: horizontals, verticals, diagonals and angle hooks",
+    "Pressed into clay with a stylus, or cut into stone copying the wedge shape",
+    "Dense rows, often ruled into lines or boxed cases, no pictures",
+    "Tablets are pillow-shaped and fit in the hand; text often wraps around the edges",
+    "On cylinder seals: two or three boxed columns of signs beside a figured scene"
+   ],
+   "onWhat": "Clay tablets, cones, bricks and cylinders, cylinder seals, stone stelae and boundary stones (kudurru), statues, Assyrian palace reliefs, foundation figures, weights.",
+   "infer": "Greater Mesopotamia and its neighbours, 3300 BCE to the 1st century CE. Sign shape narrows it: curvy pictographs or numbers on small tablets are Uruk period (3300-2900); neat signs in boxed cases on stone or cones are 3rd millennium Sumer; small crowded tablets are Old Babylonian (2000-1600) or Old Assyrian merchants at Kültepe in Anatolia; big clean wedges across the body of a relief figure are Neo-Assyrian (883-612); barrel cylinders and stamped bricks are Neo-Babylonian.",
+   "confusables": [
+    {
+     "id": "old-persian",
+     "how": "Old Persian has only about 40 simple signs and a slanted wedge as word divider; it appears on Achaemenid objects, often beside real cuneiform."
+    },
+    {
+     "id": "ugaritic",
+     "how": "Ugaritic is a 30-letter alphabet of very simple wedge groups; signs are few-stroked and repeat often."
+    },
+    {
+     "id": "linear-b",
+     "how": "Linear B is drawn lines on clay, not pressed wedges."
+    }
+   ],
+   "styles": [
+    {
+     "name": "Proto-cuneiform",
+     "sample": "",
+     "font": "",
+     "from": -3300,
+     "to": -2900,
+     "where": "Uruk and Jemdet Nasr tablets",
+     "look": "Drawn pictographs and round or D-shaped number impressions in boxes; not yet wedges.",
+     "noFont": true
+    },
+    {
+     "name": "Sumerian monumental and Ur III",
+     "sample": "𒀭𒂗𒆤 𒈗 𒆳𒆳𒊏",
+     "font": "Noto Sans Cuneiform",
+     "from": -2600,
+     "to": -2000,
+     "where": "Southern Mesopotamia: cones, statues, bricks, foundation tablets",
+     "look": "Complex, spacious signs in ruled cases. The web font follows this classic 3rd-millennium to Old Babylonian look."
+    },
+    {
+     "name": "Old Babylonian and Old Assyrian cursive",
+     "sample": "",
+     "font": "",
+     "from": -2000,
+     "to": -1600,
+     "where": "Letters, contracts, school tablets; merchant archives at Kültepe",
+     "look": "Small, slanted, tightly packed wedges on palm-sized tablets, sometimes in clay envelopes.",
+     "noFont": true
+    },
+    {
+     "name": "Neo-Assyrian",
+     "sample": "",
+     "font": "",
+     "from": -900,
+     "to": -600,
+     "where": "Palace reliefs of Nimrud, Khorsabad and Nineveh; library tablets; royal prisms",
+     "look": "Regular, squared signs made of clearly separated wedges; 'standard inscription' bands run across carved figures. No web font on Google Fonts.",
+     "noFont": true
+    },
+    {
+     "name": "Neo- and Late Babylonian",
+     "sample": "",
+     "font": "",
+     "from": -625,
+     "to": 75,
+     "where": "Babylon, Uruk: bricks, cylinders, astronomical tablets",
+     "look": "Archaising signs on royal bricks; very small leaning script on late scholarly tablets.",
+     "noFont": true
+    }
+   ]
+  },
+  {
+   "id": "japanese",
+   "name": "Japanese (kanji with kana)",
+   "family": "Japanese",
+   "sample": "色は匂へど 散りぬるを",
+   "sampleMeaning": "'Though the blossoms are fragrant, they scatter': opening of the Iroha poem",
+   "font": "Noto Serif JP",
+   "dir": "ttb",
+   "from": 700,
+   "to": 2000,
+   "areas": [
+    {
+     "label": "Japan",
+     "lat": 36.0,
+     "lon": 138.0,
+     "r_km": 700,
+     "from": 700,
+     "to": 2000,
+     "region": "eas"
+    }
+   ],
+   "look": [
+    "Chinese characters interrupted by much simpler, curvy signs (hiragana: の, は, し, を, る)",
+    "Angular simple signs (katakana: ノ, ハ, シ, ヲ) in glosses, Buddhist texts and modern labels",
+    "Brush-written kana flow together down the column in long unbroken threads",
+    "Vertical columns right to left; on prints, text sits in cartouches with a red seal",
+    "Poem cards and scrolls scatter thin wispy lines over decorated paper"
+   ],
+   "onWhat": "Hand scrolls and poem sheets, woodblock prints (title, signature, publisher and censor seals), sword tangs, lacquer boxes, ceramics, netsuke signatures, screens, sutras, armour.",
+   "infer": "Any kana means Japan. Flowing hiragana poetry on decorated paper begins in the Heian period (after about 900); woodblock prints with signature cartouches and censor seals are Edo to Meiji (1680-1900); katakana with Western-style print is late 19th century onward. Text in characters only may still be Japanese: check for kana signatures, red artist seals and the object type.",
+   "confusables": [
+    {
+     "id": "chinese",
+     "how": "Chinese text has no kana: every sign is a dense square character."
+    },
+    {
+     "id": "hangul",
+     "how": "Hangul syllables are blocks built from circles and straight bars; kana are single loose strokes."
+    },
+    {
+     "id": "chu-nom",
+     "how": "Vietnamese Nôm has no simple cursive signs between the characters."
+    }
+   ],
+   "styles": [
+    {
+     "name": "Hiragana (brush, with variant kana)",
+     "sample": "いろはにほへと ちりぬるを",
+     "font": "Yuji Syuku",
+     "from": 900,
+     "to": 2000,
+     "where": "Waka poetry, tales, letters, print captions",
+     "look": "Soft looping signs joined down the column. Before 1900 many variant shapes (hentaigana) were used; this web font shows the modern set in a brush style."
+    },
+    {
+     "name": "Katakana",
+     "sample": "イロハニホヘト",
+     "font": "Noto Serif JP",
+     "from": 800,
+     "to": 2000,
+     "where": "Glosses in Buddhist texts, official documents, modern loanwords",
+     "look": "Angular fragments of characters: short straight strokes and hooks."
+    },
+    {
+     "name": "Kanji only (kanbun, man'yōgana)",
+     "sample": "南無阿弥陀仏",
+     "font": "Noto Serif JP",
+     "from": 700,
+     "to": 2000,
+     "where": "Sutras, official inscriptions, sword signatures, temple documents",
+     "look": "'Namu Amida Butsu', the invocation of Amida Buddha. Pure characters, so the script alone cannot separate Japan from China."
+    },
+    {
+     "name": "Edo print and theatre lettering",
+     "sample": "",
+     "font": "",
+     "from": 1650,
+     "to": 1900,
+     "where": "Ukiyo-e title cartouches, kabuki programmes, shop signs",
+     "look": "Very thick, rounded, tightly packed brush characters filling their box.",
+     "noFont": true
+    }
+   ]
+  },
+  {
+   "id": "devanagari",
+   "name": "Devanagari (Nagari)",
+   "family": "Brahmic (North)",
+   "sample": "श्री गणेशाय नमः",
+   "sampleMeaning": "'Homage to Lord Ganesha', the usual opening of a manuscript",
+   "font": "Noto Serif Devanagari",
+   "dir": "ltr",
+   "from": 900,
+   "to": 2000,
+   "areas": [
+    {
+     "label": "North India (Ganges plain, Rajasthan)",
+     "lat": 26.0,
+     "lon": 79.0,
+     "r_km": 900,
+     "from": 900,
+     "to": 2000,
+     "region": "sas"
+    },
+    {
+     "label": "Gujarat & western India",
+     "lat": 23.0,
+     "lon": 72.5,
+     "r_km": 450,
+     "from": 1000,
+     "to": 2000,
+     "region": "sas"
+    },
+    {
+     "label": "Deccan & Maharashtra",
+     "lat": 18.5,
+     "lon": 75.5,
+     "r_km": 500,
+     "from": 1100,
+     "to": 2000,
+     "region": "sas"
+    },
+    {
+     "label": "Nepal",
+     "lat": 27.7,
+     "lon": 85.3,
+     "r_km": 300,
+     "from": 1100,
+     "to": 2000,
+     "region": "sas"
+    }
+   ],
+   "look": [
+    "A continuous horizontal bar runs along the top of each word; letters hang beneath it",
+    "Many full-height vertical strokes on the right side of letters",
+    "Rounded bodies with loops; vowel marks above and below the line",
+    "Words separated by breaks in the headline; verses end with single or double vertical bars (। ॥)",
+    "Jain manuscripts: wide loose folios, bold black script, red circles marking string holes, gold on red or blue"
+   ],
+   "onWhat": "Paper and palm-leaf manuscripts (Jain Kalpasutra, Bhagavata Purana, Ragamala paintings), painting captions and versos, copper-plate grants, temple inscriptions, coins of north Indian states, bronzes.",
+   "infer": "North, west or central India or Nepal, and after about 1000. Jain manuscripts in bold Nagari with small square paintings are Gujarat or Rajasthan, 14th-16th century. Captions above Rajput and Pahari paintings are 17th-19th century. In Mughal contexts it appears beside Persian nasta'liq. South India used other scripts, so Devanagari argues against the Dravidian south.",
+   "confusables": [
+    {
+     "id": "bengali",
+     "how": "Bengali also has a headline but letters are more triangular and pointed, with a distinctive leftward hook on e/i vowel signs."
+    },
+    {
+     "id": "gurmukhi",
+     "how": "Gurmukhi has a headline but simpler, more open letters with few right-hand verticals."
+    },
+    {
+     "id": "siddham",
+     "how": "Siddham has small wedge headmarks on each letter rather than a continuous bar and is written with a brush in East Asia."
+    },
+    {
+     "id": "tibetan",
+     "how": "Tibetan has a short head on each letter, a dot between syllables and long tails below; no word-long bar."
+    }
+   ],
+   "styles": [
+    {
+     "name": "Jain Nagari",
+     "sample": "",
+     "font": "",
+     "from": 1100,
+     "to": 1700,
+     "where": "Western Indian Jain manuscripts",
+     "look": "Thick, square, evenly black letters; the e-vowel is written as a stroke before the consonant (pṛṣṭhamātrā).",
+     "noFont": true
+    },
+    {
+     "name": "Ranjana and Newari scripts",
+     "sample": "",
+     "font": "",
+     "from": 1100,
+     "to": 2000,
+     "where": "Nepal: Buddhist manuscripts, prayer wheels, metalwork; also Tibet as 'Lantsa'",
+     "look": "Ornamental relatives with thick curved hooks hanging from the headline, often in gold on dark blue paper.",
+     "noFont": true
+    }
+   ]
+  },
+  {
+   "id": "hangul",
+   "name": "Korean Hangul",
+   "family": "Korean",
+   "sample": "나랏말싸미 듕귁에 달아",
+   "sampleMeaning": "'The speech of our country differs from that of China': opening of the Hunminjeongeum (1446), modernised spelling",
+   "font": "Noto Serif KR",
+   "dir": "ttb",
+   "from": 1446,
+   "to": 2000,
+   "areas": [
+    {
+     "label": "Korea",
+     "lat": 36.5,
+     "lon": 127.8,
+     "r_km": 350,
+     "from": 1446,
+     "to": 2000,
+     "region": "eas"
+    }
+   ],
+   "look": [
+    "Syllable blocks assembled from a small set of geometric letters",
+    "Circles (ㅇ), small squares (ㅁ), right angles (ㄱ, ㄴ) and long straight bars with short ticks (ㅏ, ㅗ)",
+    "Much more open and airy than Chinese characters; the same parts repeat constantly",
+    "Traditionally vertical; early printed Hangul is rigidly geometric, later brush Hangul is softer",
+    "Often mixed with or glossing Chinese characters"
+   ],
+   "onWhat": "Printed and manuscript books, letters, late Joseon documents, some ceramics and embroidered textiles, folk paintings, 19th-20th century coins and banknotes.",
+   "infer": "Korea, after 1446, and in practice mostly 18th century onward. Most Korean art objects (celadon, bronzes, paintings, epitaph tablets) carry Chinese characters only, so the absence of Hangul proves nothing.",
+   "confusables": [
+    {
+     "id": "chinese",
+     "how": "Chinese characters are far denser and non-repeating; Hangul reuses a few circles and bars."
+    },
+    {
+     "id": "japanese",
+     "how": "Kana are single flowing strokes with no circles-and-bars block structure."
+    }
+   ]
+  },
+  {
+   "id": "tibetan",
+   "name": "Tibetan",
+   "family": "Brahmic (North)",
+   "sample": "ཨོཾ་མ་ཎི་པདྨེ་ཧཱུྃ",
+   "sampleMeaning": "Oṃ maṇi padme hūṃ, the mantra of Avalokiteshvara",
+   "font": "Noto Serif Tibetan",
+   "dir": "ltr",
+   "from": 650,
+   "to": 2000,
+   "areas": [
+    {
+     "label": "Tibetan plateau",
+     "lat": 31.0,
+     "lon": 90.0,
+     "r_km": 900,
+     "from": 650,
+     "to": 2000,
+     "region": "sas"
+    },
+    {
+     "label": "Himalaya (Ladakh, Nepal, Sikkim, Bhutan)",
+     "lat": 28.5,
+     "lon": 84.0,
+     "r_km": 800,
+     "from": 900,
+     "to": 2000,
+     "region": "sas"
+    },
+    {
+     "label": "Mongolia",
+     "lat": 47.0,
+     "lon": 104.0,
+     "r_km": 800,
+     "from": 1580,
+     "to": 2000,
+     "region": "cas"
+    },
+    {
+     "label": "Beijing & Qing court workshops",
+     "lat": 40.0,
+     "lon": 116.4,
+     "r_km": 350,
+     "from": 1400,
+     "to": 1911,
+     "region": "eas"
+    },
+    {
+     "label": "Dunhuang",
+     "lat": 40.1,
+     "lon": 94.7,
+     "r_km": 300,
+     "from": 780,
+     "to": 1000,
+     "region": "cas"
+    }
+   ],
+   "look": [
+    "Each letter hangs from its own short flat head; no continuous bar",
+    "A small dot (tsheg) after every syllable, vertical strokes (shad) at phrase ends",
+    "Letters stack vertically, with long pointed tails and hooks dropping below the line",
+    "Sharp, knife-cut look: thick horizontals, thin tapering descenders",
+    "Long narrow loose-leaf pages (pecha), often gold or silver ink on black or blue paper"
+   ],
+   "onWhat": "Thangka backs and borders, book covers and pecha leaves, prayer wheels, mani stones, bronzes (base inscriptions), ritual objects, tsakli cards, seals, amulet boxes.",
+   "infer": "Tibetan Buddhist world: Tibet, the Himalaya, Mongolia, and Chinese imperial workshops of the Yuan, Ming and Qing. The script changes little over time, so date by the object. Tibetan beside Chinese, Manchu and Mongolian on one object is Qing court work (18th century).",
+   "confusables": [
+    {
+     "id": "devanagari",
+     "how": "Devanagari joins letters under one long bar and has no syllable dots."
+    },
+    {
+     "id": "siddham",
+     "how": "Siddham letters are brush-written with wedge heads and appear singly as seed syllables in Japan and China."
+    },
+    {
+     "id": "phags-pa",
+     "how": "'Phags-pa is Tibetan-derived but squared off and written in vertical columns."
+    },
+    {
+     "id": "mongolian",
+     "how": "Mongolian runs in vertical joined columns; Tibetan runs horizontally in separate syllables."
+    }
+   ],
+   "styles": [
+    {
+     "name": "Uchen ('with head')",
+     "sample": "ཨོཾ་མ་ཎི་པདྨེ་ཧཱུྃ",
+     "font": "Noto Serif Tibetan",
+     "from": 650,
+     "to": 2000,
+     "where": "Printed books, inscriptions, formal manuscripts",
+     "look": "The block hand shown here."
+    },
+    {
+     "name": "Umê ('headless') cursive",
+     "sample": "",
+     "font": "",
+     "from": 1000,
+     "to": 2000,
+     "where": "Letters, documents, informal notes on thangka backs",
+     "look": "No top bars; slanted, quick, with very long sweeping tails.",
+     "noFont": true
+    },
+    {
+     "name": "Lantsa (Ranjana)",
+     "sample": "",
+     "font": "",
+     "from": 1000,
+     "to": 2000,
+     "where": "Mantras on prayer wheels, book title pages, temple beams",
+     "look": "Ornamental Indic script with heavy curved hooks, used for Sanskrit mantras.",
+     "noFont": true
+    }
+   ]
+  },
+  {
+   "id": "hebrew",
+   "name": "Hebrew square script",
+   "family": "Semitic abjads",
+   "sample": "שלום על ישראל",
+   "sampleMeaning": "'Peace upon Israel', a common synagogue and funerary inscription",
+   "font": "Noto Serif Hebrew",
+   "dir": "rtl",
+   "from": -250,
+   "to": 2000,
+   "areas": [
+    {
+     "label": "Judea, Galilee & Levant",
+     "lat": 32.0,
+     "lon": 35.3,
+     "r_km": 250,
+     "from": -250,
+     "to": 2000,
+     "region": "wan"
+    },
+    {
+     "label": "Mesopotamia (incantation bowls)",
+     "lat": 33.0,
+     "lon": 44.4,
+     "r_km": 350,
+     "from": 300,
+     "to": 800,
+     "region": "wan"
+    },
+    {
+     "label": "Egypt",
+     "lat": 30.0,
+     "lon": 31.2,
+     "r_km": 300,
+     "from": 900,
+     "to": 1500,
+     "region": "egy"
+    },
+    {
+     "label": "Iberia (Sephardic)",
+     "lat": 40.0,
+     "lon": -4.0,
+     "r_km": 500,
+     "from": 900,
+     "to": 1497,
+     "region": "eur_s"
+    },
+    {
+     "label": "Italy",
+     "lat": 43.0,
+     "lon": 12.0,
+     "r_km": 400,
+     "from": 300,
+     "to": 2000,
+     "region": "eur_s"
+    },
+    {
+     "label": "Ashkenaz & Eastern Europe",
+     "lat": 50.5,
+     "lon": 15.0,
+     "r_km": 900,
+     "from": 1000,
+     "to": 2000,
+     "region": "eur_e"
+    }
+   ],
+   "look": [
+    "Separate square block letters, right to left, hanging from an imaginary top line",
+    "Thick horizontal strokes on top, thin verticals: a 'roofed' look",
+    "Many letters are open boxes (ב, כ, ד, ר, ה, ח, ם)",
+    "No joining; optional dots and dashes under letters for vowels",
+    "Torah-scroll letters carry tiny crowns (tagin) on top"
+   ],
+   "onWhat": "Torah scrolls and their ornaments (finials, shields, pointers), ketubbot (marriage contracts), Haggadot, Esther scrolls, Hanukkah lamps, Kiddush cups, tombstones, synagogue mosaics, incantation bowls, coins of the Jewish revolts (those use Paleo-Hebrew).",
+   "infer": "A Jewish context, almost anywhere from Iraq to western Europe. Late antique mosaics and ossuaries are from the Levant; ink spirals inside clay bowls are Sasanian Mesopotamia (5th-7th century); illuminated manuscripts split into Sephardic (Spain to 1492, rounder letters) and Ashkenazic (Germany and France, Gothic-looking thick and thin); decorated ketubbot and silver are mostly 17th-19th century Italy, the Netherlands, Germany and Eastern Europe.",
+   "confusables": [
+    {
+     "id": "imperial-aramaic",
+     "how": "Imperial Aramaic is the ancestor: similar letters but more cursive, open-topped and slanted, on pre-Christian objects."
+    },
+    {
+     "id": "syriac",
+     "how": "Syriac letters join into words; Hebrew letters stand apart."
+    },
+    {
+     "id": "phoenician",
+     "how": "Paleo-Hebrew on ancient seals and revolt coins is the Phoenician-type alphabet, not square script."
+    },
+    {
+     "id": "arabic-kufic",
+     "how": "Kufic letters connect along a baseline; Hebrew letters are separate and hang from the top."
+    }
+   ],
+   "styles": [
+    {
+     "name": "Sephardic square",
+     "sample": "",
+     "font": "",
+     "from": 900,
+     "to": 1500,
+     "where": "Spain, Portugal, North Africa, later the Ottoman empire",
+     "look": "Rounded, even strokes of nearly uniform width; often with micrography (tiny text forming patterns).",
+     "noFont": true
+    },
+    {
+     "name": "Ashkenazic square",
+     "sample": "",
+     "font": "",
+     "from": 1100,
+     "to": 2000,
+     "where": "Germany, France, later Eastern Europe",
+     "look": "Strong contrast of thick horizontals and hairline verticals, influenced by Gothic quill writing.",
+     "noFont": true
+    },
+    {
+     "name": "Aramaic incantation bowls",
+     "sample": "",
+     "font": "",
+     "from": 400,
+     "to": 700,
+     "where": "Sasanian Mesopotamia",
+     "look": "Small informal square letters spiralling from the centre of a plain clay bowl to its rim.",
+     "noFont": true
+    }
+   ]
+  },
+  {
+   "id": "cyrillic",
+   "name": "Cyrillic (incl. Church Slavonic)",
+   "family": "Greek-derived alphabets",
+   "sample": "Господи помилуй",
+   "sampleMeaning": "'Lord, have mercy' (Church Slavonic)",
+   "font": "Noto Serif",
+   "dir": "ltr",
+   "from": 900,
+   "to": 2000,
+   "areas": [
+    {
+     "label": "Bulgaria, Serbia & the Balkans",
+     "lat": 43.0,
+     "lon": 23.5,
+     "r_km": 450,
+     "from": 900,
+     "to": 2000,
+     "region": "eur_e"
+    },
+    {
+     "label": "Kievan Rus, Russia, Ukraine, Belarus",
+     "lat": 54.5,
+     "lon": 35.0,
+     "r_km": 1100,
+     "from": 988,
+     "to": 2000,
+     "region": "eur_e"
+    },
+    {
+     "label": "Wallachia & Moldavia",
+     "lat": 45.8,
+     "lon": 26.0,
+     "r_km": 300,
+     "from": 1400,
+     "to": 1860,
+     "region": "eur_e"
+    }
+   ],
+   "look": [
+    "Greek-looking capitals plus Б, Д, Ж, З, И, Л, Ц, Ч, Ш, Щ, Ъ, Ы, Я",
+    "Old texts: heavy upright uncial letters, little spacing, abbreviations under a wavy bar (titlo)",
+    "Icon labels: saints' names in a few stacked letters beside the head, IС ХС at Christ's halo",
+    "Ornamental 'vyaz' headings: tall letters squeezed and interlocked into a solid band",
+    "After 1708: civil type close to Latin print"
+   ],
+   "onWhat": "Icons, crosses, church plate, embroidered liturgical textiles, manuscripts, enamels, coins and seals, Russian silver and niello, lacquer boxes, Fabergé-era objects, porcelain marks.",
+   "infer": "Orthodox Slavic lands: Russia, Ukraine, Bulgaria, Serbia (and Romania before 1860). Uncial 'ustav' is 10th-14th century; semi-uncial and vyaz headings are 15th-17th century; modern-looking civil letters are after Peter the Great's reform of 1708. On icons, Cyrillic labels separate Russian and Balkan work from Greek.",
+   "confusables": [
+    {
+     "id": "greek",
+     "how": "Greek has no Б, Ж, Ш, Ц, Ч, Я; Byzantine icons use Greek, Russian ones Cyrillic, though both keep IC XC and MP ΘY."
+    },
+    {
+     "id": "glagolitic",
+     "how": "Glagolitic was made for the same language but its letters are loops and triangles unlike any Greek letter."
+    },
+    {
+     "id": "latin",
+     "how": "Latin lacks the mirrored-looking И and Я and the comb-shaped Ш."
+    },
+    {
+     "id": "coptic",
+     "how": "Coptic is also Greek-based uncial but its extra letters (ϣ, ϥ, ϩ, ϯ) differ and it comes from Egypt."
+    }
+   ],
+   "styles": [
+    {
+     "name": "Ustav and poluustav (Church Slavonic)",
+     "sample": "ІС ХС · МР ѲУ",
+     "font": "Noto Serif",
+     "from": 900,
+     "to": 1700,
+     "where": "Gospel books, icons, liturgical objects",
+     "look": "Sample shows the icon abbreviations for 'Jesus Christ' and 'Mother of God'. Upright, wide, pen-made letters with archaic characters (Ѣ, Ѧ, Ѡ, Ѳ) and titlo abbreviation marks. No dedicated Church Slavonic web font used here."
+    },
+    {
+     "name": "Vyaz (ornamental ligature script)",
+     "sample": "Господи помилуй",
+     "font": "Ruslan Display",
+     "from": 1400,
+     "to": 1700,
+     "where": "Headings in manuscripts, icon borders, bells, silver, embroidery",
+     "look": "Tall narrow letters bound into a continuous decorative band. The web font is a modern display face in this spirit."
+    },
+    {
+     "name": "Civil script",
+     "sample": "Санкт-Петербургъ",
+     "font": "Noto Serif",
+     "from": 1708,
+     "to": 2000,
+     "where": "Printed books, medals, coins, silver, porcelain of imperial Russia",
+     "look": "Rounded, Latin-like print letters; the hard sign Ъ at word ends means before 1918."
+    }
+   ]
+  },
+  {
+   "id": "ottoman-diwani",
+   "name": "Ottoman hands (divani, tughra, ruq'ah)",
+   "family": "Arabic-script styles",
+   "sample": "محمود خان بن عبد الحميد مظفر دائما",
+   "sampleMeaning": "'Mahmud Khan, son of Abdülhamid, ever victorious': the text woven into the tughra of Mahmud II",
+   "font": "Aref Ruqaa",
+   "dir": "rtl",
+   "from": 1350,
+   "to": 1928,
+   "areas": [
+    {
+     "label": "Bursa, Istanbul & Anatolia",
+     "lat": 40.0,
+     "lon": 31.0,
+     "r_km": 700,
+     "from": 1350,
+     "to": 1928,
+     "region": "wan"
+    },
+    {
+     "label": "Ottoman Balkans",
+     "lat": 43.0,
+     "lon": 22.5,
+     "r_km": 500,
+     "from": 1450,
+     "to": 1912,
+     "region": "eur_e"
+    },
+    {
+     "label": "Ottoman Syria, Iraq & Egypt",
+     "lat": 32.0,
+     "lon": 35.0,
+     "r_km": 900,
+     "from": 1517,
+     "to": 1918,
+     "region": "wan"
+    }
+   ],
+   "look": [
+    "Tughra: the sultan's monogram, three tall shafts, two big loops to the left and a tail to the right",
+    "Divani: lines that rise toward the left, letters wound tightly together without gaps, bowl-shaped line ends",
+    "Gold and blue floral illumination filling the loops of a tughra",
+    "Ruq'ah: small, quick, short strokes with very few curls, an everyday 19th-century hand",
+    "Mirror-image and pictorial calligraphy (birds, ships, lions made of letters)"
+   ],
+   "onWhat": "Imperial decrees (firmans) headed by a tughra, coins, silver hallmarks, Iznik and Kütahya ceramics, sword blades and firearms, calligraphic panels (levha, hilye), tombstones with turbans, textiles.",
+   "infer": "A tughra means the Ottoman sultanate, 15th century to 1922, and each sultan's is slightly different. Divani on a long paper scroll is an Ottoman chancery document, mostly 16th-19th century. Framed calligraphy panels and hilye are 17th-19th century Istanbul. Ottoman Turkish stopped using the Arabic script in 1928.",
+   "confusables": [
+    {
+     "id": "nastaliq",
+     "how": "Nasta'liq words step down to the left with open space; divani lines climb to the left and are densely knotted."
+    },
+    {
+     "id": "arabic-naskh",
+     "how": "Thuluth and naskh keep words separate on a level line; a tughra or divani text is a single interwoven mass."
+    },
+    {
+     "id": "arabic-maghribi",
+     "how": "Maghribi belongs to the far west and has wide round bowls, not stacked chancery ligatures."
+    }
+   ],
+   "styles": [
+    {
+     "name": "Tughra",
+     "sample": "",
+     "font": "",
+     "from": 1350,
+     "to": 1922,
+     "where": "Head of firmans, coins, silver marks, buildings",
+     "look": "Calligraphic emblem: three verticals, two concentric ovals on the left, extended arm to the right. A unique Ottoman signal.",
+     "noFont": true
+    },
+    {
+     "name": "Divani and celi divani",
+     "sample": "",
+     "font": "",
+     "from": 1450,
+     "to": 1922,
+     "where": "Chancery documents",
+     "look": "Rounded, crowded, rising lines; celi divani fills every gap with dots and marks. No web font on Google Fonts.",
+     "noFont": true
+    },
+    {
+     "name": "Ruq'ah (rık'a)",
+     "sample": "محمود خان بن عبد الحميد مظفر دائما",
+     "font": "Aref Ruqaa",
+     "from": 1750,
+     "to": 1928,
+     "where": "Everyday handwriting, late documents, labels",
+     "look": "Short, clipped strokes; dots fused into dashes. The web font renders the tughra text in this hand, not as a tughra."
+    }
+   ]
+  },
+  {
+   "id": "arabic-maghribi",
+   "name": "Arabic: Maghribi and Andalusi",
+   "family": "Arabic-script styles",
+   "sample": "ولا غالب إلا الله",
+   "sampleMeaning": "'There is no victor but God', the Nasrid motto repeated on the walls of the Alhambra",
+   "font": "",
+   "dir": "rtl",
+   "from": 950,
+   "to": 2000,
+   "areas": [
+    {
+     "label": "Maghreb (Morocco, Algeria, Tunisia)",
+     "lat": 33.0,
+     "lon": 0.0,
+     "r_km": 1000,
+     "from": 950,
+     "to": 2000,
+     "region": "egy"
+    },
+    {
+     "label": "al-Andalus",
+     "lat": 37.5,
+     "lon": -4.0,
+     "r_km": 400,
+     "from": 950,
+     "to": 1500,
+     "region": "eur_s"
+    },
+    {
+     "label": "West African Sahel (Sudani hand)",
+     "lat": 14.0,
+     "lon": -3.0,
+     "r_km": 1300,
+     "from": 1300,
+     "to": 2000,
+     "region": "ssa"
+    }
+   ],
+   "look": [
+    "Round, generous bowls that swing far below the line; final letters end in open half-circles",
+    "Thin, even stroke from a pointed pen, less thick-thin contrast than eastern hands",
+    "Fa has a single dot below, qaf a single dot above",
+    "Qur'ans on squarish pages, brown ink with vowels in red, blue, green and yellow",
+    "Sudani (West African) variant is heavier and more angular, on loose leaves kept in leather wallets"
+   ],
+   "onWhat": "Qur'ans on parchment (later than in the east) and paper, Nasrid stucco and tiles, silk textiles, Hispano-Moresque lustreware, Almohad and Marinid coins (often square), West African Qur'an boards and amulets.",
+   "infer": "The Islamic west: Morocco to Tunisia, Muslim Spain (until 1492), and from the 14th century the Sahel from Mauritania to northern Nigeria. Square silver coins are Almohad. The Nasrid motto is Granada, 13th-15th century. Parchment was used here centuries after the east switched to paper, so a parchment Qur'an in cursive is western.",
+   "confusables": [
+    {
+     "id": "arabic-naskh",
+     "how": "Eastern naskh has compact bowls and dots fa above and qaf with two dots."
+    },
+    {
+     "id": "arabic-kufic",
+     "how": "Kufic is fully angular; Maghribi grew out of it but is round below the line."
+    },
+    {
+     "id": "nastaliq",
+     "how": "Nasta'liq hangs diagonally and belongs to Iran and India."
+    }
+   ],
+   "noFont": true,
+   "fallbackFont": "Noto Naskh Arabic",
+   "fontNote": "No Maghribi face exists on Google Fonts; a naskh fallback shows the words but not the western letterforms."
+  },
+  {
+   "id": "brahmi",
+   "name": "Brahmi",
+   "family": "Brahmic (North)",
+   "sample": "𑀤𑁂𑀯𑀸𑀦𑀁𑀧𑀺𑀬 𑀧𑀺𑀬𑀤𑀲𑀺",
+   "sampleMeaning": "Devānaṃpiya Piyadasi, 'Beloved of the Gods, of gracious mien': the title of Ashoka in his edicts",
+   "font": "Noto Sans Brahmi",
+   "dir": "ltr",
+   "from": -300,
+   "to": 600,
+   "areas": [
+    {
+     "label": "Ganges plain & north India",
+     "lat": 25.5,
+     "lon": 81.0,
+     "r_km": 900,
+     "from": -300,
+     "to": 600,
+     "region": "sas"
+    },
+    {
+     "label": "Deccan & western India (cave inscriptions, Satavahana coins)",
+     "lat": 19.0,
+     "lon": 76.0,
+     "r_km": 600,
+     "from": -200,
+     "to": 500,
+     "region": "sas"
+    },
+    {
+     "label": "South India & Sri Lanka",
+     "lat": 9.5,
+     "lon": 79.5,
+     "r_km": 450,
+     "from": -250,
+     "to": 500,
+     "region": "sas"
+    },
+    {
+     "label": "Tarim Basin (Kucha, Khotan; local Brahmi continues to about 900)",
+     "lat": 40.0,
+     "lon": 81.5,
+     "r_km": 700,
+     "from": 200,
+     "to": 600,
+     "region": "cas"
+    }
+   ],
+   "look": [
+    "Simple geometric letters: circles, crosses, plus signs, hooks and angles, with no headline",
+    "Stick-figure look, well spaced, left to right",
+    "Small dashes attached to letters for vowels",
+    "Later (Kushan, Gupta) forms get small triangular heads and more curved, slanting strokes",
+    "On coins: tiny legend around a king, an animal, or symbols such as a hill, tree-in-railing or swastika"
+   ],
+   "onWhat": "Rock and pillar edicts, stupa railings and relic caskets, cave donations, coins (Indo-Greek reverses in the Ganges region, Satavahana, Kshatrapa, Gupta), seals and sealings, stone image pedestals (Mathura).",
+   "infer": "India, from Ashoka (about 250 BCE) to the Gupta period, after which the script splits into regional descendants. Plain stick letters are Mauryan to Shunga (3rd-1st century BCE); letters with wedge heads on red sandstone image bases are Kushan Mathura (1st-3rd century CE); elegant curved letters on gold coins are Gupta (320-550). A coin with Greek on one side and Brahmi on the other is Indo-Greek, with Kharoshthi more usual in the north-west.",
+   "confusables": [
+    {
+     "id": "kharoshthi",
+     "how": "Kharoshthi runs right to left, is cursive with long slanted tails, and is confined to the north-west."
+    },
+    {
+     "id": "siddham",
+     "how": "Siddham is the later, brush-like descendant with wedge heads and thick-thin strokes."
+    },
+    {
+     "id": "devanagari",
+     "how": "Devanagari has a continuous top bar; Brahmi has none."
+    },
+    {
+     "id": "tamil",
+     "how": "Early Tamil-Brahmi cave inscriptions look the same; later Tamil letters are rounder and more complex."
+    },
+    {
+     "id": "greek",
+     "how": "On Indo-Greek and Kshatrapa coins the Greek side has A, Σ, Ω; the Brahmi side has circles and hooks."
+    }
+   ],
+   "styles": [
+    {
+     "name": "Ashokan / Mauryan",
+     "sample": "𑀤𑁂𑀯𑀸𑀦𑀁𑀧𑀺𑀬",
+     "font": "Noto Sans Brahmi",
+     "from": -260,
+     "to": -100,
+     "where": "Pillars and rocks across the subcontinent; early stupas (Sanchi, Bharhut)",
+     "look": "Plain monoline letters with no serifs. The web font shows this stage."
+    },
+    {
+     "name": "Kushan and Kshatrapa",
+     "sample": "",
+     "font": "",
+     "from": 1,
+     "to": 320,
+     "where": "Mathura sculpture bases, western Kshatrapa silver coins",
+     "look": "Small wedge or nail heads on each letter; more angular; letters start to lean.",
+     "noFont": true
+    },
+    {
+     "name": "Gupta",
+     "sample": "",
+     "font": "",
+     "from": 320,
+     "to": 600,
+     "where": "Gupta gold coins, Allahabad pillar, copper plates, seals",
+     "look": "Rounded, graceful letters with hooked tops and long curved vowel strokes; ancestor of Siddham and Nagari.",
+     "noFont": true
+    }
+   ]
+  },
+  {
+   "id": "kharoshthi",
+   "name": "Kharoshthi",
+   "family": "Brahmic (North)",
+   "sample": "𐨨𐨱𐨪𐨗𐨯 𐨪𐨗𐨟𐨁𐨪𐨗𐨯",
+   "sampleMeaning": "maharajasa rajatirajasa, 'of the great king, king of kings' (Indo-Scythian and Kushan coin legend in Gandhari Prakrit)",
+   "font": "Noto Sans Kharoshthi",
+   "dir": "rtl",
+   "from": -250,
+   "to": 450,
+   "areas": [
+    {
+     "label": "Gandhara (Peshawar valley, Taxila, Swat)",
+     "lat": 34.0,
+     "lon": 72.5,
+     "r_km": 350,
+     "from": -250,
+     "to": 400,
+     "region": "sas"
+    },
+    {
+     "label": "Bactria & eastern Afghanistan",
+     "lat": 35.0,
+     "lon": 68.5,
+     "r_km": 400,
+     "from": -200,
+     "to": 300,
+     "region": "cas"
+    },
+    {
+     "label": "Tarim Basin (Niya, Khotan, Loulan)",
+     "lat": 38.0,
+     "lon": 82.5,
+     "r_km": 600,
+     "from": 150,
+     "to": 450,
+     "region": "cas"
+    }
+   ],
+   "look": [
+    "Right to left, cursive and slanted, unlike every other Indian script",
+    "Long tails curving down to the left; letters look like hooks, sickles and the number 7",
+    "No headline, uneven heights, thin pen or incised strokes",
+    "On coins: circular legend on the reverse, Greek on the obverse",
+    "On wooden tablets from the Tarim: ink lines on wedge-shaped double boards with clay seals"
+   ],
+   "onWhat": "Reverse of Indo-Greek, Indo-Scythian, Indo-Parthian and Kushan coins; Buddhist reliquaries; schist sculpture bases; birch-bark scrolls; wooden documents from Niya; pottery sherds.",
+   "infer": "Almost a pin by itself: Gandhara and neighbouring Afghanistan, 3rd century BCE to 3rd century CE, or the southern Tarim oases in the 3rd-4th century. A bilingual Greek and Kharoshthi coin is Indo-Greek to early Kushan (about 180 BCE-130 CE); Kanishka dropped Kharoshthi from coins.",
+   "confusables": [
+    {
+     "id": "brahmi",
+     "how": "Brahmi runs left to right with upright geometric letters."
+    },
+    {
+     "id": "imperial-aramaic",
+     "how": "Kharoshthi descends from Aramaic and shares the right-to-left cursive look, but Aramaic has no attached vowel strokes and appears further west and earlier."
+    },
+    {
+     "id": "pahlavi",
+     "how": "Pahlavi on Sasanian coins is also cursive right-to-left but appears beside a crowned bust and fire altar."
+    },
+    {
+     "id": "sogdian",
+     "how": "Sogdian is later, more connected, and found on paper in the northern Silk Road oases."
+    }
+   ]
+  },
+  {
+   "id": "coptic",
+   "name": "Coptic",
+   "family": "Greek-derived alphabets",
+   "sample": "ϩⲙ ⲡⲣⲁⲛ ⲙⲡⲛⲟⲩⲧⲉ",
+   "sampleMeaning": "ϩⲙ ⲡⲣⲁⲛ ⲙⲡⲛⲟⲩⲧⲉ, 'In the name of God', the opening formula of documents and epitaphs",
+   "font": "Noto Sans Coptic",
+   "dir": "ltr",
+   "from": 200,
+   "to": 1900,
+   "areas": [
+    {
+     "label": "Egypt",
+     "lat": 27.5,
+     "lon": 31.0,
+     "r_km": 550,
+     "from": 200,
+     "to": 1900,
+     "region": "egy"
+    },
+    {
+     "label": "Nubia (Coptic and Old Nubian)",
+     "lat": 20.5,
+     "lon": 30.8,
+     "r_km": 350,
+     "from": 550,
+     "to": 1450,
+     "region": "egy"
+    }
+   ],
+   "look": [
+    "Rounded Greek uncial capitals: ⲁ ⲃ ⲅ ⲇ ⲉ, with C-shaped sigma and ω-shaped omega",
+    "Extra non-Greek letters: ϣ (like a w with a tail), ϥ, ϩ (like a 2), ϫ, ϭ, ϯ (a cross-shaped ti)",
+    "Short horizontal strokes above letters or groups (supralinear strokes)",
+    "Thick, upright pen letters; later Bohairic hands are heavy with thin hairlines",
+    "No word spaces in early texts; crosses and staurograms at the start"
+   ],
+   "onWhat": "Limestone and pottery ostraca, papyrus and parchment codices, tombstones (stelae with crosses and niches), textiles with woven inscriptions, wall paintings, liturgical objects, magical texts.",
+   "infer": "Christian Egypt, mainly 4th-12th century; ostraca and papyri cluster in the 6th-8th century around Thebes. After the 11th century Coptic is liturgical and often written beside Arabic, which signals a medieval or later date.",
+   "confusables": [
+    {
+     "id": "greek",
+     "how": "Greek lacks ϣ, ϥ, ϩ, ϫ, ϭ, ϯ and the supralinear strokes; without those letters a text from Egypt is simply Greek."
+    },
+    {
+     "id": "cyrillic",
+     "how": "Old Cyrillic is also uncial but has Ж, Ш, Ъ and comes from the Slavic north."
+    },
+    {
+     "id": "ethiopic",
+     "how": "Ethiopic letters are separate syllable signs with little flags and rings, not Greek shapes."
+    }
+   ]
+  },
+  {
+   "id": "phoenician",
+   "name": "Phoenician, Punic and Paleo-Hebrew",
+   "family": "Semitic abjads",
+   "sample": "𐤏𐤆𐤁𐤏𐤋 𐤌𐤋𐤊 𐤂𐤁𐤋",
+   "sampleMeaning": "ʿzbʿl mlk gbl, 'Azbaal, king of Byblos' (4th-century BCE coin legend)",
+   "font": "Noto Sans Phoenician",
+   "dir": "rtl",
+   "from": -1050,
+   "to": 200,
+   "areas": [
+    {
+     "label": "Phoenicia (Tyre, Sidon, Byblos)",
+     "lat": 33.8,
+     "lon": 35.6,
+     "r_km": 200,
+     "from": -1050,
+     "to": -50,
+     "region": "wan"
+    },
+    {
+     "label": "Israel & Judah (Paleo-Hebrew)",
+     "lat": 31.8,
+     "lon": 35.1,
+     "r_km": 150,
+     "from": -950,
+     "to": 135,
+     "region": "wan"
+    },
+    {
+     "label": "Cyprus",
+     "lat": 35.0,
+     "lon": 33.3,
+     "r_km": 130,
+     "from": -900,
+     "to": -300,
+     "region": "wan"
+    },
+    {
+     "label": "Carthage & Punic North Africa",
+     "lat": 36.0,
+     "lon": 9.5,
+     "r_km": 600,
+     "from": -800,
+     "to": 200,
+     "region": "egy"
+    },
+    {
+     "label": "Sardinia, Sicily, Malta & Iberia",
+     "lat": 38.5,
+     "lon": 6.0,
+     "r_km": 900,
+     "from": -800,
+     "to": -50,
+     "region": "eur_s"
+    }
+   ],
+   "look": [
+    "22 linear letters, right to left, no vowels, usually no word spaces",
+    "Angular strokes: zigzags (mem, shin), crosses (taw), circles (ayin), long-tailed letters leaning left",
+    "Letters look like tilted, mirrored versions of early Greek capitals",
+    "Punic versions become long-shanked and cursive; Neo-Punic is almost shorthand",
+    "Short texts: a name with 'belonging to' (l-) on seals and jar handles"
+   ],
+   "onWhat": "Stone stelae and sarcophagi, tophet markers, coins of Tyre, Sidon, Byblos and Carthage, seals and bullae, ivories, metal bowls, jar handles, ostraca.",
+   "infer": "The Levantine coast from about 1000 BCE and the Phoenician colonies in Cyprus, North Africa, Sardinia, Sicily and Spain. Coins with this script start in the 5th century BCE. Tall thin Punic letters on a votive stela with a Tanit sign mean Carthage (to 146 BCE) or its Neo-Punic aftermath. The same alphabet on stamped jar handles and on coins of the Jewish revolts (66-70 and 132-135 CE) is Paleo-Hebrew from Judah.",
+   "confusables": [
+    {
+     "id": "imperial-aramaic",
+     "how": "Aramaic letters open at the top (bet, dalet, resh lose their closed heads) and look more cursive."
+    },
+    {
+     "id": "greek",
+     "how": "Archaic Greek uses similar shapes but adds vowels and Φ, Χ, Ψ and soon runs left to right."
+    },
+    {
+     "id": "etruscan",
+     "how": "Etruscan is found in Italy and has vowels and Greek-type letters such as 𐌈 and 𐌚."
+    },
+    {
+     "id": "south-arabian",
+     "how": "South Arabian letters are tall, upright and strictly symmetrical, with word-divider bars."
+    },
+    {
+     "id": "hebrew",
+     "how": "Square Hebrew is a later Aramaic-derived script with boxy letters hanging from the top line."
+    }
+   ],
+   "styles": [
+    {
+     "name": "Paleo-Hebrew",
+     "sample": "𐤋𐤌𐤋𐤊 𐤇𐤁𐤓𐤍",
+     "font": "Noto Sans Phoenician",
+     "from": -950,
+     "to": 135,
+     "where": "Judah and Israel: seals, jar handles, Siloam and Lachish texts, revolt coins",
+     "look": "lmlk ḥbrn, 'belonging to the king: Hebron', the stamp on royal Judean storage jars. Same letters as Phoenician with more curved, flourished tails."
+    },
+    {
+     "name": "Punic and Neo-Punic",
+     "sample": "",
+     "font": "",
+     "from": -500,
+     "to": 200,
+     "where": "Carthage, Tunisia, Algeria, Sardinia",
+     "look": "Letters with very long thin verticals; Neo-Punic reduces many letters to near-identical ticks.",
+     "noFont": true
+    }
+   ]
+  },
+  {
+   "id": "imperial-aramaic",
+   "name": "Aramaic (Imperial, Palmyrene, Nabataean)",
+   "family": "Semitic abjads",
+   "sample": "𐡃𐡓𐡉𐡄𐡅𐡔 𐡌𐡋𐡊𐡀",
+   "sampleMeaning": "dryhwš mlkʾ, 'Darius the king'",
+   "font": "Noto Sans Imperial Aramaic",
+   "dir": "rtl",
+   "from": -850,
+   "to": 400,
+   "areas": [
+    {
+     "label": "Syria & Mesopotamia",
+     "lat": 35.0,
+     "lon": 40.0,
+     "r_km": 600,
+     "from": -850,
+     "to": -100,
+     "region": "wan"
+    },
+    {
+     "label": "Achaemenid Egypt (Elephantine, Saqqara)",
+     "lat": 27.0,
+     "lon": 31.5,
+     "r_km": 600,
+     "from": -525,
+     "to": -300,
+     "region": "egy"
+    },
+    {
+     "label": "Anatolia (satrapal coins, stelae)",
+     "lat": 38.0,
+     "lon": 33.5,
+     "r_km": 550,
+     "from": -500,
+     "to": -300,
+     "region": "wan"
+    },
+    {
+     "label": "Iran to Afghanistan (Persepolis, Bactria, Ashoka's edicts)",
+     "lat": 33.0,
+     "lon": 58.0,
+     "r_km": 1100,
+     "from": -520,
+     "to": -200,
+     "region": "wan"
+    },
+    {
+     "label": "Palmyra",
+     "lat": 34.55,
+     "lon": 38.27,
+     "r_km": 150,
+     "from": -50,
+     "to": 280,
+     "region": "wan"
+    },
+    {
+     "label": "Nabataea (Petra, Hegra, Sinai)",
+     "lat": 29.5,
+     "lon": 36.0,
+     "r_km": 350,
+     "from": -170,
+     "to": 360,
+     "region": "wan"
+    }
+   ],
+   "look": [
+    "Right-to-left consonant script, more cursive than Phoenician",
+    "Heads of letters open at the top; many letters reduced to hooks and short verticals",
+    "Imperial style: even, pen-written, with thick horizontals and thin verticals",
+    "Palmyrene: neat rounded letters carved beside the head of a funerary bust",
+    "Nabataean: tall, looping, with letters starting to join, the forerunner of Arabic"
+   ],
+   "onWhat": "Papyri and leather documents, ostraca, stone stelae, weights, seals, coins of Persian satraps, Assyrian tablets with ink dockets, Palmyrene funerary reliefs, Nabataean tomb facades and coins.",
+   "infer": "The administrative script of the Assyrian, Babylonian and above all Persian empires (550-330 BCE), so it turns up from Egypt to Afghanistan. After Alexander it splits into local descendants: Palmyrene beside a limestone portrait bust is Palmyra, 1st-3rd century CE; Nabataean is Petra and north-west Arabia, 2nd century BCE-4th century CE; Hatran, Parthian and square Hebrew are cousins.",
+   "confusables": [
+    {
+     "id": "phoenician",
+     "how": "Phoenician keeps closed, angular letter heads; Aramaic opens and rounds them."
+    },
+    {
+     "id": "hebrew",
+     "how": "Square Hebrew is the formal book descendant: boxier, with every letter separate and upright."
+    },
+    {
+     "id": "syriac",
+     "how": "Syriac joins letters into words; Palmyrene cursive is its close relative but usually carved letter by letter."
+    },
+    {
+     "id": "pahlavi",
+     "how": "Parthian and Pahlavi derive from Aramaic and look similar; they accompany Iranian royal busts and fire altars."
+    },
+    {
+     "id": "kharoshthi",
+     "how": "Kharoshthi adds vowel strokes to the letters and is confined to Gandhara and the Tarim."
+    }
+   ],
+   "styles": [
+    {
+     "name": "Palmyrene",
+     "sample": "𐡲𐡫𐡬 …𐡡𐡴 …𐡧𐡡𐡫",
+     "font": "Noto Sans Palmyrene",
+     "from": -50,
+     "to": 280,
+     "where": "Palmyra: funerary busts, honorific columns, tesserae; also soldiers' tombstones as far as Britain",
+     "look": "ṣlm … br … ḥbl, 'Image of … son of … alas!': the skeleton of a Palmyrene epitaph. Rounded monumental letters, often picked out in red."
+    },
+    {
+     "name": "Nabataean",
+     "sample": "𐢝𐢑𐢒",
+     "font": "Noto Sans Nabataean",
+     "from": -170,
+     "to": 360,
+     "where": "Petra, Hegra, Bosra, Sinai graffiti; Nabataean silver and bronze coins",
+     "look": "šlm, 'peace', the commonest word in Nabataean graffiti. Tall, narrow, with ligatures and distinct final forms."
+    }
+   ]
+  },
+  {
+   "id": "syriac",
+   "name": "Syriac",
+   "family": "Semitic abjads",
+   "sample": "ܒܫܡ ܐܒܐ ܘܒܪܐ",
+   "sampleMeaning": "b-šem abā w-brā, 'In the name of the Father and of the Son'",
+   "font": "Noto Sans Syriac",
+   "dir": "rtl",
+   "from": 1,
+   "to": 2000,
+   "areas": [
+    {
+     "label": "Edessa & northern Mesopotamia",
+     "lat": 37.0,
+     "lon": 40.0,
+     "r_km": 450,
+     "from": 1,
+     "to": 2000,
+     "region": "wan"
+    },
+    {
+     "label": "Syria & Lebanon (Serto)",
+     "lat": 34.5,
+     "lon": 37.0,
+     "r_km": 300,
+     "from": 700,
+     "to": 2000,
+     "region": "wan"
+    },
+    {
+     "label": "Iraq & Iran (Church of the East)",
+     "lat": 36.0,
+     "lon": 45.0,
+     "r_km": 500,
+     "from": 400,
+     "to": 2000,
+     "region": "wan"
+    },
+    {
+     "label": "Central Asia & China",
+     "lat": 42.5,
+     "lon": 77.0,
+     "r_km": 1200,
+     "from": 600,
+     "to": 1400,
+     "region": "cas"
+    },
+    {
+     "label": "Kerala",
+     "lat": 10.0,
+     "lon": 76.5,
+     "r_km": 220,
+     "from": 1500,
+     "to": 2000,
+     "region": "sas"
+    }
+   ],
+   "look": [
+    "Right to left, letters joined along the baseline into short words",
+    "Low and wide: few tall strokes, many small loops and boxes",
+    "Dots above or below a letter distinguish d from r and mark plurals (two dots)",
+    "Estrangela is rounded-square and monumental; Serto is smaller and looped; East Syriac adds many vowel dots",
+    "Red headings and rows of four dots as punctuation in manuscripts"
+   ],
+   "onWhat": "Gospel books and lectionaries on parchment, mosaics and tombstones at Edessa, liturgical objects, magic bowls, Christian gravestones in Central Asia, the Xi'an stele.",
+   "infer": "Syriac Christianity: south-east Turkey, Syria, Iraq, Iran, and missions along the Silk Road to China and to south India. Estrangela alone is 1st-8th century; Serto (West Syriac) appears from the 8th century; East Syriac vowel-dotted hands after the 7th. Cross-marked gravestones with Syriac from Kyrgyzstan are 13th-14th century.",
+   "confusables": [
+    {
+     "id": "arabic-naskh",
+     "how": "Arabic has tall alif and lam strokes and deep bowls; Syriac stays low and compact."
+    },
+    {
+     "id": "arabic-kufic",
+     "how": "Kufic stretches letters horizontally with rigid verticals; Estrangela is squarish and compact with dotted d and r."
+    },
+    {
+     "id": "hebrew",
+     "how": "Hebrew letters never join."
+    },
+    {
+     "id": "sogdian",
+     "how": "Sogdian derives from the same Aramaic stock and joins letters, but it is looser, with long tails, and is often written vertically."
+    },
+    {
+     "id": "mongolian",
+     "how": "Mongolian looks like Syriac turned on its side: a vertical spine with teeth."
+    }
+   ],
+   "styles": [
+    {
+     "name": "Estrangela",
+     "sample": "ܒܫܡ ܐܒܐ ܘܒܪܐ",
+     "font": "Noto Sans Syriac",
+     "from": 1,
+     "to": 2000,
+     "where": "Earliest inscriptions and manuscripts; later headings",
+     "look": "Rounded-square, open letters; the classical monumental form."
+    },
+    {
+     "name": "Serto (West Syriac)",
+     "sample": "ܒܫܡ ܐܒܐ ܘܒܪܐ",
+     "font": "Noto Sans Syriac Western",
+     "from": 700,
+     "to": 2000,
+     "where": "Syrian Orthodox and Maronite manuscripts",
+     "look": "Smaller, rounder, more cursive; alaph is a simple upright stroke; small Greek-letter vowels above and below."
+    },
+    {
+     "name": "Madnhaya (East Syriac)",
+     "sample": "ܒܫܡ ܐܒܐ ܘܒܪܐ",
+     "font": "Noto Sans Syriac Eastern",
+     "from": 600,
+     "to": 2000,
+     "where": "Church of the East: Iraq, Iran, Central Asia, India",
+     "look": "Close to Estrangela but with wedge-like strokes and vowel points made of dot pairs."
+    }
+   ]
+  },
+  {
+   "id": "pahlavi",
+   "name": "Pahlavi, Parthian and Avestan (Middle Iranian)",
+   "family": "Semitic abjads",
+   "sample": "𐭬𐭫𐭪𐭠𐭭 𐭬𐭫𐭪𐭠",
+   "sampleMeaning": "MLKʾn MLKʾ, read šāhān šāh, 'king of kings' (Sasanian coin and rock-relief title)",
+   "font": "Noto Sans Inscriptional Pahlavi",
+   "dir": "rtl",
+   "from": -150,
+   "to": 1900,
+   "areas": [
+    {
+     "label": "Sasanian Iran & Mesopotamia",
+     "lat": 32.5,
+     "lon": 50.0,
+     "r_km": 900,
+     "from": 224,
+     "to": 750,
+     "region": "wan"
+    },
+    {
+     "label": "Parthia (Nisa, north-east Iran)",
+     "lat": 37.0,
+     "lon": 57.5,
+     "r_km": 500,
+     "from": -150,
+     "to": 300,
+     "region": "wan"
+    },
+    {
+     "label": "Merv, Bactria & Sogdian borderlands",
+     "lat": 37.5,
+     "lon": 63.5,
+     "r_km": 550,
+     "from": 250,
+     "to": 750,
+     "region": "cas"
+    },
+    {
+     "label": "Tabaristan (Caspian coast)",
+     "lat": 36.5,
+     "lon": 52.5,
+     "r_km": 200,
+     "from": 700,
+     "to": 800,
+     "region": "wan"
+    },
+    {
+     "label": "Gujarat & Bombay (Parsi manuscripts)",
+     "lat": 20.5,
+     "lon": 72.8,
+     "r_km": 300,
+     "from": 1200,
+     "to": 1900,
+     "region": "sas"
+    }
+   ],
+   "look": [
+    "Right to left, cursive, with many letters looking alike (a row of hooks and loops)",
+    "On coins: a curving legend in front of and behind a crowned bust; fire altar with two attendants on the back",
+    "Inscriptional letters are separate; later 'Book Pahlavi' fuses them into ambiguous squiggles",
+    "On seals: a ring of script around a bust, animal or monogram on a domed stone",
+    "Avestan (manuscripts only) is a larger, clear, flowing alphabet with many more letters"
+   ],
+   "onWhat": "Sasanian silver drachms, stamp seals and clay bullae, silver plates and bowls (weight inscriptions on the rim underside), rock reliefs, ostraca; Parthian ostraca from Nisa and coins; Arab-Sasanian coins; Zoroastrian manuscripts.",
+   "infer": "Iran and its empire. Parthian script appears on Arsacid coins from the 1st century CE; Pahlavi on a thin, wide silver coin with a tall crown is Sasanian (224-651), and the crown identifies the king. The same coin type with a short Arabic word in the margin is Arab-Sasanian (650s-700), and Tabaristan half-drachms run to about 790. Avestan and Book Pahlavi manuscripts are 13th century or later, from Iran or Parsi India.",
+   "confusables": [
+    {
+     "id": "imperial-aramaic",
+     "how": "Aramaic is the parent: clearer, more separate letters, earlier, and without Sasanian imagery."
+    },
+    {
+     "id": "sogdian",
+     "how": "Sogdian is also Aramaic-derived cursive but comes from Central Asia, on paper, coins with square holes, or with Turkic and Chinese neighbours."
+    },
+    {
+     "id": "arabic-kufic",
+     "how": "Kufic has rigid tall verticals on a baseline; Pahlavi is a low string of curls."
+    },
+    {
+     "id": "kharoshthi",
+     "how": "Kharoshthi accompanies Greek on Gandharan coins, not Sasanian busts."
+    },
+    {
+     "id": "syriac",
+     "how": "Syriac letters join neatly on a line and carry distinguishing dots."
+    }
+   ],
+   "styles": [
+    {
+     "name": "Inscriptional Parthian",
+     "sample": "𐭌𐭋𐭊𐭉𐭍 𐭌𐭋𐭊𐭀",
+     "font": "Noto Sans Inscriptional Parthian",
+     "from": -150,
+     "to": 300,
+     "where": "Arsacid coins, Nisa ostraca, early Sasanian trilingual reliefs",
+     "look": "MLKYN MLKʾ, 'king of kings' in Parthian spelling. Rounder, wider letters than Pahlavi."
+    },
+    {
+     "name": "Inscriptional Pahlavi",
+     "sample": "𐭬𐭫𐭪𐭠𐭭 𐭬𐭫𐭪𐭠",
+     "font": "Noto Sans Inscriptional Pahlavi",
+     "from": 224,
+     "to": 700,
+     "where": "Sasanian coins, seals, silver, rock reliefs",
+     "look": "Separate, angular-cursive letters; legends get more cursive and careless after the 5th century."
+    },
+    {
+     "name": "Book Pahlavi",
+     "sample": "",
+     "font": "",
+     "from": 500,
+     "to": 1900,
+     "where": "Late coins and seals, papyri, Zoroastrian books",
+     "look": "Letters fused together; a dozen shapes do the work of twenty sounds. Not in Unicode.",
+     "noFont": true
+    },
+    {
+     "name": "Avestan",
+     "sample": "𐬀𐬵𐬎𐬭𐬀 𐬨𐬀𐬰𐬛𐬁",
+     "font": "Noto Sans Avestan",
+     "from": 1250,
+     "to": 1900,
+     "where": "Zoroastrian liturgical manuscripts, Iran (Yazd, Kerman) and Gujarat",
+     "look": "ahura mazdā, 'Lord Wisdom'. A 50-odd letter alphabet with full vowels, written in an even, rounded pen hand with dots separating words."
+    }
+   ]
+  },
+  {
+   "id": "south-arabian",
+   "name": "Ancient South Arabian (Musnad)",
+   "family": "Semitic abjads",
+   "sample": "𐩣𐩡𐩫 𐩪𐩨𐩱 𐩥𐩹𐩧𐩺𐩵𐩬",
+   "sampleMeaning": "mlk sbʾ w-ḏ-rydn, 'king of Saba and dhu-Raydan' (Himyarite royal title)",
+   "font": "Noto Sans Old South Arabian",
+   "dir": "rtl",
+   "from": -800,
+   "to": 600,
+   "areas": [
+    {
+     "label": "Yemen (Saba, Qataban, Hadramawt, Himyar)",
+     "lat": 15.3,
+     "lon": 45.5,
+     "r_km": 450,
+     "from": -800,
+     "to": 600,
+     "region": "wan"
+    },
+    {
+     "label": "Northern Ethiopia & Eritrea (Yeha, Aksum)",
+     "lat": 14.3,
+     "lon": 39.0,
+     "r_km": 250,
+     "from": -800,
+     "to": 350,
+     "region": "ssa"
+    },
+    {
+     "label": "North-west Arabia (Dedan, al-'Ula)",
+     "lat": 26.6,
+     "lon": 37.9,
+     "r_km": 350,
+     "from": -600,
+     "to": 100,
+     "region": "wan"
+    }
+   ],
+   "look": [
+    "Tall, upright, strictly geometric letters of equal height: circles on stems, rectangles, forks, zigzags",
+    "Monumental and symmetrical, like architectural ornament",
+    "Vertical bars between words",
+    "Right to left, or early on alternating direction line by line",
+    "Usually crisply carved in relief or sunk into alabaster or limestone; also cast in bronze"
+   ],
+   "onWhat": "Alabaster funerary stelae with faces, bronze dedicatory plaques and statues, stone building inscriptions, incense burners, coins imitating Athenian owls, seals; a cursive version on palm-leaf sticks.",
+   "infer": "Ancient Yemen, roughly 8th century BCE to 6th century CE, with outposts in Ethiopia and north Arabia. Earlier inscriptions are severe and geometric; later Himyarite ones (1st-6th century CE) have flared, decorative letter ends. Alabaster heads and stelae with a name in these letters are Qatabanian or Sabaean, around 3rd century BCE-2nd century CE.",
+   "confusables": [
+    {
+     "id": "ethiopic",
+     "how": "Ge'ez descends from it but runs left to right, is rounder, and marks vowels by small modifications of each letter."
+    },
+    {
+     "id": "phoenician",
+     "how": "Phoenician letters are slanted and irregular with long tails; South Arabian letters are upright and symmetrical."
+    },
+    {
+     "id": "runic",
+     "how": "Runes are also made of straight strokes but have no circles or rectangles and come from northern Europe."
+    },
+    {
+     "id": "old-turkic",
+     "how": "Old Turkic is angular too but slanted and found in Mongolia and Siberia."
+    }
+   ]
+  },
+  {
+   "id": "etruscan",
+   "name": "Etruscan and Old Italic",
+   "family": "Greek-derived alphabets",
+   "sample": "𐌌𐌉 𐌋𐌀𐌓𐌈𐌉𐌀",
+   "sampleMeaning": "mi larθia, 'I [am] of Larth', the 'speaking object' ownership formula",
+   "font": "Noto Sans Old Italic",
+   "dir": "rtl",
+   "from": -700,
+   "to": 50,
+   "areas": [
+    {
+     "label": "Etruria (Tuscany, northern Lazio)",
+     "lat": 42.8,
+     "lon": 11.8,
+     "r_km": 180,
+     "from": -700,
+     "to": 50,
+     "region": "eur_s"
+    },
+    {
+     "label": "Campania",
+     "lat": 41.0,
+     "lon": 14.5,
+     "r_km": 130,
+     "from": -600,
+     "to": -80,
+     "region": "eur_s"
+    },
+    {
+     "label": "Po valley & Alps (Etruscan, Venetic, Raetic)",
+     "lat": 45.0,
+     "lon": 11.5,
+     "r_km": 250,
+     "from": -550,
+     "to": -50,
+     "region": "eur_s"
+    },
+    {
+     "label": "Central & southern Apennines (Umbrian, Oscan)",
+     "lat": 42.0,
+     "lon": 14.0,
+     "r_km": 300,
+     "from": -500,
+     "to": -50,
+     "region": "eur_s"
+    }
+   ],
+   "look": [
+    "Looks like archaic Greek capitals written right to left, so letters appear mirrored",
+    "No B, D, G or O; frequent 𐌈 (circle with cross or dot), 𐌚 (figure-8 f), 𐌑 (M-like sibilant)",
+    "Short texts, often running around the rim, foot or figure",
+    "Dots or colons between words in later inscriptions",
+    "Names beside mythological figures on mirrors"
+   ],
+   "onWhat": "Bronze mirrors, bucchero and painted pottery, cinerary urns and sarcophagi, tomb walls, gold tablets, bronze statuettes, coins, lead and bronze votives, boundary stones.",
+   "infer": "Central Italy before Rome absorbed it. Seventh-century examples are on bucchero and gold; engraved bronze mirrors with labelled figures are 5th-3rd century BCE; alabaster and terracotta urns with a name along the lid are Hellenistic Volterra, Chiusi or Perugia (3rd-1st century BCE). Related alphabets write Oscan, Umbrian, Venetic and early Latin.",
+   "confusables": [
+    {
+     "id": "greek",
+     "how": "Greek has O, B, Δ and normally runs left to right after 500 BCE; an inscription on an imported Attic vase is Greek even if found in Etruria."
+    },
+    {
+     "id": "latin",
+     "how": "Latin runs left to right with B, D, G, O and familiar words."
+    },
+    {
+     "id": "phoenician",
+     "how": "Phoenician has no vowels and no Greek-type letters such as 𐌈 or 𐌚."
+    },
+    {
+     "id": "runic",
+     "how": "Runes probably derive from a north Italic alphabet and share angular shapes, but they are found in the Germanic north and are much later."
+    }
+   ],
+   "dirNote": "Unicode Old Italic letters are stored left to right; mirror the line to imitate the usual right-to-left Etruscan direction."
+  },
+  {
+   "id": "runic",
+   "name": "Runes (Futhark)",
+   "family": "European",
+   "sample": "ᚺᛟᚱᚾᚨ ᛏᚨᚹᛁᛞᛟ",
+   "sampleMeaning": "horna tawido, 'made the horn' (end of the Gallehus gold horn inscription, about 400 CE)",
+   "font": "Noto Sans Runic",
+   "dir": "ltr",
+   "from": 150,
+   "to": 1500,
+   "areas": [
+    {
+     "label": "Scandinavia",
+     "lat": 60.0,
+     "lon": 14.0,
+     "r_km": 800,
+     "from": 150,
+     "to": 1500,
+     "region": "eur_nw"
+    },
+    {
+     "label": "Denmark, Frisia & continental Germany",
+     "lat": 53.5,
+     "lon": 9.5,
+     "r_km": 500,
+     "from": 150,
+     "to": 750,
+     "region": "eur_nw"
+    },
+    {
+     "label": "Anglo-Saxon England",
+     "lat": 54.0,
+     "lon": -1.5,
+     "r_km": 350,
+     "from": 450,
+     "to": 1050,
+     "region": "eur_nw"
+    },
+    {
+     "label": "North Atlantic (Iceland, Orkney, Man, Greenland)",
+     "lat": 62.0,
+     "lon": -12.0,
+     "r_km": 1300,
+     "from": 850,
+     "to": 1500,
+     "region": "eur_nw"
+    }
+   ],
+   "look": [
+    "Only straight strokes: verticals with diagonal branches, no curves and no horizontals",
+    "Made to be cut across wood grain, so letters look like twigs: ᚠ ᚢ ᚦ ᚱ ᚲ",
+    "On Viking stones the text runs inside a ribbon or serpent that loops around the face",
+    "Small dots or crosses between words",
+    "Short inscriptions on small objects: a name, 'made', 'owns', or the alphabet itself"
+   ],
+   "onWhat": "Rune stones, bracteates (thin gold pendants), brooches, weapons and scabbard fittings, combs, bone and wood sticks, whalebone caskets, coins of early England, church bells and fonts.",
+   "infer": "The Germanic north. The 24-rune Elder Futhark on bracteates, brooches and weapons is about 150-750 CE (Denmark, Sweden, Norway, north Germany). The extended Anglo-Saxon futhorc is England and Frisia, 5th-11th century. The 16-rune Younger Futhark on memorial stones is the Viking Age, with most stones from 11th-century Sweden. Dotted medieval runes continue to about 1500.",
+   "confusables": [
+    {
+     "id": "ogham",
+     "how": "Ogham is groups of plain notches along one edge line, not individual branching letters."
+    },
+    {
+     "id": "old-turkic",
+     "how": "Old Turkic 'runes' look similar but come from Mongolia and Siberia, run right to left, and include curved and arrow-shaped signs."
+    },
+    {
+     "id": "etruscan",
+     "how": "Old Italic has round letters (𐌏-like theta, 𐌚) and comes from Italy centuries earlier."
+    },
+    {
+     "id": "latin",
+     "how": "Latin capitals include curves (B, C, D, O, S) and horizontals (E, F, T)."
+    }
+   ],
+   "styles": [
+    {
+     "name": "Elder Futhark (24 runes)",
+     "sample": "ᚺᛟᚱᚾᚨ ᛏᚨᚹᛁᛞᛟ",
+     "font": "Noto Sans Runic",
+     "from": 150,
+     "to": 750,
+     "where": "Scandinavia and the continent: bracteates, fibulae, spearheads, the oldest stones",
+     "look": "Includes ᛟ, ᛞ, ᛇ, ᛈ and ᚹ, which later disappear."
+    },
+    {
+     "name": "Anglo-Saxon futhorc",
+     "sample": "ᚠᚢᚦᚩᚱᚳ",
+     "font": "Noto Sans Runic",
+     "from": 450,
+     "to": 1050,
+     "where": "England and Frisia: the Franks Casket, Ruthwell Cross, coins, rings",
+     "look": "The first six runes, 'fuþorc'. Extra runes such as ᚩ, ᚪ, ᚫ, ᚣ; often mixed with Latin letters."
+    },
+    {
+     "name": "Younger Futhark (16 runes)",
+     "sample": "ᚱᛅᛁᛋᛏᛁ ᛋᛏᛅᛁᚾ",
+     "font": "Noto Sans Runic",
+     "from": 750,
+     "to": 1150,
+     "where": "Viking Age Denmark, Norway and especially Sweden; Isle of Man, Rus trade routes",
+     "look": "raisti stain, 'raised the stone', the stock phrase of memorial stones. Fewer, simpler runes, set in serpent bands."
+    }
+   ]
+  },
+  {
+   "id": "armenian",
+   "name": "Armenian",
+   "family": "Greek-derived alphabets",
+   "sample": "Հայր մեր որ յերկինս ես",
+   "sampleMeaning": "'Our Father who art in heaven' (Classical Armenian)",
+   "font": "Noto Serif Armenian",
+   "dir": "ltr",
+   "from": 405,
+   "to": 2000,
+   "areas": [
+    {
+     "label": "Armenian highland",
+     "lat": 40.0,
+     "lon": 44.5,
+     "r_km": 400,
+     "from": 405,
+     "to": 2000,
+     "region": "wan"
+    },
+    {
+     "label": "Cilician Armenia",
+     "lat": 37.3,
+     "lon": 35.5,
+     "r_km": 220,
+     "from": 1080,
+     "to": 1375,
+     "region": "wan"
+    },
+    {
+     "label": "New Julfa (Isfahan)",
+     "lat": 32.6,
+     "lon": 51.6,
+     "r_km": 100,
+     "from": 1605,
+     "to": 2000,
+     "region": "wan"
+    },
+    {
+     "label": "Constantinople, Kütahya & western Anatolia",
+     "lat": 40.0,
+     "lon": 29.5,
+     "r_km": 350,
+     "from": 1500,
+     "to": 1920,
+     "region": "wan"
+    },
+    {
+     "label": "Jerusalem",
+     "lat": 31.77,
+     "lon": 35.23,
+     "r_km": 60,
+     "from": 600,
+     "to": 2000,
+     "region": "wan"
+    }
+   ],
+   "look": [
+    "Rows of arches and hooks: many letters are built from one or two vertical strokes joined by a curve (Ա Ո Ս Ւ Ն Մ)",
+    "Looks like a string of u, n, m and h shapes with small flags",
+    "Capitals (erkatagir) are tall, rounded and monumental; later bolorgir is slanted and compact",
+    "Initials formed from birds, fish and knots in manuscripts",
+    "Carved in relief around the edges of cross-stones (khachkars)"
+   ],
+   "onWhat": "Illuminated Gospel books, khachkars, church facades, silver bindings and reliquaries, liturgical textiles, coins of Cilician Armenia, Kütahya ceramics, printed books.",
+   "infer": "Armenians at home and in diaspora. The alphabet dates from about 405. Rounded erkatagir capitals are 5th-13th century; bolorgir minuscule dominates from the 13th. Lavish 13th-century Gospels are Cilician; 17th-century works are often New Julfa (Isfahan) or Constantinople; inscribed Kütahya pottery is 18th century.",
+   "confusables": [
+    {
+     "id": "georgian",
+     "how": "Georgian letters are rounder and more varied, with loops and tails above and below the line, and no rows of arches."
+    },
+    {
+     "id": "ethiopic",
+     "how": "Ethiopic letters are separate, squat syllable signs with small rings and flags."
+    },
+    {
+     "id": "latin",
+     "how": "Lower-case Armenian resembles u, n, h, but repeated in unfamiliar combinations with hooks."
+    }
+   ],
+   "styles": [
+    {
+     "name": "Erkatagir ('iron letters')",
+     "sample": "ՀԱՅՐ ՄԵՐ",
+     "font": "Noto Serif Armenian",
+     "from": 405,
+     "to": 1300,
+     "where": "Early Gospels, inscriptions, later headings",
+     "look": "'Our Father'. Large upright uncial capitals with thick rounded strokes."
+    },
+    {
+     "name": "Bolorgir (minuscule)",
+     "sample": "Հայր մեր որ յերկինս ես",
+     "font": "Noto Serif Armenian",
+     "from": 1100,
+     "to": 2000,
+     "where": "Manuscripts from the Cilician period on; basis of printing",
+     "look": "Small, angular-slanted letters with short ascenders and descenders."
+    }
+   ]
+  },
+  {
+   "id": "georgian",
+   "name": "Georgian",
+   "family": "Greek-derived alphabets",
+   "sample": "ქრისტე შეიწყალე",
+   "sampleMeaning": "'Christ, have mercy' (a common inscription formula)",
+   "font": "Noto Serif Georgian",
+   "dir": "ltr",
+   "from": 430,
+   "to": 2000,
+   "areas": [
+    {
+     "label": "Georgia",
+     "lat": 42.0,
+     "lon": 43.8,
+     "r_km": 300,
+     "from": 430,
+     "to": 2000,
+     "region": "wan"
+    }
+   ],
+   "look": [
+    "Rounded, curling letters with loops, hooks and tails; no capitals in the modern script",
+    "Old Asomtavruli inscriptions: even-height rounded capitals, many circles and semicircles",
+    "Nuskhuri church minuscule: angular, slanted, spiky",
+    "Mkhedruli (modern): very curvy with long ascenders and descenders, like a row of numerals 3, 6, 9",
+    "Abbreviations under a bar on icons"
+   ],
+   "onWhat": "Icons with repoussé silver and enamel, processional crosses, church inscriptions, manuscripts, coins of Georgian kings (sometimes bilingual with Arabic), metalwork.",
+   "infer": "Georgia in the Caucasus. Asomtavruli alone is 5th-9th century and continues on icons and stone; Nuskhuri is the church book hand from the 9th century; Mkhedruli appears in the 11th century and takes over for secular use. Cloisonné enamel icons with Georgian labels are 10th-13th century.",
+   "confusables": [
+    {
+     "id": "armenian",
+     "how": "Armenian is built from repeated arches and verticals; Georgian from circles and curls."
+    },
+    {
+     "id": "burmese",
+     "how": "Burmese is also all circles but with Indic stacking and comes from Southeast Asia."
+    },
+    {
+     "id": "glagolitic",
+     "how": "Glagolitic has loops and triangles too, but appears in Slavic church contexts in the Balkans and Croatia."
+    }
+   ],
+   "styles": [
+    {
+     "name": "Asomtavruli",
+     "sample": "ႵႰႨႱႲႤ",
+     "font": "Noto Sans Georgian",
+     "from": 430,
+     "to": 1400,
+     "where": "Stone inscriptions, early manuscripts, icon labels and titles",
+     "look": "'kriste', Christ. Monumental rounded capitals of equal height."
+    },
+    {
+     "name": "Nuskhuri",
+     "sample": "ⴕⴐⴈⴑⴒⴄ",
+     "font": "Noto Sans Georgian",
+     "from": 800,
+     "to": 1900,
+     "where": "Ecclesiastical manuscripts",
+     "look": "Same word in the angular, slanted church minuscule."
+    },
+    {
+     "name": "Mkhedruli",
+     "sample": "ქრისტე შეიწყალე",
+     "font": "Noto Serif Georgian",
+     "from": 1000,
+     "to": 2000,
+     "where": "Royal charters, secular texts, modern use",
+     "look": "The rounded modern script."
+    }
+   ]
+  },
+  {
+   "id": "ethiopic",
+   "name": "Ge'ez (Ethiopic)",
+   "family": "Africa",
+   "sample": "በስመ አብ ወወልድ ወመንፈስ ቅዱስ",
+   "sampleMeaning": "'In the name of the Father and of the Son and of the Holy Spirit', the opening of most Ge'ez texts",
+   "font": "Noto Serif Ethiopic",
+   "dir": "ltr",
+   "from": 300,
+   "to": 2000,
+   "areas": [
+    {
+     "label": "Ethiopian & Eritrean highlands",
+     "lat": 12.5,
+     "lon": 39.0,
+     "r_km": 550,
+     "from": 300,
+     "to": 2000,
+     "region": "ssa"
+    }
+   ],
+   "look": [
+    "Separate, upright, blocky signs of equal height, left to right",
+    "Each consonant has seven variants made by adding small rings, hooks and legs",
+    "Words separated by two stacked dots (፡); sections end with four dots (።)",
+    "Thick black pen strokes with red for holy names and headings",
+    "Parchment pages in two or three columns; scrolls with talismanic faces and eyes"
+   ],
+   "onWhat": "Parchment manuscripts (Gospels, Psalters, Miracles of Mary), healing scrolls, icons and triptychs, processional and hand crosses, Aksumite coins (also in Greek), stone inscriptions.",
+   "infer": "Christian highland Ethiopia or Eritrea. Unvocalised and early vocalised forms are Aksumite (4th-7th century, coins and stelae). Nearly all manuscripts and icons in museums are 14th century or later; tall, slender letters suggest 14th-15th century, broader rounded ones the Gondar period (17th-18th century), and many healing scrolls are 19th century.",
+   "confusables": [
+    {
+     "id": "south-arabian",
+     "how": "South Arabian is the angular, vowelless, right-to-left ancestor carved on stone in Yemen."
+    },
+    {
+     "id": "armenian",
+     "how": "Armenian letters are narrower arches without the ring and flag vowel marks or two-dot word dividers."
+    },
+    {
+     "id": "coptic",
+     "how": "Coptic is Greek-shaped; Ethiopic shapes are unrelated to Greek."
+    }
+   ]
+  },
+  {
+   "id": "linear-b",
+   "name": "Linear B (and Linear A)",
+   "family": "Aegean",
+   "sample": "𐀷𐀙𐀏 𐀡𐀴𐀛𐀊",
+   "sampleMeaning": "wa-na-ka po-ti-ni-ja: wanax 'king' and potnia 'mistress, lady', two titles from the palace tablets",
+   "font": "Noto Sans Linear B",
+   "dir": "ltr",
+   "from": -1450,
+   "to": -1190,
+   "areas": [
+    {
+     "label": "Crete (Knossos, Chania)",
+     "lat": 35.3,
+     "lon": 24.9,
+     "r_km": 150,
+     "from": -1450,
+     "to": -1250,
+     "region": "eur_s"
+    },
+    {
+     "label": "Mainland Greece (Pylos, Mycenae, Tiryns, Thebes)",
+     "lat": 37.8,
+     "lon": 22.6,
+     "r_km": 230,
+     "from": -1400,
+     "to": -1190,
+     "region": "eur_s"
+    }
+   ],
+   "look": [
+    "Thin scratched line-signs on clay: crosses, tridents, little houses, figure-eights",
+    "Signs sit on ruled horizontal lines, left to right, with short vertical ticks between words",
+    "Mixed with pictorial commodity signs (horse heads, chariots, jars) and tally strokes for numbers",
+    "Tablets are long 'palm-leaf' strips or page-shaped slabs, grey or burnt orange",
+    "Also painted in a few large signs on stirrup jars"
+   ],
+   "onWhat": "Unbaked clay tablets preserved by fire, clay sealings and labels, painted transport stirrup jars.",
+   "infer": "Mycenaean palace administration, about 1450-1200 BCE, at Knossos and on the Greek mainland. The similar-looking but undeciphered Linear A is Minoan Crete, about 1800-1450 BCE, and also appears on stone libation tables and gold or silver pins.",
+   "confusables": [
+    {
+     "id": "cypriot",
+     "how": "The Cypriot syllabary is a later relative with simpler, more angular signs, found on Cyprus and written right to left."
+    },
+    {
+     "id": "cuneiform",
+     "how": "Cuneiform is impressed wedges, not drawn lines."
+    },
+    {
+     "id": "egyptian-hieroglyphs",
+     "how": "Hieroglyphs are detailed pictures; Linear B signs are abstract outlines."
+    }
+   ]
+  },
+  {
+   "id": "cypriot",
+   "name": "Cypriot syllabary",
+   "family": "Aegean",
+   "sample": "𐠞𐠪𐠐𐠵𐠩 𐠁𐠄𐠲𐠍𐠦",
+   "sampleMeaning": "pa-si-le-wo-se e-u-wa-ko-ro, 'of King Evagoras' (coin legend of Salamis, about 400 BCE, written in Greek)",
+   "font": "Noto Sans Cypriot",
+   "dir": "rtl",
+   "from": -1050,
+   "to": -200,
+   "areas": [
+    {
+     "label": "Cyprus",
+     "lat": 35.0,
+     "lon": 33.2,
+     "r_km": 130,
+     "from": -1050,
+     "to": -200,
+     "region": "wan"
+    }
+   ],
+   "look": [
+    "About 55 simple angular signs: arrows, crosses, combs, Y and X shapes, small strokes",
+    "Usually right to left, with dots or short strokes between words",
+    "Looks like a cross between runes and tally marks",
+    "Often shallowly incised on local limestone",
+    "Sometimes beside the same text in Greek or Phoenician letters"
+   ],
+   "onWhat": "Limestone votive statues and their bases, tomb stelae, bronze bowls and tablets, coins of the Cypriot city-kingdoms, gold jewellery, pottery graffiti.",
+   "infer": "Cyprus only, mostly 8th-3rd century BCE (the island kept its syllabary to write Greek until the Ptolemies imposed the alphabet). On a coin it means a Cypriot kingdom, 6th-4th century BCE.",
+   "confusables": [
+    {
+     "id": "linear-b",
+     "how": "Linear B is five centuries older, on clay tablets from Greece and Crete, with more elaborate signs."
+    },
+    {
+     "id": "phoenician",
+     "how": "Phoenician has only 22 letters with tails and no arrow or comb shapes; both occur on Cyprus."
+    },
+    {
+     "id": "runic",
+     "how": "Runes come from northern Europe a thousand years later."
+    },
+    {
+     "id": "greek",
+     "how": "Greek alphabet inscriptions on Cyprus become normal only after 300 BCE."
+    }
+   ]
+  },
+  {
+   "id": "old-persian",
+   "name": "Old Persian cuneiform",
+   "family": "Mesopotamian",
+   "sample": "𐎭𐎠𐎼𐎹𐎺𐎢𐏁𐏐𐏋",
+   "sampleMeaning": "Dārayavauš xšāyaθiya, 'Darius the king' (with the slanted word divider and the logogram for 'king')",
+   "font": "Noto Sans Old Persian",
+   "dir": "ltr",
+   "from": -520,
+   "to": -330,
+   "areas": [
+    {
+     "label": "Persia (Persepolis, Pasargadae, Naqsh-e Rustam)",
+     "lat": 30.0,
+     "lon": 52.9,
+     "r_km": 350,
+     "from": -520,
+     "to": -330,
+     "region": "wan"
+    },
+    {
+     "label": "Susa, Bisitun, Hamadan & Babylon",
+     "lat": 33.3,
+     "lon": 47.5,
+     "r_km": 450,
+     "from": -520,
+     "to": -330,
+     "region": "wan"
+    },
+    {
+     "label": "Egypt (inscribed stone vases, canal stelae)",
+     "lat": 29.5,
+     "lon": 32.0,
+     "r_km": 400,
+     "from": -500,
+     "to": -400,
+     "region": "egy"
+    }
+   ],
+   "look": [
+    "Wedges, but far simpler and airier than Mesopotamian cuneiform: only 36 signs plus a few logograms",
+    "Each sign has two to five wedges; no crossing wedges",
+    "A single slanted wedge separates every word, giving a regular rhythm",
+    "Almost always part of a trilingual text, beside denser Elamite and Babylonian versions",
+    "Cut in stone or precious metal, never on everyday clay tablets"
+   ],
+   "onWhat": "Palace doorframes, column bases and reliefs, rock tombs, gold and silver foundation tablets, stone vases, cylinder seals, weights.",
+   "infer": "Achaemenid Persian royal display, Darius I to Artaxerxes III (about 520-338 BCE). Finding it means the Persian court: Persepolis, Susa, Pasargadae, Hamadan, or royal gifts carried elsewhere.",
+   "confusables": [
+    {
+     "id": "cuneiform",
+     "how": "Mesopotamian cuneiform has hundreds of denser signs with crossing wedges and no regular word divider."
+    },
+    {
+     "id": "ugaritic",
+     "how": "Ugaritic is also a simple wedge alphabet but is on clay tablets from the Syrian coast 800 years earlier, with a small vertical wedge as divider."
+    }
+   ]
+  },
+  {
+   "id": "ugaritic",
+   "name": "Ugaritic alphabetic cuneiform",
+   "family": "Mesopotamian",
+   "sample": "𐎎𐎍𐎋𐎟𐎜𐎂𐎗𐎚",
+   "sampleMeaning": "mlk ʾugrt, 'king of Ugarit' (with the word-divider wedge)",
+   "font": "Noto Sans Ugaritic",
+   "dir": "ltr",
+   "from": -1400,
+   "to": -1180,
+   "areas": [
+    {
+     "label": "Ugarit (Ras Shamra) & the Syrian coast",
+     "lat": 35.6,
+     "lon": 35.8,
+     "r_km": 130,
+     "from": -1400,
+     "to": -1180,
+     "region": "wan"
+    }
+   ],
+   "look": [
+    "Wedge-impressed like cuneiform but with only 30 very simple letters",
+    "Many signs are one to three wedges in a row; the same few shapes recur constantly",
+    "A small vertical wedge divides words",
+    "Left to right on small clay tablets",
+    "Tablets look sparse and orderly compared with Akkadian ones"
+   ],
+   "onWhat": "Clay tablets (myths, rituals, letters, lists), a few inscribed bronze tools, ivories and seals.",
+   "infer": "The city of Ugarit on the Syrian coast, 14th-13th century BCE, destroyed about 1185 BCE. A handful of examples come from elsewhere in the Levant and Cyprus.",
+   "confusables": [
+    {
+     "id": "cuneiform",
+     "how": "Syllabic cuneiform packs many wedges into each complex sign; Ugaritic letters are minimal."
+    },
+    {
+     "id": "old-persian",
+     "how": "Old Persian is carved on stone monuments in Iran 800 years later and uses a slanted divider."
+    }
+   ]
+  },
+  {
+   "id": "meroitic",
+   "name": "Meroitic",
+   "family": "Egyptian",
+   "sample": "𐦳𐦣𐦫𐦡 𐦲𐦷𐦲𐦡",
+   "sampleMeaning": "qore and kdke: 'ruler' and 'kandake' (queen mother), the two chief royal titles; words, not a sentence",
+   "font": "Noto Sans Meroitic",
+   "dir": "rtl",
+   "from": -200,
+   "to": 450,
+   "areas": [
+    {
+     "label": "Meroe & Upper Nubia (Sudan)",
+     "lat": 17.5,
+     "lon": 33.3,
+     "r_km": 450,
+     "from": -200,
+     "to": 450,
+     "region": "egy"
+    },
+    {
+     "label": "Lower Nubia (Qasr Ibrim, Faras, Karanog)",
+     "lat": 22.5,
+     "lon": 31.8,
+     "r_km": 250,
+     "from": -100,
+     "to": 450,
+     "region": "egy"
+    }
+   ],
+   "look": [
+    "Cursive form: small slanted strokes and hooks, right to left, resembling Egyptian demotic",
+    "Words separated by two or three stacked dots",
+    "Only 23 signs, so the same shapes recur far more often than in Egyptian",
+    "Hieroglyphic form: Egyptian-looking pictures but facing the opposite way and used alphabetically",
+    "Often on sandstone offering tables with a spout, around a scene of libation"
+   ],
+   "onWhat": "Sandstone offering tables and funerary stelae, temple and pyramid-chapel reliefs, royal stelae, ostraca, graffiti, bronze bowls.",
+   "infer": "The kingdom of Kush with its capital at Meroe, about 2nd century BCE to 4th century CE. Egyptian-style art from Sudan with this script, rather than real Egyptian, is Meroitic period.",
+   "confusables": [
+    {
+     "id": "egyptian-hieroglyphs",
+     "how": "Egyptian uses hundreds of signs without dot dividers; Meroitic hieroglyphs use 23 and read toward the faces' backs."
+    },
+    {
+     "id": "coptic",
+     "how": "Coptic and Old Nubian are Greek-based alphabets of Christian Nubia, after Meroe."
+    },
+    {
+     "id": "south-arabian",
+     "how": "South Arabian is tall, geometric and carved in Yemen."
+    }
+   ],
+   "styles": [
+    {
+     "name": "Meroitic cursive",
+     "sample": "𐦳𐦣𐦫𐦡 𐦲𐦷𐦲𐦡",
+     "font": "Noto Sans Meroitic",
+     "from": -200,
+     "to": 450,
+     "where": "Most inscriptions: stelae, offering tables, ostraca",
+     "look": "Demotic-like slanted strokes."
+    },
+    {
+     "name": "Meroitic hieroglyphs",
+     "sample": "𐦗𐦃𐦎𐦁",
+     "font": "Noto Sans Meroitic",
+     "from": -200,
+     "to": 350,
+     "where": "Royal and temple monuments only",
+     "look": "'qore' in the pictorial form: owls, eyes, lions and reeds used as single letters."
+    }
+   ]
+  },
+  {
+   "id": "khmer",
+   "name": "Khmer",
+   "family": "Brahmic (Southeast Asia)",
+   "sample": "នមោ ពុទ្ធាយ",
+   "sampleMeaning": "namo buddhāya, 'homage to the Buddha' (Pali, in Khmer letters)",
+   "font": "Noto Serif Khmer",
+   "dir": "ltr",
+   "from": 600,
+   "to": 2000,
+   "areas": [
+    {
+     "label": "Cambodia",
+     "lat": 12.8,
+     "lon": 104.8,
+     "r_km": 350,
+     "from": 600,
+     "to": 2000,
+     "region": "sea"
+    },
+    {
+     "label": "Angkorian empire (north-east Thailand, southern Laos, Mekong delta)",
+     "lat": 14.8,
+     "lon": 103.5,
+     "r_km": 500,
+     "from": 800,
+     "to": 1400,
+     "region": "sea"
+    },
+    {
+     "label": "Central Thailand (Khom script for sacred texts)",
+     "lat": 14.5,
+     "lon": 100.5,
+     "r_km": 350,
+     "from": 1350,
+     "to": 1950,
+     "region": "sea"
+    }
+   ],
+   "look": [
+    "Each letter wears a small notched 'hair' or crown on top",
+    "Tall, narrow letters with second consonants tucked underneath as subscripts",
+    "Angular and ornate in the slanted style; rounder in the upright 'mul' style used for titles",
+    "No spaces between words",
+    "Angkor stone inscriptions: beautifully regular rounded letters with curled flourishes above"
+   ],
+   "onWhat": "Sandstone stelae and temple door jambs, bronze ritual objects, palm-leaf manuscripts, folding paper books, yantra cloths and amulets, temple banners.",
+   "infer": "Cambodia and the lands of the Angkor empire. Stone inscriptions with flourished rounded letters are Angkorian (9th-13th century) and may be in Sanskrit. On Thai manuscripts, amulets and yantras the same script ('Khom') is used for Pali well into the 20th century, so it does not exclude Thailand.",
+   "confusables": [
+    {
+     "id": "thai",
+     "how": "Thai letters have small loops at stroke ends and tone marks above but no 'hair' on top; Thai derives from Khmer."
+    },
+    {
+     "id": "burmese",
+     "how": "Burmese is made of open circles with no crowns."
+    },
+    {
+     "id": "javanese",
+     "how": "Javanese is more looping and wavy, with a row of repeated arch shapes, and comes from Indonesia."
+    },
+    {
+     "id": "cham",
+     "how": "Cham has similar Indic structure but looser, hooked letters and comes from the Vietnamese coast."
+    }
+   ]
+  },
+  {
+   "id": "thai",
+   "name": "Thai and Lao",
+   "family": "Brahmic (Southeast Asia)",
+   "sample": "กรุงศรีอยุธยา",
+   "sampleMeaning": "Krung Si Ayutthaya, the name of the Ayutthaya kingdom and its capital",
+   "font": "Noto Serif Thai",
+   "dir": "ltr",
+   "from": 1283,
+   "to": 2000,
+   "areas": [
+    {
+     "label": "Sukhothai & central Thailand",
+     "lat": 15.5,
+     "lon": 100.5,
+     "r_km": 400,
+     "from": 1283,
+     "to": 2000,
+     "region": "sea"
+    },
+    {
+     "label": "Lan Na (northern Thailand, Tham script)",
+     "lat": 18.8,
+     "lon": 99.3,
+     "r_km": 250,
+     "from": 1300,
+     "to": 2000,
+     "region": "sea"
+    },
+    {
+     "label": "Laos & Isan",
+     "lat": 17.5,
+     "lon": 103.5,
+     "r_km": 400,
+     "from": 1350,
+     "to": 2000,
+     "region": "sea"
+    }
+   ],
+   "look": [
+    "Upright letters, most beginning with a tiny loop like a pinhead",
+    "Tall narrow arches and hairpin shapes (ก ภ ถ ค ด); few horizontal strokes",
+    "Vowels and tone marks stacked above and below; no spaces between words",
+    "Lao is rounder and simpler with fewer letters and more curves",
+    "Manuscripts: long folding books (samut khoi) of cream or black paper with paintings"
+   ],
+   "onWhat": "Folding-book manuscripts, lacquer and gilt manuscript chests, bronze Buddha bases, stone inscriptions, Bencharong and Sawankhalok wares rarely, votive tablets, textiles, royal seals.",
+   "infer": "Thailand or Laos, after the late 13th century (the Ram Khamhaeng inscription is dated 1292). Most inscribed objects in museums are Ayutthaya (1351-1767) or Bangkok period (after 1782). Rounded Tham letters mean Lan Na or Laos; sacred Pali text in Khmer-style 'Khom' letters is also common on Thai objects.",
+   "confusables": [
+    {
+     "id": "khmer",
+     "how": "Khmer letters carry a notched crown on top instead of a starting loop."
+    },
+    {
+     "id": "burmese",
+     "how": "Burmese letters are nearly full circles."
+    },
+    {
+     "id": "sinhala",
+     "how": "Sinhala is rounder and curlier still, with snail-shell spirals, and comes from Sri Lanka."
+    }
+   ],
+   "styles": [
+    {
+     "name": "Lao",
+     "sample": "ລ້ານຊ້າງ",
+     "font": "Noto Serif Lao",
+     "from": 1350,
+     "to": 2000,
+     "where": "Laos and north-east Thailand",
+     "look": "Lan Xang, 'a million elephants', the Lao kingdom. Softer and rounder than Thai."
+    },
+    {
+     "name": "Tham (Lanna / Lao Buddhist script)",
+     "sample": "",
+     "font": "",
+     "from": 1300,
+     "to": 2000,
+     "where": "Palm-leaf manuscripts and Buddha bases in northern Thailand, Laos, Shan and Dai areas",
+     "look": "Very round, Mon- and Burmese-like letters with subscripts; used for religious texts.",
+     "noFont": true
+    },
+    {
+     "name": "Khom Thai",
+     "sample": "",
+     "font": "",
+     "from": 1350,
+     "to": 1950,
+     "where": "Thai Pali manuscripts, yantras, amulets",
+     "look": "Khmer letterforms written by Thai scribes: crowned letters, often slanted and angular.",
+     "noFont": true
+    }
+   ]
+  },
+  {
+   "id": "burmese",
+   "name": "Burmese (and Mon)",
+   "family": "Brahmic (Southeast Asia)",
+   "sample": "နမော တဿ ဘဂဝတော",
+   "sampleMeaning": "namo tassa bhagavato, 'Homage to him, the Blessed One' (Pali opening formula)",
+   "font": "Noto Sans Myanmar",
+   "dir": "ltr",
+   "from": 1050,
+   "to": 2000,
+   "areas": [
+    {
+     "label": "Burma (Myanmar)",
+     "lat": 20.5,
+     "lon": 96.0,
+     "r_km": 650,
+     "from": 1050,
+     "to": 2000,
+     "region": "sea"
+    }
+   ],
+   "look": [
+    "A chain of circles and part-circles, like bubbles or the letters C, O, U turned every way",
+    "Almost no straight lines in the everyday script",
+    "Small marks above and below; little spacing",
+    "Square 'tamarind-seed' ritual script: thick, blocky, dark-brown lacquer letters on gilded leaves",
+    "Palm-leaf pages with gilded and red-lacquered edges"
+   ],
+   "onWhat": "Kammavaca ordination manuscripts (lacquered cloth, ivory or metal leaves), palm-leaf books, folding parabaik books, stone inscriptions at Pagan, bronze bells, lacquer vessels, votive tablets.",
+   "infer": "Burma. Stone inscriptions begin in the Pagan period (11th-13th century); nearly all portable inscribed objects (lacquer, Kammavaca, parabaik, silver) are 18th-19th century Konbaung or colonial period. Mon uses nearly the same letters.",
+   "confusables": [
+    {
+     "id": "thai",
+     "how": "Thai letters are upright hairpins with tiny loops, not full circles."
+    },
+    {
+     "id": "sinhala",
+     "how": "Sinhala is round too but with spirals and curls inside the letters; it comes from Sri Lanka."
+    },
+    {
+     "id": "telugu-kannada",
+     "how": "Telugu and Kannada are rounded with a tick or 'check mark' on top of most letters."
+    },
+    {
+     "id": "georgian",
+     "how": "Georgian is curly but alphabetic with tall ascenders and comes from the Caucasus."
+    }
+   ],
+   "styles": [
+    {
+     "name": "Round script",
+     "sample": "နမော တဿ ဘဂဝတော",
+     "font": "Noto Sans Myanmar",
+     "from": 1100,
+     "to": 2000,
+     "where": "Palm leaf, paper, stone, lacquer",
+     "look": "The ordinary circular script."
+    },
+    {
+     "name": "Square 'tamarind-seed' script (magyi-zi)",
+     "sample": "",
+     "font": "",
+     "from": 1600,
+     "to": 1950,
+     "where": "Kammavaca ordination texts",
+     "look": "Bold square letters in thick black or brown lacquer on gold or red ground, six or so lines per leaf.",
+     "noFont": true
+    }
+   ]
+  },
+  {
+   "id": "javanese",
+   "name": "Kawi, Javanese and Balinese",
+   "family": "Brahmic (Southeast Asia)",
+   "sample": "ꦲꦤꦕꦫꦏ ꦢꦠꦱꦮꦭ",
+   "sampleMeaning": "hana caraka, data sawala: 'there were two messengers, they quarrelled', the first lines of the alphabet poem",
+   "font": "Noto Sans Javanese",
+   "dir": "ltr",
+   "from": 680,
+   "to": 2000,
+   "areas": [
+    {
+     "label": "Java",
+     "lat": -7.4,
+     "lon": 110.5,
+     "r_km": 450,
+     "from": 750,
+     "to": 2000,
+     "region": "sea"
+    },
+    {
+     "label": "Bali & Lombok",
+     "lat": -8.4,
+     "lon": 115.6,
+     "r_km": 170,
+     "from": 900,
+     "to": 2000,
+     "region": "sea"
+    },
+    {
+     "label": "Sumatra & the Malay peninsula (Kawi, Old Malay)",
+     "lat": 0.0,
+     "lon": 102.0,
+     "r_km": 800,
+     "from": 680,
+     "to": 1400,
+     "region": "sea"
+    },
+    {
+     "label": "Philippines (Kawi and baybayin)",
+     "lat": 13.5,
+     "lon": 122.0,
+     "r_km": 600,
+     "from": 900,
+     "to": 1700,
+     "region": "sea"
+    }
+   ],
+   "look": [
+    "Rows of rounded arches and waves: many letters look like m, n and w with curls",
+    "Even height, with small marks above and hanging subscript letters below",
+    "Old Javanese (Kawi) on stone and copper: neater, squarer, evenly spaced",
+    "Balinese: rounder and more open, scratched into palm leaf and blackened",
+    "Palm-leaf (lontar) strips threaded on a cord, sometimes with incised drawings"
+   ],
+   "onWhat": "Copper-plate charters, stone inscriptions and statue bases, gold rings and foil, bronze bells and zodiac beakers, lontar palm-leaf manuscripts, paper manuscripts from the courts of Yogyakarta and Surakarta, kris fittings, wayang-related texts.",
+   "infer": "Indonesia. Kawi on stone, copper or gold is the Hindu-Buddhist period of central and east Java (8th-15th century). Paper manuscripts in Javanese script are mostly 18th-19th century court work. Incised palm leaves are usually Bali or Lombok, 18th-20th century.",
+   "confusables": [
+    {
+     "id": "khmer",
+     "how": "Khmer letters are taller and crowned; Javanese is a low row of arches."
+    },
+    {
+     "id": "burmese",
+     "how": "Burmese is circles; Javanese is waves and arches."
+    },
+    {
+     "id": "grantha",
+     "how": "South Indian Pallava-Grantha is the ancestor: earliest Indonesian inscriptions (5th-7th century) look south Indian."
+    },
+    {
+     "id": "cham",
+     "how": "Cham comes from the Vietnamese coast and has more angular hooks."
+    }
+   ],
+   "styles": [
+    {
+     "name": "Kawi (Old Javanese)",
+     "sample": "𑼲𑼥𑼗𑼬𑼒",
+     "font": "Noto Sans Kawi",
+     "from": 750,
+     "to": 1500,
+     "where": "Java, Bali, Sumatra, Philippines: stone and copper",
+     "look": "The letters ha-na-ca-ra-ka in Kawi: a letter sequence, not an attested phrase."
+    },
+    {
+     "name": "Balinese",
+     "sample": "ᬳᬦᬘᬭᬓ",
+     "font": "Noto Sans Balinese",
+     "from": 1000,
+     "to": 2000,
+     "where": "Bali and Lombok lontar",
+     "look": "ha-na-ca-ra-ka in Balinese: rounder, with generous curls."
+    }
+   ]
+  },
+  {
+   "id": "tamil",
+   "name": "Tamil",
+   "family": "Brahmic (South)",
+   "sample": "ஓம் நமசிவாய",
+   "sampleMeaning": "Oṃ namaśivāya, 'Om, homage to Shiva'",
+   "font": "Noto Serif Tamil",
+   "dir": "ltr",
+   "from": 500,
+   "to": 2000,
+   "areas": [
+    {
+     "label": "Tamil Nadu",
+     "lat": 10.8,
+     "lon": 78.8,
+     "r_km": 350,
+     "from": 500,
+     "to": 2000,
+     "region": "sas"
+    },
+    {
+     "label": "Northern Sri Lanka",
+     "lat": 9.3,
+     "lon": 80.4,
+     "r_km": 150,
+     "from": 900,
+     "to": 2000,
+     "region": "sas"
+    }
+   ],
+   "look": [
+    "Squarish letters built from loops, right angles and long flat strokes",
+    "Fewer letters than other Indian scripts, no stacked conjuncts, so text looks open and even",
+    "Dots (pulli) above consonants; distinctive ம, ன, ண with multiple loops",
+    "Temple inscriptions run in long bands around stone plinths",
+    "Palm-leaf manuscripts with letters scratched and inked"
+   ],
+   "onWhat": "Temple wall and plinth inscriptions, copper-plate grants on a ring with a royal seal, bronze image pedestals, palm-leaf manuscripts, coins of the Cholas and Pandyas, hero stones.",
+   "infer": "The Tamil south and northern Sri Lanka. Copper plates and temple inscriptions are mainly Pallava, Chola and Pandya (7th-13th century) and Vijayanagara-Nayaka (14th-18th). Before about 600 the same region used Tamil-Brahmi and then rounded Vatteluttu.",
+   "confusables": [
+    {
+     "id": "grantha",
+     "how": "Grantha, used for Sanskrit in the same region, has more letters, rounder forms and stacked conjuncts."
+    },
+    {
+     "id": "telugu-kannada",
+     "how": "Telugu and Kannada letters are round with a tick on top; Tamil is squarer with no tick."
+    },
+    {
+     "id": "sinhala",
+     "how": "Sinhala is all curls and spirals with no straight strokes."
+    },
+    {
+     "id": "brahmi",
+     "how": "Tamil-Brahmi cave inscriptions (3rd century BCE onward) are simple stick letters."
+    }
+   ],
+   "styles": [
+    {
+     "name": "Vatteluttu ('round script')",
+     "sample": "",
+     "font": "",
+     "from": 500,
+     "to": 1300,
+     "where": "Pandya country and Kerala: hero stones, copper plates",
+     "look": "Cursive, leaning, made of connected curves like a row of springs.",
+     "noFont": true
+    }
+   ]
+  },
+  {
+   "id": "telugu-kannada",
+   "name": "Telugu and Kannada",
+   "family": "Brahmic (South)",
+   "sample": "ఓం నమః శివాయ",
+   "sampleMeaning": "Oṃ namaḥ śivāya, 'Om, homage to Shiva' (Telugu script)",
+   "font": "Noto Serif Telugu",
+   "dir": "ltr",
+   "from": 600,
+   "to": 2000,
+   "areas": [
+    {
+     "label": "Karnataka",
+     "lat": 14.5,
+     "lon": 76.0,
+     "r_km": 350,
+     "from": 600,
+     "to": 2000,
+     "region": "sas"
+    },
+    {
+     "label": "Andhra & Telangana",
+     "lat": 16.5,
+     "lon": 79.8,
+     "r_km": 400,
+     "from": 600,
+     "to": 2000,
+     "region": "sas"
+    }
+   ],
+   "look": [
+    "Round, bowl-shaped letters, most topped by a small tick or 'check mark' (talakattu)",
+    "No headline; letters sit separately like a row of pots with lids",
+    "Subscript consonants written below and to the right",
+    "Kannada ticks are flatter and letters slightly more angular; Telugu ticks are V-shaped",
+    "Medieval stone inscriptions are large, even and deeply cut, often below a relief panel"
+   ],
+   "onWhat": "Hero stones and temple inscriptions, copper plates, Vijayanagara and Hoysala coins, bronze lamps and ritual vessels, palm-leaf manuscripts, kalamkari textiles, Company-period paintings.",
+   "infer": "The Deccan south: Karnataka, Andhra and Telangana. The two scripts were one 'Old Kannada-Telugu' script until about 1300-1500, so on older objects you cannot split them. Typical dynasties: Chalukya, Rashtrakuta, Hoysala, Kakatiya, Vijayanagara (1336-1565), Nayaka.",
+   "confusables": [
+    {
+     "id": "sinhala",
+     "how": "Sinhala is rounder still, with no ticks on top."
+    },
+    {
+     "id": "burmese",
+     "how": "Burmese circles have no top ticks and no subscripts to the lower right."
+    },
+    {
+     "id": "tamil",
+     "how": "Tamil is squarer with long flat strokes and no ticks."
+    },
+    {
+     "id": "grantha",
+     "how": "Grantha and Malayalam are round but wider, with many double loops and no ticks."
+    }
+   ],
+   "styles": [
+    {
+     "name": "Kannada",
+     "sample": "ಓಂ ನಮಃ ಶಿವಾಯ",
+     "font": "Noto Serif Kannada",
+     "from": 600,
+     "to": 2000,
+     "where": "Karnataka",
+     "look": "The same mantra in Kannada letters."
+    }
+   ]
+  },
+  {
+   "id": "grantha",
+   "name": "Grantha and Malayalam",
+   "family": "Brahmic (South)",
+   "sample": "𑌓𑌂 𑌨𑌮𑌃 𑌶𑌿𑌵𑌾𑌯",
+   "sampleMeaning": "Oṃ namaḥ śivāya, 'Om, homage to Shiva' (Sanskrit in Grantha letters)",
+   "font": "Noto Sans Grantha",
+   "dir": "ltr",
+   "from": 400,
+   "to": 2000,
+   "areas": [
+    {
+     "label": "Tamil Nadu (Pallava, Chola, Pandya)",
+     "lat": 11.0,
+     "lon": 79.0,
+     "r_km": 350,
+     "from": 400,
+     "to": 1950,
+     "region": "sas"
+    },
+    {
+     "label": "Kerala (Malayalam)",
+     "lat": 10.0,
+     "lon": 76.5,
+     "r_km": 250,
+     "from": 800,
+     "to": 2000,
+     "region": "sas"
+    },
+    {
+     "label": "Southeast Asia ('Pallava' script inscriptions)",
+     "lat": 6.0,
+     "lon": 105.0,
+     "r_km": 1700,
+     "from": 400,
+     "to": 800,
+     "region": "sea"
+    }
+   ],
+   "look": [
+    "Wide, rounded letters with many double loops, like linked spectacles or pretzels",
+    "Stacked and ligatured consonant clusters for Sanskrit",
+    "Early Pallava forms are tall and florid with long curling tails",
+    "Malayalam: very round and wide, with large loops and few straight lines",
+    "Often mixed with Tamil in the same inscription: Sanskrit words in Grantha"
+   ],
+   "onWhat": "Pallava and Chola temple inscriptions and copper plates, bronze pedestals, palm-leaf Sanskrit manuscripts, Kerala murals and manuscripts, the earliest stone inscriptions of Cambodia, Champa, Java, Borneo and the Malay peninsula.",
+   "infer": "South India's script for Sanskrit, 5th century onward, and Malayalam in Kerala from about the 12th century. Its early Pallava form was carried overseas, so the oldest inscriptions of Southeast Asia (5th-8th century) are in it before local scripts (Khmer, Kawi, Cham, Mon) diverge.",
+   "confusables": [
+    {
+     "id": "tamil",
+     "how": "Tamil has fewer, squarer letters and no stacked clusters."
+    },
+    {
+     "id": "sinhala",
+     "how": "Sinhala is closely similar and round, but found in Sri Lanka and with more spirals."
+    },
+    {
+     "id": "telugu-kannada",
+     "how": "Telugu and Kannada carry a tick on most letters."
+    },
+    {
+     "id": "khmer",
+     "how": "Khmer and other Southeast Asian scripts descend from Pallava-Grantha; by the 9th century they have their own crowns and shapes."
+    }
+   ],
+   "styles": [
+    {
+     "name": "Malayalam",
+     "sample": "ഓം നമഃ ശിവായ",
+     "font": "Noto Serif Malayalam",
+     "from": 1100,
+     "to": 2000,
+     "where": "Kerala",
+     "look": "The same mantra in Malayalam letters."
+    }
+   ]
+  },
+  {
+   "id": "bengali",
+   "name": "Bengali-Assamese",
+   "family": "Brahmic (North)",
+   "sample": "শ্রী শ্রী দুর্গা সহায়",
+   "sampleMeaning": "Śrī śrī Durgā sahāy, 'Blessed Durga, be my help' (invocation at the head of documents)",
+   "font": "Noto Serif Bengali",
+   "dir": "ltr",
+   "from": 1100,
+   "to": 2000,
+   "areas": [
+    {
+     "label": "Bengal",
+     "lat": 23.7,
+     "lon": 89.5,
+     "r_km": 400,
+     "from": 1100,
+     "to": 2000,
+     "region": "sas"
+    },
+    {
+     "label": "Assam",
+     "lat": 26.3,
+     "lon": 92.8,
+     "r_km": 300,
+     "from": 1300,
+     "to": 2000,
+     "region": "sas"
+    }
+   ],
+   "look": [
+    "Headline like Devanagari, but letters beneath are more triangular and pointed",
+    "Sharp wedge shapes and a hooked 'flag' vowel sign curling over the top left (ি, ে)",
+    "Fewer full-height right-hand verticals than Devanagari",
+    "Long, narrow palm-leaf or paper manuscripts with wooden painted covers",
+    "Signatures and captions on Kalighat paintings and Company-period drawings"
+   ],
+   "onWhat": "Palm-leaf and paper manuscripts with painted covers, copper plates, Pala-Sena stone image bases (in the ancestral script), coins of the Bengal sultans rarely and of Assam and Tripura, Kalighat paintings, kantha textiles.",
+   "infer": "Eastern India and Bangladesh. The script separates from its Gaudi/proto-Bengali ancestor around the 11th-12th century; inscriptions on black stone Pala-period sculptures (8th-12th century) are in that ancestor. Most objects with clearly Bengali writing are 17th-19th century.",
+   "confusables": [
+    {
+     "id": "devanagari",
+     "how": "Devanagari letters are rounder with many full verticals; Bengali is angular with pointed loops."
+    },
+    {
+     "id": "siddham",
+     "how": "Pala-period image inscriptions are in the Siddham-like ancestor of Bengali."
+    },
+    {
+     "id": "tibetan",
+     "how": "Tibetan has syllable dots and separate letter heads rather than a joined bar."
+    }
+   ]
+  },
+  {
+   "id": "sinhala",
+   "name": "Sinhala",
+   "family": "Brahmic (South)",
+   "sample": "නමෝ බුද්ධාය",
+   "sampleMeaning": "namo buddhāya, 'homage to the Buddha'",
+   "font": "Noto Serif Sinhala",
+   "dir": "ltr",
+   "from": 700,
+   "to": 2000,
+   "areas": [
+    {
+     "label": "Sri Lanka",
+     "lat": 7.7,
+     "lon": 80.7,
+     "r_km": 230,
+     "from": 700,
+     "to": 2000,
+     "region": "sas"
+    }
+   ],
+   "look": [
+    "The roundest of all Indian scripts: nearly every letter is a curl, spiral or snail shell",
+    "No straight lines and no headline",
+    "Letters of even height with small hooks and loops attached",
+    "Palm-leaf (ola) manuscripts between painted or ivory covers",
+    "Medieval stone inscriptions on pillars and slabs, weathered and rounded"
+   ],
+   "onWhat": "Palm-leaf manuscripts and their covers, stone pillar inscriptions, copper plates, Kandyan ivory and metalwork, coins of medieval Lanka (which use Nagari), temple paintings.",
+   "infer": "Sri Lanka. Earlier inscriptions (3rd century BCE-7th century CE) are Brahmi; the rounded Sinhala script develops from the 8th century. Most portable objects with Sinhala writing are Kandyan period (17th-19th century).",
+   "confusables": [
+    {
+     "id": "burmese",
+     "how": "Burmese letters are plain open circles; Sinhala letters are curled and spiralled."
+    },
+    {
+     "id": "telugu-kannada",
+     "how": "Telugu and Kannada have ticks on top."
+    },
+    {
+     "id": "grantha",
+     "how": "Malayalam and Grantha are close relatives but wider with paired loops."
+    },
+    {
+     "id": "tamil",
+     "how": "Tamil has straight strokes and right angles."
+    }
+   ]
+  },
+  {
+   "id": "gurmukhi",
+   "name": "Gurmukhi",
+   "family": "Brahmic (North)",
+   "sample": "ੴ ਸਤਿ ਨਾਮੁ",
+   "sampleMeaning": "Ik Oankar, sati nāmu: 'One God, Truth is the Name' (opening of the Sikh Mul Mantar)",
+   "font": "Noto Serif Gurmukhi",
+   "dir": "ltr",
+   "from": 1540,
+   "to": 2000,
+   "areas": [
+    {
+     "label": "Punjab",
+     "lat": 31.2,
+     "lon": 75.3,
+     "r_km": 300,
+     "from": 1540,
+     "to": 2000,
+     "region": "sas"
+    }
+   ],
+   "look": [
+    "Headline script like Devanagari but simpler, squarer and more open",
+    "Many letters are plain boxes or hooks under the bar: ਸ ਮ ਹ ਗ ਪ",
+    "The ੴ symbol (Ik Oankar) at the start of texts",
+    "Few conjunct clusters, so lines look even and uncluttered",
+    "Often with floral illumination in Kashmiri style"
+   ],
+   "onWhat": "Guru Granth Sahib manuscripts and prayer books, Sikh portrait captions, coins of the Sikh empire (though most are in Persian), arms and armour, phulkari-related documents.",
+   "infer": "The Sikh Punjab, from the 16th century; in museums mostly late 18th-19th century (the Sikh kingdom of Ranjit Singh, 1799-1849, and after).",
+   "confusables": [
+    {
+     "id": "devanagari",
+     "how": "Devanagari has more complex letters with right-hand verticals and stacked clusters."
+    },
+    {
+     "id": "bengali",
+     "how": "Bengali is angular and pointed; Gurmukhi is boxy and plain."
+    }
+   ]
+  },
+  {
+   "id": "siddham",
+   "name": "Siddham (Siddhamatrika, 'bonji')",
+   "family": "Brahmic (North)",
+   "sample": "𑖡𑖦𑖺 𑖤𑖲𑖟𑖿𑖠𑖯𑖧",
+   "sampleMeaning": "namo buddhāya, 'homage to the Buddha'",
+   "font": "Noto Sans Siddham",
+   "dir": "ltr",
+   "from": 550,
+   "to": 2000,
+   "areas": [
+    {
+     "label": "North & east India (post-Gupta, Pala)",
+     "lat": 25.5,
+     "lon": 84.0,
+     "r_km": 800,
+     "from": 550,
+     "to": 1200,
+     "region": "sas"
+    },
+    {
+     "label": "Tang & Song China",
+     "lat": 34.5,
+     "lon": 110.0,
+     "r_km": 700,
+     "from": 650,
+     "to": 1200,
+     "region": "eas"
+    },
+    {
+     "label": "Japan (Shingon and Tendai Buddhism)",
+     "lat": 35.0,
+     "lon": 135.8,
+     "r_km": 500,
+     "from": 806,
+     "to": 2000,
+     "region": "eas"
+    },
+    {
+     "label": "Korea",
+     "lat": 36.5,
+     "lon": 128.0,
+     "r_km": 250,
+     "from": 700,
+     "to": 1900,
+     "region": "eas"
+    }
+   ],
+   "look": [
+    "Indic letters written with a brush or broad pen: strong thick-thin contrast",
+    "Each letter has a small wedge or triangular head rather than a continuous bar",
+    "Angular, with sharp bends and tapering tails to the lower left",
+    "In East Asia: single large 'seed syllables' in a circle or on a lotus, standing for a deity",
+    "Rings of small letters around a central image on printed dharani sheets"
+   ],
+   "onWhat": "Indian stone and copper inscriptions of the 6th-10th century, clay sealings with the Buddhist creed, Pala bronzes; in East Asia mandalas, dharani prints, sutra scrolls, grave markers, sword blades, bells, reliquaries.",
+   "infer": "Two different stories. In India it is the post-Gupta northern script (about 550-1100), for example the 'ye dharma' creed on clay sealings and image bases. In East Asia it is the frozen sacred script for Sanskrit mantras: on a Japanese object (after Kukai's return in 806) or a Chinese or Korean Buddhist one, usually alongside Chinese characters.",
+   "confusables": [
+    {
+     "id": "devanagari",
+     "how": "Devanagari joins letters under one bar and is not used in East Asia before modern times."
+    },
+    {
+     "id": "tibetan",
+     "how": "Tibetan has syllable dots and long stacked descenders; Siddham seed syllables stand alone."
+    },
+    {
+     "id": "brahmi",
+     "how": "Brahmi is the plain monoline ancestor without wedges or brush contrast."
+    },
+    {
+     "id": "bengali",
+     "how": "Proto-Bengali grows out of eastern Siddham and keeps its wedges, adding a headline."
+    }
+   ]
+  },
+  {
+   "id": "mongolian",
+   "name": "Mongolian (vertical script)",
+   "family": "Steppe & Central Asia",
+   "sample": "ᠮᠣᠩᠭᠣᠯ ᠪᠢᠴᠢᠭ",
+   "sampleMeaning": "mongγol bičig, 'Mongolian script'",
+   "font": "Noto Sans Mongolian",
+   "dir": "ttb",
+   "from": 1204,
+   "to": 2000,
+   "areas": [
+    {
+     "label": "Mongolia",
+     "lat": 47.0,
+     "lon": 104.0,
+     "r_km": 900,
+     "from": 1204,
+     "to": 2000,
+     "region": "cas"
+    },
+    {
+     "label": "Inner Mongolia & north China (Yuan to Qing)",
+     "lat": 41.5,
+     "lon": 113.5,
+     "r_km": 700,
+     "from": 1204,
+     "to": 2000,
+     "region": "eas"
+    },
+    {
+     "label": "Ilkhanid Iran",
+     "lat": 36.0,
+     "lon": 48.5,
+     "r_km": 600,
+     "from": 1256,
+     "to": 1353,
+     "region": "wan"
+    },
+    {
+     "label": "Kalmykia (Clear Script)",
+     "lat": 46.3,
+     "lon": 44.3,
+     "r_km": 300,
+     "from": 1650,
+     "to": 1925,
+     "region": "eur_e"
+    }
+   ],
+   "look": [
+    "Vertical columns read top to bottom, columns running left to right",
+    "Each word is a continuous spine with teeth, loops and tails projecting to the left and right",
+    "Words separated by gaps; word-final letters sweep away in long tails",
+    "Looks like Arabic or Syriac turned 90 degrees",
+    "On imperial objects it stands beside Chinese, Manchu and Tibetan"
+   ],
+   "onWhat": "Imperial edicts and letters, paiza (passport tablets), coins of the Ilkhans, Buddhist sutras (often gold on black), seals, stone stelae, Qing multilingual plaques and steles.",
+   "infer": "Mongols, from Chinggis Khan's adoption of the Uyghur script (1204). Mongolian beside Arabic or Persian on a coin or decree is Ilkhanid Iran (1256-1353). Buddhist manuscripts and prints are 17th-19th century Mongolia or Beijing. Its parent, the Old Uyghur script (9th-14th century, Turfan and Dunhuang), looks nearly identical.",
+   "confusables": [
+    {
+     "id": "manchu",
+     "how": "Manchu is the same vertical script with added dots and small circles beside letters and firmer, more regular strokes."
+    },
+    {
+     "id": "sogdian",
+     "how": "Sogdian is the ancestor: usually horizontal right-to-left, without the strong vertical spine."
+    },
+    {
+     "id": "syriac",
+     "how": "Syriac runs horizontally right to left."
+    },
+    {
+     "id": "phags-pa",
+     "how": "'Phags-pa is vertical too but made of separate squared letters, not a joined spine."
+    },
+    {
+     "id": "tibetan",
+     "how": "Tibetan is horizontal with syllable dots."
+    }
+   ]
+  },
+  {
+   "id": "manchu",
+   "name": "Manchu",
+   "family": "Steppe & Central Asia",
+   "sample": "ᠪᠣᠣ ᠴᡳᠣᠸᠠᠨ",
+   "sampleMeaning": "boo ciowan, the mint mark of the Board of Revenue mint in Beijing on the back of Qing cash coins",
+   "font": "Noto Sans Mongolian",
+   "dir": "ttb",
+   "from": 1599,
+   "to": 1912,
+   "areas": [
+    {
+     "label": "Manchuria",
+     "lat": 43.5,
+     "lon": 126.0,
+     "r_km": 600,
+     "from": 1599,
+     "to": 1912,
+     "region": "eas"
+    },
+    {
+     "label": "Qing empire (Beijing and provincial mints)",
+     "lat": 33.0,
+     "lon": 111.0,
+     "r_km": 1400,
+     "from": 1644,
+     "to": 1912,
+     "region": "eas"
+    }
+   ],
+   "look": [
+    "Vertical joined script like Mongolian, columns left to right",
+    "Small dots and circles to the right of the spine distinguish sounds",
+    "More regular and upright than Mongolian, with crisp teeth",
+    "On coins: two vertical words flanking the square hole on the reverse",
+    "On plaques and seals: side by side with Chinese characters, Manchu on the left"
+   ],
+   "onWhat": "Qing cash coins (reverse), imperial seals, edicts and patents of nobility on brocade, palace name plaques, steles, book prints, jade books, archery and banner equipment.",
+   "infer": "Qing dynasty, 1644-1912 (the script was created in 1599 and reformed in 1632). A Chinese-style cash coin with Chinese on the front and Manchu on the back is Qing; the two Manchu words name the mint. Bilingual Chinese-Manchu seals and plaques are imperial Beijing.",
+   "confusables": [
+    {
+     "id": "mongolian",
+     "how": "Mongolian lacks the systematic dots and circles and has more varied, sweeping tails."
+    },
+    {
+     "id": "phags-pa",
+     "how": "'Phags-pa letters are separate squares stacked in a column, found on Yuan coins."
+    },
+    {
+     "id": "chinese",
+     "how": "Seal-script Chinese on the same seal is made of separate symmetric characters, not a joined spine."
+    }
+   ]
+  },
+  {
+   "id": "phags-pa",
+   "name": "'Phags-pa",
+   "family": "Steppe & Central Asia",
+   "sample": "ꡏꡡꡃ ꡣꡡꡙ ꡐꡜꡞ",
+   "sampleMeaning": "mongxol tshi, 'Mongolian script' (the script's own name)",
+   "font": "Noto Sans PhagsPa",
+   "dir": "ttb",
+   "from": 1269,
+   "to": 1368,
+   "areas": [
+    {
+     "label": "Yuan China",
+     "lat": 36.0,
+     "lon": 112.0,
+     "r_km": 1300,
+     "from": 1269,
+     "to": 1368,
+     "region": "eas"
+    },
+    {
+     "label": "Mongolia",
+     "lat": 47.0,
+     "lon": 104.0,
+     "r_km": 700,
+     "from": 1269,
+     "to": 1368,
+     "region": "cas"
+    },
+    {
+     "label": "Tibet (a derived seal script continues on Tibetan seals to the 1900s)",
+     "lat": 30.0,
+     "lon": 91.0,
+     "r_km": 500,
+     "from": 1269,
+     "to": 1368,
+     "region": "sas"
+    }
+   ],
+   "look": [
+    "Square, angular letters stacked in vertical columns and joined by a line down the right side",
+    "Looks like Tibetan redrawn with only horizontal and vertical strokes",
+    "On coins: four blocky signs around a square hole",
+    "On seals: maze-like 'seal' version filling a square",
+    "Short texts: an imperial title, a reign name, a monk's or official's seal"
+   ],
+   "onWhat": "Yuan coins and paper money, paiza tablets, official seals, edict stelae, porcelain and lacquer marks rarely, banknote printing plates; later Tibetan and Mongolian seals.",
+   "infer": "The Yuan dynasty: decreed in 1269 by Khubilai Khan and abandoned after 1368. On a Chinese-format coin or an iron or silver pass tablet it dates the object to within a century. A squared seal script derived from it survives on Tibetan seals into the 20th century.",
+   "confusables": [
+    {
+     "id": "chinese",
+     "how": "Chinese seal script fills the square with one complex character; 'Phags-pa stacks a few simple repeating letters."
+    },
+    {
+     "id": "tibetan",
+     "how": "Tibetan is horizontal and curved with syllable dots."
+    },
+    {
+     "id": "manchu",
+     "how": "Manchu is a flowing joined column with dots, on Qing coins."
+    },
+    {
+     "id": "mongolian",
+     "how": "Uyghur-Mongolian is cursive with tails; 'Phags-pa is blocky."
+    }
+   ]
+  },
+  {
+   "id": "tangut",
+   "name": "Tangut (Xi Xia); also Khitan and Jurchen",
+   "family": "Sinitic",
+   "sample": "𗴂𗹭𘜶𗴲𗂧 𗴂𗹭𗂧𘜶",
+   "sampleMeaning": "'Great State of White and High', the Tangut name of the Western Xia empire, followed by a second, shorter form of the state name",
+   "font": "Noto Serif Tangut",
+   "dir": "ttb",
+   "from": 1036,
+   "to": 1502,
+   "areas": [
+    {
+     "label": "Western Xia (Ningxia, Gansu, Ordos)",
+     "lat": 38.5,
+     "lon": 105.5,
+     "r_km": 550,
+     "from": 1036,
+     "to": 1227,
+     "region": "eas"
+    },
+    {
+     "label": "Khara-Khoto & the Hexi corridor",
+     "lat": 41.0,
+     "lon": 100.5,
+     "r_km": 450,
+     "from": 1036,
+     "to": 1400,
+     "region": "eas"
+    },
+    {
+     "label": "Beijing & Hebei (Yuan-Ming survivals)",
+     "lat": 39.8,
+     "lon": 116.0,
+     "r_km": 220,
+     "from": 1340,
+     "to": 1502,
+     "region": "eas"
+    }
+   ],
+   "look": [
+    "Looks exactly like Chinese from a distance: square characters in columns",
+    "Up close no character is readable as Chinese, and each is denser, with more strokes",
+    "Many slanting strokes and repeated left-falling diagonals; few simple characters",
+    "Printed Buddhist texts with woodcut frontispieces; movable-type editions",
+    "Khitan (Liao, 10th-12th century) and Jurchen (Jin, 12th-13th century) scripts give the same 'almost Chinese' impression with simpler, sparser characters"
+   ],
+   "onWhat": "Printed and manuscript Buddhist sutras, coins, bronze seals with knob handles, stelae, paiza, banknotes; Khitan on epitaph tablets and bronze mirrors.",
+   "infer": "The Tangut Xi Xia empire in north-west China (1038-1227), with late survivals to 1502. Most material comes from Khara-Khoto. Pseudo-Chinese characters on a north Chinese epitaph or mirror may instead be Khitan (Liao dynasty, 907-1125) or Jurchen (Jin dynasty, 1115-1234).",
+   "confusables": [
+    {
+     "id": "chinese",
+     "how": "If you can find even common characters such as 大, 年, 天 it is Chinese; Tangut never contains them."
+    },
+    {
+     "id": "chu-nom",
+     "how": "Nôm mixes real Chinese characters with new compounds; Tangut has no real Chinese characters at all."
+    },
+    {
+     "id": "japanese",
+     "how": "Japanese has kana between characters."
+    }
+   ]
+  },
+  {
+   "id": "chu-nom",
+   "name": "Vietnamese Hán-Nôm",
+   "family": "Sinitic",
+   "sample": "景興通寶 嗣德通寶",
+   "sampleMeaning": "Cảnh Hưng thông bảo and Tự Đức thông bảo: two Vietnamese coin legends (18th and 19th century) written in ordinary Chinese characters. Invented Nôm characters are outside the coverage of Google web fonts, so none is shown.",
+   "font": "Noto Serif TC",
+   "dir": "ttb",
+   "from": 1200,
+   "to": 1945,
+   "areas": [
+    {
+     "label": "Northern Vietnam (Red River delta)",
+     "lat": 21.0,
+     "lon": 105.8,
+     "r_km": 300,
+     "from": 1200,
+     "to": 1945,
+     "region": "sea"
+    },
+    {
+     "label": "Central Vietnam (Hue)",
+     "lat": 16.4,
+     "lon": 107.6,
+     "r_km": 350,
+     "from": 1550,
+     "to": 1945,
+     "region": "sea"
+    }
+   ],
+   "look": [
+    "Chinese-style square characters in vertical columns",
+    "Among ordinary Chinese characters, unfamiliar heavy compounds: two normal characters squeezed into one square",
+    "Most inscriptions on Vietnamese objects are plain literary Chinese with Vietnamese reign names",
+    "Coins: Chinese-format cash with Vietnamese era names (Cảnh Hưng, Gia Long, Minh Mạng, Tự Đức)",
+    "Blue-and-white ceramics with reign marks or poem inscriptions in loose brush characters"
+   ],
+   "onWhat": "Cash coins, bronze bells and drums, stelae, blue-and-white and 'bleu de Hue' ceramics, mother-of-pearl inlaid furniture, woodblock prints (Dong Ho), royal edicts, lacquer panels.",
+   "infer": "Vietnam cannot usually be separated from China by script. Clues are Vietnamese reign names on coins and marks, invented Nôm characters, and the object type. Nôm writing flourishes from the 13th century to the early 20th; the Nguyen dynasty (1802-1945) accounts for most museum pieces.",
+   "confusables": [
+    {
+     "id": "chinese",
+     "how": "Pure Chinese has no invented compounds; check reign names against Chinese ones."
+    },
+    {
+     "id": "tangut",
+     "how": "Tangut contains no genuine Chinese characters."
+    },
+    {
+     "id": "japanese",
+     "how": "Japanese adds kana."
+    }
+   ],
+   "fontNote": "Nôm-specific characters (CJK Extension B and beyond) are not covered by Google Fonts CJK subsets."
+  },
+  {
+   "id": "sogdian",
+   "name": "Sogdian (and Old Uyghur)",
+   "family": "Steppe & Central Asia",
+   "sample": "𐼱𐼲𐼷 𐼶𐼴𐼱𐼴",
+   "sampleMeaning": "βγy xwβw: 'lord, divine' and 'sovereign', two title words from Sogdian coins and documents; not a sentence",
+   "font": "Noto Sans Sogdian",
+   "dir": "rtl",
+   "from": 300,
+   "to": 1000,
+   "areas": [
+    {
+     "label": "Sogdiana (Samarkand, Bukhara, Panjikent)",
+     "lat": 39.7,
+     "lon": 66.5,
+     "r_km": 400,
+     "from": 300,
+     "to": 1000,
+     "region": "cas"
+    },
+    {
+     "label": "Semirechye, Turfan & Dunhuang",
+     "lat": 42.0,
+     "lon": 85.0,
+     "r_km": 1000,
+     "from": 300,
+     "to": 1000,
+     "region": "cas"
+    },
+    {
+     "label": "Mongolia (Turk and Uyghur khaganates)",
+     "lat": 47.5,
+     "lon": 102.5,
+     "r_km": 450,
+     "from": 580,
+     "to": 850,
+     "region": "cas"
+    },
+    {
+     "label": "North China (Sogdian merchant communities)",
+     "lat": 35.5,
+     "lon": 110.5,
+     "r_km": 550,
+     "from": 550,
+     "to": 800,
+     "region": "eas"
+    }
+   ],
+   "look": [
+    "Cursive, right to left (later also in vertical columns), letters joined along a line",
+    "Low zigzag texture with long final tails sweeping left or down",
+    "Many letters hard to tell apart: a run of similar teeth and loops",
+    "Coins: Chinese-style cash with a square hole but cursive legend, or Sasanian-style busts with a Sogdian name",
+    "Ink on paper, wood or leather; also on silver vessels and textiles"
+   ],
+   "onWhat": "Paper letters and documents (Mount Mug, Dunhuang, Turfan), coins of Samarkand, Bukhara and Chach, silver bowls and ewers (ownership and weight inscriptions), wall paintings, textiles, funerary couches and epitaphs in China, steles in Mongolia.",
+   "infer": "Sogdian merchants and their Silk Road network, 4th-10th century, from Samarkand to north China. A cash-shaped coin with cursive writing is 7th-8th century Sogdiana or Semirechye. The script passed to the Uyghurs (9th-14th century) and from them to the Mongols and Manchus.",
+   "confusables": [
+    {
+     "id": "mongolian",
+     "how": "Mongolian is the vertical descendant with a strong spine; Sogdian is mostly horizontal and looser."
+    },
+    {
+     "id": "pahlavi",
+     "how": "Pahlavi comes with Sasanian royal imagery in Iran; many letter shapes overlap."
+    },
+    {
+     "id": "syriac",
+     "how": "Syriac is neater, with dots distinguishing letters, in Christian contexts."
+    },
+    {
+     "id": "kharoshthi",
+     "how": "Kharoshthi is earlier and has attached vowel strokes; found on Kushan-era coins and wood tablets."
+    },
+    {
+     "id": "arabic-naskh",
+     "how": "Arabic has tall alif-lam verticals and dots; Sogdian is a low ripple."
+    }
+   ]
+  },
+  {
+   "id": "old-turkic",
+   "name": "Old Turkic (Orkhon 'runes')",
+   "family": "Steppe & Central Asia",
+   "sample": "𐱅𐰭𐰼𐰃 𐱅𐰇𐰼𐰜",
+   "sampleMeaning": "teŋri and türk: 'Heaven / God' and 'Türk', two key words of the Orkhon inscriptions; not a sentence",
+   "font": "Noto Sans Old Turkic",
+   "dir": "rtl",
+   "from": 700,
+   "to": 1000,
+   "areas": [
+    {
+     "label": "Orkhon valley & Mongolia",
+     "lat": 47.5,
+     "lon": 102.8,
+     "r_km": 500,
+     "from": 700,
+     "to": 850,
+     "region": "cas"
+    },
+    {
+     "label": "Yenisei (Tuva, Khakassia)",
+     "lat": 52.5,
+     "lon": 92.0,
+     "r_km": 450,
+     "from": 750,
+     "to": 1000,
+     "region": "cas"
+    },
+    {
+     "label": "Talas & Semirechye",
+     "lat": 42.5,
+     "lon": 72.5,
+     "r_km": 350,
+     "from": 750,
+     "to": 950,
+     "region": "cas"
+    },
+    {
+     "label": "Turfan & Dunhuang",
+     "lat": 41.5,
+     "lon": 90.0,
+     "r_km": 500,
+     "from": 800,
+     "to": 950,
+     "region": "cas"
+    }
+   ],
+   "look": [
+    "Angular rune-like letters made of straight strokes, with a few arcs and arrow shapes",
+    "Right to left, sometimes in vertical columns on stelae",
+    "Words separated by a colon (:)",
+    "About 40 letters; signs resemble ↑, >, D, Y, diamond and bow shapes",
+    "Cut on tall stone stelae, rock faces, or scratched on small metal objects"
+   ],
+   "onWhat": "Memorial stelae (often with a Chinese text on another face), rock inscriptions, silver vessels, bronze mirrors, belt fittings, coins of the Türgesh rarely, a few paper manuscripts.",
+   "infer": "Turkic khaganates of the steppe: Second Türk and Uyghur empires in Mongolia (8th-9th century), Kyrgyz on the Yenisei (to 10th century). An unrelated-looking 'runic' text on a stele or silver cup from Mongolia or south Siberia is this, not Germanic.",
+   "confusables": [
+    {
+     "id": "runic",
+     "how": "Germanic runes run left to right, lack the arc and arrow signs and colon dividers, and come from northern Europe."
+    },
+    {
+     "id": "south-arabian",
+     "how": "South Arabian is upright and symmetric with bar dividers, from Yemen."
+    },
+    {
+     "id": "sogdian",
+     "how": "Sogdian is cursive and joined; both can appear on the same Mongolian stele."
+    }
+   ]
+  },
+  {
+   "id": "glagolitic",
+   "name": "Glagolitic",
+   "family": "Greek-derived alphabets",
+   "sample": "ⰳⰾⰰⰳⱁⰾⰹⱌⰰ",
+   "sampleMeaning": "glagolica, 'Glagolitic' (the script's name)",
+   "font": "Noto Sans Glagolitic",
+   "dir": "ltr",
+   "from": 860,
+   "to": 1900,
+   "areas": [
+    {
+     "label": "Moravia, Pannonia, Bulgaria & Macedonia (round form)",
+     "lat": 43.5,
+     "lon": 20.5,
+     "r_km": 650,
+     "from": 860,
+     "to": 1200,
+     "region": "eur_e"
+    },
+    {
+     "label": "Croatia: Istria, Kvarner & Dalmatia (angular form)",
+     "lat": 44.8,
+     "lon": 14.8,
+     "r_km": 250,
+     "from": 1100,
+     "to": 1900,
+     "region": "eur_e"
+    }
+   ],
+   "look": [
+    "Letters built from small circles, triangles and loops attached to stems",
+    "Looks unlike Greek, Latin or Cyrillic: many symmetrical 'spectacle' and 'candelabra' shapes",
+    "Early round form hangs from the line; Croatian form is square and angular like blackletter",
+    "Red initials and ligatures in missals",
+    "Carved on stone tablets with interlace borders in Croatia"
+   ],
+   "onWhat": "Church manuscripts (missals, breviaries, Gospels), stone inscriptions and church lintels in Croatia, a few early printed books, graffiti in churches.",
+   "infer": "The oldest Slavic alphabet, devised by Cyril about 863. Round Glagolitic is 9th-12th century Balkans and central Europe; the angular form is Croatian Catholic liturgy from the 12th century, with printing in 1483 and use to the 19th century.",
+   "confusables": [
+    {
+     "id": "cyrillic",
+     "how": "Cyrillic letters are recognisably Greek-based; Glagolitic ones are not."
+    },
+    {
+     "id": "georgian",
+     "how": "Georgian is curly but lacks the paired circles and triangles and comes from the Caucasus."
+    },
+    {
+     "id": "ethiopic",
+     "how": "Ethiopic is blocky syllable signs with two-dot dividers."
+    },
+    {
+     "id": "armenian",
+     "how": "Armenian is rows of arches."
+    }
+   ]
+  },
+  {
+   "id": "ogham",
+   "name": "Ogham",
+   "family": "European",
+   "sample": "᚛ᚋᚐᚊᚔ ᚋᚒᚉᚑᚔ᚜",
+   "sampleMeaning": "MAQI MUCOI, 'of the son of the kin-group of': the linking formula of ogham memorial stones",
+   "font": "Noto Sans Ogham",
+   "dir": "ltr",
+   "from": 350,
+   "to": 800,
+   "areas": [
+    {
+     "label": "Ireland (densest in Kerry, Cork, Waterford)",
+     "lat": 52.6,
+     "lon": -8.3,
+     "r_km": 260,
+     "from": 350,
+     "to": 800,
+     "region": "eur_nw"
+    },
+    {
+     "label": "Wales, Cornwall, Isle of Man & Scotland",
+     "lat": 53.5,
+     "lon": -4.3,
+     "r_km": 400,
+     "from": 400,
+     "to": 800,
+     "region": "eur_nw"
+    }
+   ],
+   "look": [
+    "Groups of one to five straight notches or strokes along a stem line",
+    "The stem is usually the corner edge of a standing stone; text reads bottom to top",
+    "Strokes to the left, to the right, across, or short notches on the edge",
+    "Looks like a tally or a barcode rather than letters",
+    "In Britain often paired with a Latin inscription on the same stone"
+   ],
+   "onWhat": "Standing memorial stones, a few bone, antler and metal objects, later manuscript margins.",
+   "infer": "Early medieval Ireland and Irish-settled western Britain, 4th-7th century for most stones (Pictish examples in Scotland to the 9th).",
+   "confusables": [
+    {
+     "id": "runic",
+     "how": "Runes are individual letter shapes; ogham is counted strokes on a line."
+    },
+    {
+     "id": "cuneiform",
+     "how": "Cuneiform wedges are impressed in clay in complex clusters, from the Near East."
+    }
+   ]
+  },
+  {
+   "id": "cham",
+   "name": "Cham",
+   "family": "Brahmic (Southeast Asia)",
+   "sample": "ꨀꨇꩉ ꨌꩌ",
+   "sampleMeaning": "Akhar Cam, 'Cham script' (the script's own name)",
+   "font": "Noto Sans Cham",
+   "dir": "ltr",
+   "from": 400,
+   "to": 2000,
+   "areas": [
+    {
+     "label": "Champa (central & southern Vietnam coast)",
+     "lat": 14.0,
+     "lon": 108.7,
+     "r_km": 400,
+     "from": 400,
+     "to": 2000,
+     "region": "sea"
+    },
+    {
+     "label": "Cambodia (Western Cham)",
+     "lat": 12.0,
+     "lon": 105.3,
+     "r_km": 200,
+     "from": 1500,
+     "to": 2000,
+     "region": "sea"
+    }
+   ],
+   "look": [
+    "Indic structure: base letters with marks above, below and to the left",
+    "Loose hooked and looped letters, many resembling the numerals 2, 3 and 9 with tails",
+    "Stone inscriptions are neat and south-Indian looking; later manuscripts are slanted and wiry",
+    "Carved on sandstone stelae and door jambs of brick temple-towers",
+    "Often alongside Sanskrit in the same letters"
+   ],
+   "onWhat": "Sandstone stelae, temple pillars and pedestals (My Son, Po Nagar), metal vessels, later paper and palm-leaf manuscripts.",
+   "infer": "The Cham kingdoms of central Vietnam. Stone inscriptions run from about the 4th to the 15th century; a sandstone sculpture or stele with this script is Champa, most often 7th-13th century. Manuscripts are 18th-20th century.",
+   "confusables": [
+    {
+     "id": "khmer",
+     "how": "Khmer has crowned letters and tidy subscripts; Cham is looser and hook-shaped."
+    },
+    {
+     "id": "javanese",
+     "how": "Javanese is a regular row of arches."
+    },
+    {
+     "id": "grantha",
+     "how": "Early Cham inscriptions are in a Pallava-type script almost identical to south Indian Grantha."
+    }
+   ]
+  },
+  {
+   "id": "maya",
+   "name": "Maya hieroglyphs",
+   "family": "Americas",
+   "sample": "",
+   "sampleMeaning": "No Unicode encoding: describe by look",
+   "font": "",
+   "dir": "ttb",
+   "from": -300,
+   "to": 1700,
+   "areas": [
+    {
+     "label": "Maya lowlands (Petén, Yucatán, Belize, Usumacinta)",
+     "lat": 17.8,
+     "lon": -89.8,
+     "r_km": 380,
+     "from": -300,
+     "to": 1700,
+     "region": "mes"
+    },
+    {
+     "label": "Highland Guatemala, Copán & the Pacific slope",
+     "lat": 14.8,
+     "lon": -90.3,
+     "r_km": 250,
+     "from": -300,
+     "to": 900,
+     "region": "mes"
+    }
+   ],
+   "look": [
+    "Rounded-square glyph blocks like pebbles or cushions, each packed with a main sign and smaller attached signs",
+    "Blocks arranged in a grid, read in paired columns, left to right and top to bottom",
+    "Many glyphs are profile heads of humans, gods, birds and jaguars; hands also common",
+    "Numbers as bars (five) and dots (one), often at the start with calendar signs in cartouches",
+    "Painted in fine black or red line on pottery; carved in relief on stone and jade"
+   ],
+   "onWhat": "Polychrome and codex-style cylinder vases (a band of glyphs under the rim), stone stelae, lintels, altars and panels, jade plaques and celts, shell and bone ornaments, stucco, bark-paper codices.",
+   "infer": "The Maya area: southern Mexico, Guatemala, Belize, western Honduras. Almost all inscribed objects are Classic period (250-900 CE), and painted cylinder vases with a rim text are Late Classic (600-900). Long Count dates fix monuments to the day.",
+   "confusables": [
+    {
+     "id": "aztec-mixtec",
+     "how": "Central Mexican pictography is separate picture-signs and day names with dots, scattered in a scene, without the dense grid of compound blocks."
+    },
+    {
+     "id": "egyptian-hieroglyphs",
+     "how": "Egyptian signs are separate outlined pictures in rows; Maya glyphs are compact rounded compounds."
+    },
+    {
+     "id": "chinese",
+     "how": "Bronze-script Chinese is linear and abstract; Maya blocks are plump and face-filled."
+    }
+   ],
+   "noUnicode": true
+  },
+  {
+   "id": "aztec-mixtec",
+   "name": "Central Mexican pictography (Aztec, Mixtec, Zapotec)",
+   "family": "Americas",
+   "sample": "",
+   "sampleMeaning": "No Unicode encoding: describe by look",
+   "font": "",
+   "dir": "ltr",
+   "from": -500,
+   "to": 1600,
+   "areas": [
+    {
+     "label": "Valley of Mexico & central highlands (Aztec)",
+     "lat": 19.4,
+     "lon": -99.1,
+     "r_km": 250,
+     "from": 1300,
+     "to": 1600,
+     "region": "mes"
+    },
+    {
+     "label": "Oaxaca (Zapotec, then Mixtec)",
+     "lat": 17.1,
+     "lon": -96.9,
+     "r_km": 220,
+     "from": -500,
+     "to": 1600,
+     "region": "mes"
+    }
+   ],
+   "look": [
+    "Picture-signs rather than text lines: a rabbit, reed, flint knife, house, each with a row of dots for a number 1-13",
+    "Year signs in square cartouches (Aztec) or with an interlaced A-O sign (Mixtec)",
+    "Place names drawn as a hill with an attached object; names shown as a sign linked to a figure by a line",
+    "Bright flat colours with firm black outlines in screenfold books on deerskin or bark paper",
+    "Speech shown as small curled scrolls from the mouth; footprints mark journeys"
+   ],
+   "onWhat": "Stone sculpture with date glyphs, carved boxes and calendar stones, screenfold codices and early colonial manuscripts and maps (lienzos), Mixtec gold, turquoise mosaic, carved bone, polychrome pottery; Zapotec urns and carved slabs with glyphs.",
+   "infer": "Highland Mexico. Zapotec glyphs with bar-and-dot numbers at Monte Albán start about 500 BCE. Mixtec codex-style imagery is Postclassic Oaxaca (1200-1521). Aztec date glyphs on stone are about 1400-1521. Pictorial manuscripts with Spanish or Nahuatl glosses in Latin letters are early colonial (16th century).",
+   "confusables": [
+    {
+     "id": "maya",
+     "how": "Maya writing is dense grids of compound glyph blocks; Central Mexican signs are isolated pictures with dot numbers."
+    },
+    {
+     "id": "latin",
+     "how": "Colonial codices add alphabetic glosses in Latin script, which date them after 1521."
+    }
+   ],
+   "noUnicode": true
+  },
+  {
+   "id": "indus",
+   "name": "Indus script",
+   "family": "Indus",
+   "sample": "",
+   "sampleMeaning": "No Unicode encoding: describe by look (undeciphered)",
+   "font": "",
+   "dir": "rtl",
+   "from": -2600,
+   "to": -1900,
+   "areas": [
+    {
+     "label": "Indus valley (Harappa, Mohenjo-daro)",
+     "lat": 28.5,
+     "lon": 70.0,
+     "r_km": 700,
+     "from": -2600,
+     "to": -1900,
+     "region": "sas"
+    },
+    {
+     "label": "Gujarat (Lothal, Dholavira)",
+     "lat": 22.8,
+     "lon": 71.0,
+     "r_km": 350,
+     "from": -2600,
+     "to": -1900,
+     "region": "sas"
+    },
+    {
+     "label": "Gulf & Mesopotamia (traded seals)",
+     "lat": 28.0,
+     "lon": 49.0,
+     "r_km": 600,
+     "from": -2400,
+     "to": -1900,
+     "region": "wan"
+    }
+   ],
+   "look": [
+    "A single short row of about five abstract signs: fish shapes, jars, stick men, rakes, circles, strokes",
+    "Almost always above a profile animal (the one-horned 'unicorn', bull, elephant, rhinoceros) with a stand in front",
+    "On small square stamp seals of white-glazed steatite with a pierced boss on the back",
+    "Signs crisp and tiny, cut in intaglio so the impression reads right to left",
+    "Also on small copper tablets, pottery graffiti and moulded tablets"
+   ],
+   "onWhat": "Square steatite stamp seals, clay sealings, miniature tablets of faience and copper, pottery, bronze tools.",
+   "infer": "The mature Harappan civilisation of Pakistan and north-west India, about 2600-1900 BCE. Nothing else looks like it; a few seals travelled to the Gulf and Mesopotamia.",
+   "confusables": [
+    {
+     "id": "egyptian-hieroglyphs",
+     "how": "Egyptian texts are long, with detailed pictures and cartouches; Indus texts are a handful of abstract signs on a seal."
+    },
+    {
+     "id": "cuneiform",
+     "how": "Cuneiform is wedges; Mesopotamian seals are cylinders, not square stamps."
+    },
+    {
+     "id": "brahmi",
+     "how": "Brahmi appears over 1,500 years later and is a true alphabet in longer lines."
+    }
+   ],
+   "noUnicode": true
+  },
+  {
+   "id": "cherokee",
+   "name": "Cherokee syllabary",
+   "family": "Americas",
+   "sample": "ᏣᎳᎩ ᎦᏬᏂᎯᏍᏗ",
+   "sampleMeaning": "Tsalagi gawonihisdi, 'Cherokee language'",
+   "font": "Noto Sans Cherokee",
+   "dir": "ltr",
+   "from": 1821,
+   "to": 2000,
+   "areas": [
+    {
+     "label": "Cherokee homeland (southern Appalachians)",
+     "lat": 35.2,
+     "lon": -84.0,
+     "r_km": 250,
+     "from": 1821,
+     "to": 1838,
+     "region": "nam"
+    },
+    {
+     "label": "Indian Territory (Oklahoma)",
+     "lat": 35.9,
+     "lon": -95.0,
+     "r_km": 200,
+     "from": 1838,
+     "to": 2000,
+     "region": "nam"
+    }
+   ],
+   "look": [
+    "85 signs, many borrowed from Latin capitals and numerals but with unrelated sounds (D, R, T, W, 4, Ꮞ)",
+    "Mixed with ornate invented letters with curls and serifs: Ꮳ Ꮂ Ꮹ Ꮿ",
+    "Reads like scrambled, decorated English capitals that spell nothing",
+    "Printed in a 19th-century serif typeface in newspapers and hymnals",
+    "No lower-case in historical material"
+   ],
+   "onWhat": "Printed newspapers (Cherokee Phoenix, from 1828), Bibles and hymnals, manuscripts and medicine books, signed baskets and carvings, treaties and broadsides.",
+   "infer": "Cherokee Nation, after Sequoyah completed the syllabary in 1821: the Southeast until Removal (1838), then Oklahoma, with the Eastern Band in North Carolina.",
+   "confusables": [
+    {
+     "id": "latin",
+     "how": "Latin-looking letters appear, but the words are unpronounceable as English and include non-Latin shapes."
+    },
+    {
+     "id": "greek",
+     "how": "A few signs resemble Greek letters, but the object is 19th-century North American."
+    }
+   ]
+  },
+  {
+   "id": "rongorongo",
+   "name": "Rongorongo",
+   "family": "Oceania",
+   "sample": "",
+   "sampleMeaning": "No Unicode encoding: describe by look (undeciphered)",
+   "font": "",
+   "dir": "ltr",
+   "from": 1650,
+   "to": 1870,
+   "areas": [
+    {
+     "label": "Rapa Nui (Easter Island)",
+     "lat": -27.12,
+     "lon": -109.36,
+     "r_km": 60,
+     "from": 1650,
+     "to": 1870,
+     "region": "oce"
+    }
+   ],
+   "look": [
+    "Rows of small outlined figures: bird-men, frigate birds, fish, plants, crescents, standing people with raised arms",
+    "Glyphs of even height packed tightly with no gaps",
+    "Every other line is upside down (reverse boustrophedon): you rotate the tablet at each line end",
+    "Finely incised with a shark tooth or obsidian flake on dark wood, lines running in shallow flutes",
+    "Carved on boards, a staff, and a few chest ornaments (reimiro)"
+   ],
+   "onWhat": "Wooden tablets, a chief's staff, reimiro pectorals, a birdman figure; only about two dozen authentic pieces exist.",
+   "infer": "Easter Island, collected in the 1860s-1880s; the surviving pieces are probably 18th-19th century. Many tourist copies exist.",
+   "confusables": [
+    {
+     "id": "indus",
+     "how": "Indus signs are a short row on a stone seal with an animal."
+    },
+    {
+     "id": "egyptian-hieroglyphs",
+     "how": "Egyptian has columns, cartouches and many abstract signs; rongorongo is uniform little figures in inverted alternate lines."
+    },
+    {
+     "id": "maya",
+     "how": "Maya glyphs are compound blocks in a grid."
+    }
+   ],
+   "noUnicode": true
+  }
+ ]
+}
