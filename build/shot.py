@@ -18,6 +18,7 @@ Options:
   --full                  full-page screenshot
   --ls 'k=json'           set localStorage key (prefix anthro.v2. is added) before load; repeatable
   --still 0               don't add ?still=1 (animations run)
+  --path variants/x/index.html   page to open instead of index.html (pass '' as the hash)
 Prints console errors / page errors / failed requests (non-font) so regressions are visible.
 The preview server must be running:  python3 -m http.server 8920 --bind 127.0.0.1   (from the repo root)
 """
@@ -26,9 +27,9 @@ from playwright.sync_api import sync_playwright
 ap = argparse.ArgumentParser(); ap.add_argument("hash"); ap.add_argument("out")
 ap.add_argument("--w", type=int, default=1600); ap.add_argument("--h", type=int, default=950); ap.add_argument("--wait", type=int, default=900)
 ap.add_argument("--do", action="append", default=[]); ap.add_argument("--full", action="store_true"); ap.add_argument("--ls", action="append", default=[])
-ap.add_argument("--still", default="1"); ap.add_argument("--port", default=os.environ.get("PORT", "8920"))
+ap.add_argument("--still", default="1"); ap.add_argument("--port", default=os.environ.get("PORT", "8920")); ap.add_argument("--path", default="index.html")
 a = ap.parse_args()
-url = f"http://127.0.0.1:{a.port}/index.html{'?still=1' if a.still == '1' else ''}{a.hash}"
+url = f"http://127.0.0.1:{a.port}/{a.path}{'?still=1' if a.still == '1' else ''}{a.hash}"
 with sync_playwright() as p:
     b = p.chromium.launch(args=["--no-sandbox"]); ctx = b.new_context(viewport={"width": a.w, "height": a.h}, device_scale_factor=1)
     pg = ctx.new_page(); msgs = []

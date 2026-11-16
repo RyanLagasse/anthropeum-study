@@ -21,6 +21,9 @@
    map.fit(points:[[lon,lat],…], { pad = 80, maxZoom = 8, ms = 700 })
    map.reset(ms)   map.project(lon,lat) → [x,y] CSS px   map.unproject(x,y) → [lon,lat]
    map.setCrosshair(bool)   map.redraw()   map.destroy()
+   Theming: colours are read from CSS custom properties on :root when the map is created — --ocean-0 --ocean-1 --land --land-line --coast --grat --ink --bg
+   plus optional --map-halo (label outline) --map-label --map-glow --map-rim --map-equator --map-coast-2 --map-polity-line --map-polity-label --map-polity-halo
+   --map-polity-hover --map-polity-sat / --map-polity-light (numeric shifts applied to polity fill saturation / lightness, e.g. "-8" / "38" for a light theme).
    Marker/area/arc arrays are replaced wholesale on each set* call; call again to update. */
 (function(){
 "use strict";
@@ -36,7 +39,7 @@ AS.project = project; AS.unproject = unproject;
 
 const hashStr = s => { let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0; return h; };
 /* jewel-toned polity fill from its name */
-const polityColor = name => { const h = hashStr(name); const hue = h % 360, sat = 38 + (h >> 9) % 22, lig = 30 + (h >> 15) % 12; return `hsl(${hue} ${sat}% ${lig}%)`; };
+const polityColor = (name, ds = 0, dl = 0) => { const h = hashStr(name); const hue = h % 360, sat = 38 + (h >> 9) % 22 + ds, lig = 30 + (h >> 15) % 12 + dl; return `hsl(${hue} ${Math.max(0, Math.min(100, sat))}% ${Math.max(0, Math.min(100, lig))}%)`; };
 AS.polityColor = polityColor;
 
 /* per-snapshot geometry cache shared by all map instances */
@@ -65,7 +68,12 @@ AS.createMap = function(host, opts = {}){
   const css = getComputedStyle(document.documentElement); const V = n => css.getPropertyValue(n).trim();
   const C = { ocean0:V("--ocean-0") || "#0e1a33", ocean1:V("--ocean-1") || "#070c19", land:V("--land") || "#232c45", landLine:V("--land-line") || "rgba(241,235,221,.2)",
     coast:V("--coast") || "rgba(120,170,255,.16)", grat:V("--grat") || "rgba(160,180,230,.07)", ink:V("--ink") || "#f1ebdd", bg:V("--bg") || "#080b14", gold:V("--gold") || "#ecbd4f",
-    font:V("--f-body") || "system-ui", mono:V("--f-mono") || "monospace" };
+    font:V("--f-body") || "system-ui", mono:V("--f-mono") || "monospace",
+    /* optional theme tokens (defaults = night gallery): */
+    halo:V("--map-halo") || "rgba(6,9,18,.9)", glow:V("--map-glow") || "rgba(70,120,255,.25)", rim:V("--map-rim") || "rgba(160,190,255,.22)", equator:V("--map-equator") || "rgba(236,189,79,.16)", coast2:V("--map-coast-2") || "rgba(140,185,255,.10)",
+    polLine:V("--map-polity-line") || "rgba(8,11,20,.75)", polLabel:V("--map-polity-label") || "rgba(255,255,255,.62)", polHalo:V("--map-polity-halo") || "rgba(8,11,20,.55)", polHover:V("--map-polity-hover") || "rgba(255,255,255,.14)",
+    pS:parseFloat(V("--map-polity-sat")) || 0, pL:parseFloat(V("--map-polity-light")) || 0, labelInk:V("--map-label") || V("--ink") || "#f1ebdd" };
+  const pcache = {}; const pcol = n => pcache[n] || (pcache[n] = polityColor(n, C.pS, C.pL));
   const root = AS.h("div.asmap" + (o.crosshair ? ".crosshair" : "")); const base = AS.h("canvas"), over = AS.h("canvas"); root.append(base, over);
   const bx = base.getContext("2d"), ox = over.getContext("2d"); host.append(root);
   let W = 0, H = 0, dpr = 1, k = 1, tx = 0, ty = 0, k0 = 1; // screen = world * k + t
@@ -87,27 +95,27 @@ AS.createMap = function(host, opts = {}){
     bx.setTransform(dpr, 0, 0, dpr, 0, 0); bx.clearRect(0, 0, W, H);
     bx.setTransform(dpr * k, 0, 0, dpr * k, dpr * tx, dpr * ty);
     /* ocean: sphere-shaped, radial gradient, soft outer glow */
-    bx.save(); bx.shadowColor = "rgba(70,120,255,.25)"; bx.shadowBlur = 50 * dpr; const g = bx.createRadialGradient(0, -.2, .2, 0, 0, 2.9); g.addColorStop(0, C.ocean0); g.addColorStop(1, C.ocean1); bx.fillStyle = g; bx.fill(spherePath); bx.restore();
+    bx.save(); bx.shadowColor = C.glow; bx.shadowBlur = 50 * dpr; const g = bx.createRadialGradient(0, -.2, .2, 0, 0, 2.9); g.addColorStop(0, C.ocean0); g.addColorStop(1, C.ocean1); bx.fillStyle = g; bx.fill(spherePath); bx.restore();
     bx.save(); bx.clip(spherePath);
-    bx.lineWidth = 1 / k; bx.strokeStyle = C.grat; bx.stroke(gratPath); bx.setLineDash([4 / k, 5 / k]); bx.strokeStyle = "rgba(236,189,79,.16)"; bx.stroke(equatorPath); bx.setLineDash([]);
+    bx.lineWidth = 1 / k; bx.strokeStyle = C.grat; bx.stroke(gratPath); bx.setLineDash([4 / k, 5 / k]); bx.strokeStyle = C.equator; bx.stroke(equatorPath); bx.setLineDash([]);
     /* coast halo under the land */
-    bx.lineJoin = "round"; bx.strokeStyle = C.coast; bx.lineWidth = 7 / k; bx.stroke(geo.all); bx.strokeStyle = "rgba(140,185,255,.10)"; bx.lineWidth = 16 / k; bx.stroke(geo.all);
+    bx.lineJoin = "round"; bx.strokeStyle = C.coast; bx.lineWidth = 7 / k; bx.stroke(geo.all); bx.strokeStyle = C.coast2; bx.lineWidth = 16 / k; bx.stroke(geo.all);
     const pol = o.mode === "polities";
-    for (const f of geo.feats){ bx.fillStyle = pol && f.color ? f.color : C.land; bx.fill(f.path); }
-    if (hoverFeat && hoverFeat.name){ bx.fillStyle = "rgba(255,255,255,.14)"; for (const f of geo.feats) if (f.name === hoverFeat.name) bx.fill(f.path); }
-    bx.lineWidth = (pol ? .9 : .7) / k; bx.strokeStyle = pol ? "rgba(8,11,20,.75)" : C.landLine; for (const f of geo.feats) bx.stroke(f.path);
+    for (const f of geo.feats){ bx.fillStyle = pol && f.name ? pcol(f.name) : C.land; bx.fill(f.path); }
+    if (hoverFeat && hoverFeat.name){ bx.fillStyle = C.polHover; for (const f of geo.feats) if (f.name === hoverFeat.name) bx.fill(f.path); }
+    bx.lineWidth = (pol ? .9 : .7) / k; bx.strokeStyle = pol ? C.polLine : C.landLine; for (const f of geo.feats) bx.stroke(f.path);
     bx.restore();
-    bx.lineWidth = 1.2 / k; bx.strokeStyle = "rgba(160,190,255,.22)"; bx.stroke(spherePath);
+    bx.lineWidth = 1.2 / k; bx.strokeStyle = C.rim; bx.stroke(spherePath);
     /* polity names (polities mode, when zoomed enough for them to fit) */
     if (pol){ bx.setTransform(dpr, 0, 0, dpr, 0, 0); bx.textAlign = "center"; bx.textBaseline = "middle"; const seen = new Set(); const boxes = [];
       const cand = geo.feats.filter(f => f.name).map(f => ({ f, w:(f.bbox[2] - f.bbox[0]) * k, h:(f.bbox[3] - f.bbox[1]) * k })).sort((a, b) => b.w * b.h - a.w * a.h);
       for (const c of cand){ if (seen.has(c.f.name)) continue; const fs = Math.max(10, Math.min(15, c.w / (c.f.name.length * .62))); if (c.w < c.f.name.length * 6.2 || c.h < 16) continue;
         const cx = (c.f.bbox[0] + c.f.bbox[2]) / 2 * k + tx, cy = (c.f.bbox[1] + c.f.bbox[3]) / 2 * k + ty; if (cx < -50 || cx > W + 50 || cy < -20 || cy > H + 20) continue;
         bx.font = `600 ${fs}px ${C.font}`; const tw = bx.measureText(c.f.name).width; const b = [cx - tw / 2 - 4, cy - fs / 2 - 3, cx + tw / 2 + 4, cy + fs / 2 + 3]; if (boxes.some(q => !(b[2] < q[0] || b[0] > q[2] || b[3] < q[1] || b[1] > q[3]))) continue;
-        boxes.push(b); seen.add(c.f.name); bx.fillStyle = "rgba(255,255,255,.62)"; bx.strokeStyle = "rgba(8,11,20,.55)"; bx.lineWidth = 3; bx.strokeText(c.f.name, cx, cy); bx.fillText(c.f.name, cx, cy); } }
+        boxes.push(b); seen.add(c.f.name); bx.fillStyle = C.polLabel; bx.strokeStyle = C.polHalo; bx.lineWidth = 3; bx.strokeText(c.f.name, cx, cy); bx.fillText(c.f.name, cx, cy); } }
   }
   function label(ctx, text, x, y, opt = {}){ const fs = opt.size || 12; ctx.font = `${opt.weight || 600} ${fs}px ${C.font}`; ctx.textAlign = opt.align || "center"; ctx.textBaseline = opt.base || "alphabetic";
-    ctx.lineJoin = "round"; ctx.lineWidth = 3.5; ctx.strokeStyle = "rgba(6,9,18,.9)"; ctx.strokeText(text, x, y); ctx.fillStyle = opt.color || C.ink; ctx.fillText(text, x, y); }
+    ctx.lineJoin = "round"; ctx.lineWidth = 3.5; ctx.strokeStyle = C.halo; ctx.strokeText(text, x, y); ctx.fillStyle = opt.color || C.labelInk; ctx.fillText(text, x, y); }
   function drawOver(){
     ox.setTransform(dpr, 0, 0, dpr, 0, 0); ox.clearRect(0, 0, W, H);
     /* heat field */
