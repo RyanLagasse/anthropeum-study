@@ -176,7 +176,7 @@ function create(el, params){
   const inner = h("div.wh-inner", {}, head, body);
   const chart = h("div.wh-chart", { style:{ "--wh-spec":`linear-gradient(90deg,${AS.ERA_COLORS.map((c, i) => `${c} ${i * 5 + 2.5}%`).join(",")})` }, tabindex:"-1" }, inner);
   const legend = h("div.wh-legend", {},
-    h("span", {}, h("i.wh-lg-bar"), "exists from here on"), h("span", {}, h("i.wh-mark.wh-lg"), "arrival, coloured by region"),
+    h("span", {}, h("i.wh-lg-bar", { style:{ "--c1":AS.eraColor(3), "--c2":AS.eraColor(9) } }), "exists from here on"), h("span", {}, h("i.wh-mark.wh-lg"), "arrival, coloured by region"),
     h("span", {}, h("i.wh-mark.ind.wh-lg"), "independent invention"), h("span", {}, h("i.wh-lg-lead"), "elsewhere first"), h("span", {}, h("i.wh-lg-end"), "falls out of use"),
     h("span.wh-keys", {}, h("span.kbd", {}, "↑"), h("span.kbd", {}, "↓"), "row", h("span.kbd", {}, "←"), h("span.kbd", {}, "→"), "era", h("span.kbd", {}, "P"), "pin", h("span.kbd", {}, "/"), "search"));
   const side = h("div.side.wh-side");
@@ -188,6 +188,7 @@ function create(el, params){
     pinChip.classList.toggle("on", S.pinned); pinChip.innerHTML = ""; pinChip.append(h("span.wh-star", {}, "★"), "Pinned", h("span.n", {}, String(pins.size)));
     drill.setAttribute("href", AS.href("practice", { mode:"when", group:S.group, region:S.region })); }
 
+  const fadeA = AS.theme.light ? .64 : .5, fadeB = AS.theme.light ? .36 : .2;   /* bar tails fade toward the ground: keep more ink on paper */
   function rowEl(v){ const t = v.t, s = v.s, ghost = s == null, ee = endOf(t, ghost ? t.origin.year : s), e = ee == null ? Y1 : ee, on = pins.has(t.id);
     const row = h("div.wh-row" + (ghost ? ".ghost" : "") + (t.id === S.id ? ".sel" : ""), { data:{ id:t.id }, role:"button", "aria-label":t.name });
     row.append(h("div.wh-name", {}, h("button.wh-pin" + (on ? ".on" : ""), { type:"button", tabindex:"-1", "aria-label":on ? "Unpin" : "Pin", title:on ? "Unpin" : "Pin: keep forgetting this one" }, "★"),
@@ -197,7 +198,7 @@ function create(el, params){
       tr.append(h("div.wh-gbar", { style:{ left:a + "%", width:(b - a) + "%" } }), h("span.wh-gnote" + (a > 55 ? ".l" : ""), { style:{ left:a + "%" } }, `not attested here · elsewhere from ${AS.fmtYear(oy)}`));
       return row; }
     const a = pct(s), b = Math.max(a + .5, pct(Math.max(e, s))), mid = Math.min(b, a + 13), c = AS.eraColor(AS.eraOf(s));
-    const mask = `linear-gradient(90deg,transparent ${a}%,#000 ${a}%,rgba(0,0,0,.5) ${mid}%,rgba(0,0,0,.2) ${b}%,transparent ${b}%)`;
+    const mask = `linear-gradient(90deg,transparent ${a}%,#000 ${a}%,rgba(0,0,0,${fadeA}) ${mid}%,rgba(0,0,0,${fadeB}) ${b}%,transparent ${b}%)`;
     tr.append(h("div.wh-bar", { style:{ maskImage:mask, webkitMaskImage:mask } }));
     if (S.region && oy < s){ const o = pct(oy); tr.append(h("div.wh-lead", { style:{ left:o + "%", width:(a - o) + "%" } }), h("i.wh-o", { style:{ left:o + "%" }, data:{ o:"1" } })); }
     if (ee != null && e < Y1) tr.append(h("i.wh-end", { style:{ left:b + "%" } }));
@@ -266,13 +267,13 @@ function create(el, params){
   function ruleNode(t){ const cl = t.clauses.length ? t.clauses : [{ text:`${t.name} ⇒ not before ${fy(t.origin.year)}` }];
     const box = h("div.wh-rulebox", {}, clauseNode("p.wh-rule" + (cl[0].text.length > 130 ? ".xlong" : cl[0].text.length > 64 ? ".long" : ""), cl[0]));
     if (cl.length > 1) box.append(h("ul.wh-also", {}, cl.slice(1).map(c => clauseNode("li", c)))); return box; }
-  function techChip(t, dir){ return h("button.wh-step", { type:"button", onclick:() => select(t.id, true), title:t.head || t.name }, dir < 0 ? h("span.wh-sa", {}, "←") : null, h("span.wh-sn", {}, t.name), h("span.wh-sy", { style:{ color:`color-mix(in srgb,${AS.eraColor(AS.eraOf(t.origin.year))} 65%,white)` } }, AS.fmtYearShort(t.origin.year)), dir > 0 ? h("span.wh-sa", {}, "→") : null); }
+  function techChip(t, dir){ return h("button.wh-step", { type:"button", onclick:() => select(t.id, true), title:t.head || t.name }, dir < 0 ? h("span.wh-sa", {}, "←") : null, h("span.wh-sn", {}, t.name), h("span.wh-sy", { style:{ color:`color-mix(in srgb,${AS.eraColor(AS.eraOf(t.origin.year))} 65%,var(--mix))` } }, AS.fmtYearShort(t.origin.year)), dir > 0 ? h("span.wh-sa", {}, "→") : null); }
 
   function ensureMap(){ if (map) return; mapHost = h("div.wh-map"); map = AS.createMap(mapHost, { year:AS.MODERN_MAP, mode:"quiet", controls:true }); }
   let spread = null; /* { t, pts, src, years } for the technique on the map */
   function drawSpread(p){ if (!map || !spread) return; const { t, pts, src, years, parts } = spread, n = pts.length, full = p >= n, k = Math.floor(Math.min(p, n));
     const mk = [], arcs = [], oc = AS.regionColor(t.origin.region);
-    if (t.origin.lat != null && t.origin.lon != null) mk.push({ id:"o", lon:t.origin.lon, lat:t.origin.lat, r:7.5, color:oc, glow:true, pulse:true, label:`${shortPlace(t.origin.place)} · ${AS.fmtYearShort(t.origin.year)}`, labelAlways:true, priority:1e6, fixed:true,
+    if (t.origin.lat != null && t.origin.lon != null) mk.push({ id:"o", lon:t.origin.lon, lat:t.origin.lat, r:7.5, color:oc, glow:AS.theme.id === "night", pulse:true, label:`${shortPlace(t.origin.place)} · ${AS.fmtYearShort(t.origin.year)}`, labelAlways:true, priority:1e6, fixed:true,
       tip:`<div class="t">${esc(t.origin.place)}</div><div class="s">origin · ${fy(t.origin.year)}</div>` });
     pts.forEach((a, i) => { const c = AS.regionColor(a.region), tt = AS.clamp(p - i, 0, 1), here = S.region && a.region === S.region;
       if (src[i] && tt > 0){ let acc = 0; for (const part of parts[i]){ const u = AS.clamp((tt - acc) / part.w, 0, 1); acc += part.w; if (u > 0) arcs.push({ from:part.from, to:part.to, color:c, width:here ? 2.6 : 1.7, t:u }); } }

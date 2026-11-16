@@ -13,14 +13,21 @@ const METRICS = [
   { value:"balanced", label:"Balanced", title:"Share of the era's objects. On All eras: the mean of per-era shares, so 1900 counts no more than 1900 BCE." },
   { value:"raw", label:"Raw", title:"Plain object counts. Honest, and heavily tilted to 1750–2000 and works on paper." },
   { value:"signature", label:"Signature", title:"Lift: this place's share of the selection ÷ its share of everything. What is characteristic, not merely numerous." } ];
+/* Theme: jewel tones on dark maps, darker ink-like equivalents on paper. Night keeps its original values; the other
+   themes take UI colours from tokens. Luminous marker halos are a Night Gallery effect only. */
+const TH = AS.theme || { id:"night", light:false, css:() => "" }, LIGHT = !!TH.light, NIGHT = TH.id === "night", tok = (name, fb) => NIGHT ? fb : (TH.css(name) || fb);
+const pal = (dark, light) => LIGHT ? light : dark;
 const CATS = [
-  { key:"stone",  ci:1, label:"Stone & gems",           short:"Stone",       color:"#5b9bff" },
-  { key:"metal",  ci:2, label:"Metal",                  short:"Metal",       color:"#f5a13a" },
-  { key:"perish", ci:3, label:"Perishables (organic)",  short:"Perishables", color:"#37d39a" },
-  { key:"other",  ci:4, label:"Ceramic, glass & other", short:"Ceramic · glass", color:"#e06cf0" } ];
-const C_INST = "#9d8cff", C_ANI = "#ff7a59", C_PLACE = "#ecbd4f";
+  { key:"stone",  ci:1, label:"Stone & gems",           short:"Stone",       color:pal("#5b9bff", "#2b5aa8") },
+  { key:"metal",  ci:2, label:"Metal",                  short:"Metal",       color:pal("#f5a13a", "#b0690e") },
+  { key:"perish", ci:3, label:"Perishables (organic)",  short:"Perishables", color:pal("#37d39a", "#1d7a58") },
+  { key:"other",  ci:4, label:"Ceramic, glass & other", short:"Ceramic · glass", color:pal("#e06cf0", "#8a3a98") } ];
+const C_INST = pal("#9d8cff", "#55409f"), C_ANI = pal("#ff7a59", "#b54a1c"), C_PLACE = tok("--gold", "#ecbd4f");
+const C_LOW = tok("--muted", "#8f93a6"), C_NEUTRAL = tok("--ink", "#f1ebdd"), GLOW = NIGHT;
+/* on paper a marker's default pale rim disappears: outline bubbles in their own ink, diamonds in the paper colour */
+const RING = LIGHT ? c => c : () => undefined, RING_DIA = LIGHT ? (TH.css("--map-halo") || undefined) : undefined;
 const EXCLUDE_SUBS = new Set(["stone_other", "metal_other", "unspecified", "textile", "ceramic"]);
-const STRENGTH = { 3:{ label:"superpower of its era", short:"superpower", color:"#ecbd4f", r:11 }, 2:{ label:"major power", short:"major", color:"#f1ebdd", r:8 }, 1:{ label:"regional culture", short:"regional", color:"#aab3d0", r:5.5 } };
+const STRENGTH = { 3:{ label:"superpower of its era", short:"superpower", color:C_PLACE, r:11 }, 2:{ label:"major power", short:"major", color:C_NEUTRAL, r:8 }, 1:{ label:"regional culture", short:"regional", color:tok("--muted", "#aab3d0"), r:5.5 } };
 const MIN_N = 5, DEFAULT_POWER_ERA = 12, NEAR_KM = 1200, E20 = Array.from({ length:20 }, (_, i) => i);
 /* AS.regionOfPoint is a coarse lon/lat box test; these centroids land in the wrong box */
 const REGION_FIX = { "Micronesia":"oce", "Marquesas":"oce", "Indonesia (Java/Bali)":"sea", "Cyprus":"eur_s", "Greece (Crete)":"eur_s", "Greece (Rhodes)":"eur_s",
@@ -216,7 +223,7 @@ function renderMap(sel, vals, first){
     const era = S.era, emps = (X.EMP[era] || {}).empires || [];
     map.setBase({ year:AS.ERA2MAP[era], mode:"polities", featureTip:f => f.name ? `<div class="t">${esc(f.name)}</div>${f.sub && f.sub !== f.name ? `<div class="s">under ${esc(f.sub)}</div>` : ""}<div class="s">borders c. ${AS.mapKeyLabel(AS.ERA2MAP[era])}</div>` : "" });
     map.setMarkers(emps.map((e, k) => { const st = STRENGTH[e.strength] || STRENGTH[1];
-      return { id:"pw" + k, lon:e.lon, lat:e.lat, r:st.r, shape:"diamond", color:st.color, fill:.95, glow:e.strength >= 3, label:e.name, priority:e.strength * 10 - k * .01, labelAlways:e.strength >= 3, selected:power === k, data:{ kind:"power", k },
+      return { id:"pw" + k, lon:e.lon, lat:e.lat, r:st.r, shape:"diamond", color:st.color, ring:RING_DIA, fill:.95, glow:GLOW && e.strength >= 3, label:e.name, priority:e.strength * 10 - k * .01, labelAlways:e.strength >= 3, selected:power === k, data:{ kind:"power", k },
         tip:`<div class="t">${esc(e.name)}</div><div class="s">${st.label} · ${AS.eraLabel(era)}</div><div style="margin-top:5px">${esc(e.note || "")}</div>` }; }));
     if (pendingFly){ map.flyTo(pendingFly[0], pendingFly[1], 2.8, first ? 0 : 700); pendingFly = null; }
     lastPlace = null; scale = null; return;
@@ -225,11 +232,12 @@ function renderMap(sel, vals, first){
   scale = makeScale(vals);
   const labelled = new Set(vals.slice(0, 30).map(x => x.i));
   const marks = vals.map(x => { const r = scale.r(x.v), dim = S.metric === "signature" && x.v <= 1;
-    return { id:"p" + x.i, lon:x.p.lon, lat:x.p.lat, r, color:S.lens === "places" ? AS.regionColor(X.reg[x.i]) : sel.color, glow:r >= 5 && !dim, fill:dim ? .3 : null,
+    const col = S.lens === "places" ? AS.regionColor(X.reg[x.i]) : sel.color;
+    return { id:"p" + x.i, lon:x.p.lon, lat:x.p.lat, r, color:col, ring:RING(col), glow:GLOW && r >= 5 && !dim, fill:dim ? .3 : null,
       label:labelled.has(x.i) || S.place === x.i ? x.p.name : null, priority:r + x.v * 1e-6, selected:S.place === x.i, tip:placeTip(x, sel), data:{ kind:"place", i:x.i } }; });
-  for (const x of vals.low || []) marks.push({ id:"p" + x.i, lon:x.p.lon, lat:x.p.lat, r:2.5, color:"#8f93a6", fill:.45, label:S.place === x.i ? x.p.name : null, selected:S.place === x.i, tip:placeTip(x, sel), data:{ kind:"place", i:x.i } });
+  for (const x of vals.low || []) marks.push({ id:"p" + x.i, lon:x.p.lon, lat:x.p.lat, r:2.5, color:C_LOW, ring:RING(C_LOW), fill:.45, label:S.place === x.i ? x.p.name : null, selected:S.place === x.i, tip:placeTip(x, sel), data:{ kind:"place", i:x.i } });
   if (S.place != null && !vals.some(x => x.i === S.place) && !(vals.low || []).some(x => x.i === S.place)){ const p = X.P[S.place]; /* selected place has nothing in this slice: keep a ghost so the dossier still has an anchor */
-    marks.push({ id:"p" + S.place, lon:p.lon, lat:p.lat, r:4, color:"#8f93a6", fill:.25, label:p.name, selected:true, data:{ kind:"place", i:S.place }, tip:`<div class="t">${esc(p.name)}</div><div class="s">Nothing for ${esc(sel.label.toLowerCase())} · ${eraTxt()}</div>` }); }
+    marks.push({ id:"p" + S.place, lon:p.lon, lat:p.lat, r:4, color:C_LOW, ring:RING(C_LOW), fill:.25, label:p.name, selected:true, data:{ kind:"place", i:S.place }, tip:`<div class="t">${esc(p.name)}</div><div class="s">Nothing for ${esc(sel.label.toLowerCase())} · ${eraTxt()}</div>` }); }
   map.setMarkers(marks);
   if (S.place !== lastPlace){ if (S.place != null){ const p = X.P[S.place]; map.flyTo(p.lon, p.lat, Math.max(3, Math.min(map.zoom, 5)), first ? 0 : 700); } else if (!first) map.reset(600); lastPlace = S.place; }
 }
@@ -253,11 +261,11 @@ function renderReadout(sel, vals){
       h("div.at-hint", {}, "Hover a territory for its polity · click a diamond"));
     return; }
   const lensName = LENSES.find(l => l.value === S.lens).label, mName = METRICS.find(m => m.value === S.metric).label;
-  r.append(h("div.eyebrow", {}, `${lensName} · ${mName}`), h("h3.at-rt", { style:S.lens === "places" ? null : { color:`color-mix(in srgb, ${sel.color} 70%, white)` } }, sel.label), eraLine);
+  r.append(h("div.eyebrow", {}, `${lensName} · ${mName}`), h("h3.at-rt", { style:S.lens === "places" ? null : { color:`color-mix(in srgb, ${sel.color} 70%, var(--mix))` } }, sel.label), eraLine);
   if (!vals.length){ r.append(h("div.at-read", {}, S.metric === "signature" ? `No place reaches ${MIN_N} objects here, so there is no honest lift to show.${vals.low.length ? " Grey dots mark where the few are." : ""} Try Balanced.` : `Nothing recorded for this slice. ${S.era != null ? "Try another era." : ""}`)); return; }
   const top = vals.slice(0, 3).map(x => h("span", {}, x.p.name + " ", h("b.mono", {}, fmtV(x.v))));
   r.append(h("div.at-read", {}, S.metric === "signature" ? h("span.muted", {}, "Most characteristic of: ") : null, top.reduce((a, s, i) => a.concat(i ? [h("span.faint", {}, " · "), s] : [s]), [])));
-  const leg = h("div.at-legend", {}, sizeLegend(S.lens === "places" ? "#f1ebdd" : sel.color, v => fmtV(v)));
+  const leg = h("div.at-legend", {}, sizeLegend(S.lens === "places" ? C_NEUTRAL : sel.color, v => fmtV(v)));
   if (S.lens === "places"){ const tot = {}; let sum = 0; for (const x of vals){ tot[X.reg[x.i]] = (tot[X.reg[x.i]] || 0) + x.v; sum += x.v; }
     leg.append(h("div.at-regkey", {}, Object.entries(tot).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([id, v]) => h("span.at-kitem", { title:AS.region(id).name }, h("i.at-dot", { style:{ "--c":AS.regionColor(id) } }), AS.region(id).short, h("b.mono", {}, fmtPct(v / sum)))))); }
   else leg.append(h("div.at-legtxt", {}, h("div", {}, "size = ", h("b", {}, metricNoun())), S.metric === "signature" ? h("div.muted", {}, `log scale · faint = below ×1 · grey = under ${MIN_N} objects`) : h("div.muted", {}, `${vals.length} places · ${fmtN(S.era == null ? sel.G.reduce((a, b) => a + b, 0) : sel.G[S.era])} objects`)));
@@ -304,7 +312,7 @@ function matChart(){
     for (const c of CATS){ let hh = r[c.ci] / tot * colH; if (hh <= 0) continue; if (hh < 1) hh = 1; y -= hh;
       s += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${cw.toFixed(1)}" height="${Math.max(.5, hh - .8).toFixed(1)}" rx="1.5" fill="${c.color}" data-era="${i}" data-cat="${c.key}"${dim}${c.key === S.mat ? "" : ' fill-opacity=".62"'}/>`; }
     s += `<rect x="${x.toFixed(1)}" y="${H + 4}" width="${cw.toFixed(1)}" height="${S.era === i ? 6 : 4}" rx="1.5" fill="${AS.eraColor(i)}" data-era="${i}"/>`;
-    if (S.era === i) s += `<rect x="${(x - 1).toFixed(1)}" y="0" width="${(cw + 2).toFixed(1)}" height="${H + 1}" rx="2.5" fill="none" stroke="#fff" stroke-width="1.2" pointer-events="none"/>`; }
+    if (S.era === i) s += `<rect x="${(x - 1).toFixed(1)}" y="0" width="${(cw + 2).toFixed(1)}" height="${H + 1}" rx="2.5" fill="none" stroke="${tok("--ink", "#fff")}" stroke-width="1.2" pointer-events="none"/>`; }
   const box = h("div.at-chart", { html:`<svg viewBox="0 0 ${W} ${H + 26}" role="img" aria-label="Material mix by era">${s}<text x="0" y="${H + 23}">3000 BCE</text><text x="${W / 2}" y="${H + 23}" text-anchor="middle">1 CE</text><text x="${W}" y="${H + 23}" text-anchor="end">2000 CE</text></svg>` });
   box.addEventListener("click", e => { const r = e.target.closest("[data-era]"); if (r) commit({ era:+r.dataset.era === S.era ? null : +r.dataset.era }); });
   box.addEventListener("mousemove", e => { const r = e.target.closest("[data-era]"); if (!r) return AS.tip.hide(); const i = +r.dataset.era, g = rows[i];

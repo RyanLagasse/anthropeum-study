@@ -212,7 +212,7 @@ function tellsFor(o){
     const txt = String((t.title || "") + " " + (t.cue || "") + " " + (t.tags || []).join(" ")).toLowerCase();
     const sameKind = !!med && t.medium === med, shared = words.some(w => new RegExp("\\b" + w).test(txt));
     const km = Number.isFinite(+t.place.lat) ? AS.geo.havKm(o.lon, o.lat, +t.place.lon, +t.place.lat) : 9e9;
-    if (!(sameKind || shared) || km > 1500) return null;
+    if (!(med ? sameKind : shared) || km > 1500) return null;   /* a known object type must match the tell's medium; a shared material word alone is not enough (glass vessel vs "glass beads") */
     let sc = (+t.strength || 0) + (sameKind ? 6 : 0) + (shared ? 5 : 0) + (km < 400 ? 5 : km < 900 ? 2 : 0); if (o.country && String(t.place.label || "").includes(o.country)) sc += 4;
     return [sc, t]; }).filter(Boolean).sort((a, b) => b[0] - a[0]).slice(0, 3).map(x => x[1]);
 }
@@ -341,10 +341,10 @@ function engine(host, params, ctx, cfg){
 const enough = () => objects().length >= 12;
 const NOTE = "The practice gallery is not packed yet (data/gallery.js is empty).";
 const rep = (k, n) => Array(n).fill(k);
-[ { id:"daily", title:"Daily mix", blurb:"Eight objects, three games, one fixed draw per day.", accent:"#ecbd4f", glyph:ICON.daily, featured:true, daily:true, plan:["place", "older", "lineup", "place", "lineup", "older", "place", "lineup"] },
-  { id:"place", title:"Place & date", blurb:"The real game on objects you have never seen: drop a pin, pick an era. Five per round.", accent:"#3fd08f", glyph:ICON.place, plan:rep("place", 5) },
-  { id:"older", title:"Older or newer?", blurb:"Two objects, one question. The gap between them shrinks every time you get it right.", accent:"#5b86ff", glyph:ICON.older, plan:rep("older", 10), variants:[{ label:"Same region only", params:{ same:"1" } }] },
-  { id:"lineup", title:"Which one is from…?", blurb:"Four objects in a row; pick the one from the named region or era. The decoys are neighbours.", accent:"#c56bd6", glyph:ICON.lineup, plan:rep("lineup", 8) }
+[ { id:"daily", title:"Daily mix", blurb:"Eight objects, three games, one fixed draw per day.", accent:"var(--gold)", glyph:ICON.daily, featured:true, daily:true, plan:["place", "older", "lineup", "place", "lineup", "older", "place", "lineup"] },
+  { id:"place", title:"Place & date", blurb:"The real game on objects you have never seen: drop a pin, pick an era. Five per round.", accent:"var(--good)", glyph:ICON.place, plan:rep("place", 5) },
+  { id:"older", title:"Older or newer?", blurb:"Two objects, one question. The gap between them shrinks every time you get it right.", accent:"var(--lapis)", glyph:ICON.older, plan:rep("older", 10), variants:[{ label:"Same region only", params:{ same:"1" } }] },
+  { id:"lineup", title:"Which one is from…?", blurb:"Four objects in a row; pick the one from the named region or era. The decoys are neighbours.", accent:AS.theme && AS.theme.light ? "#8a3f9c" : "#c56bd6", glyph:ICON.lineup, plan:rep("lineup", 8) }
 ].forEach(cfg => Q.register(Object.assign({ group:GROUP, available:enough, unavailableNote:NOTE, start:(host, params, ctx) => engine(host, params || {}, ctx || { exit(){ AS.go("practice"); } }, cfg) }, cfg)));
 
 /* ============================ calibration dashboard ============================ */

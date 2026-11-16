@@ -26,6 +26,7 @@
 (function(){
 "use strict";
 const AS = window.AS, h = AS.h;
+const TC = (n, d) => (AS.theme && AS.theme.css(n)) || d;   /* a theme token's current value, for canvas markers */
 const Q = AS.quiz = AS.quiz || {}; Q.modes = Q.modes || {};
 Q.register = m => { Q.modes[m.id] = m; return m; };
 Q.scoreBurst = (pts, max) => { const el = h("div.pts", {}, "0", h("small", {}, "/ " + AS.fmtN(max))); const t0 = performance.now(), dur = AS.still ? 0 : 700;
@@ -60,13 +61,13 @@ Q.placeTask = function(host, o){
   const setStatus = () => { if (done) return; const need = []; if (askPin && !guess) need.push("click the map to drop your pin"); if (askEra && eraGuess == null) need.push("pick an era below");
     status.innerHTML = need.length ? `<span class="gold">●</span> ${need.join(" · ")}` : `<span class="ok">●</span> ready — you can still move your pin or change era`; lock.disabled = need.length > 0; };
   if (askPin){ map = AS.createMap(stage, { year:o.mapYear || AS.MODERN_MAP, mode:"quiet", crosshair:true });
-    map.on("click", e => { if (done) return; guess = { lon:e.lon, lat:e.lat }; map.setMarkers([{ lon:guess.lon, lat:guess.lat, r:9, shape:"pin", color:"#ecbd4f", label:"your pin", labelAlways:true, inert:true, fixed:true }]); setStatus(); }); }
+    map.on("click", e => { if (done) return; guess = { lon:e.lon, lat:e.lat }; map.setMarkers([{ lon:guess.lon, lat:guess.lat, r:9, shape:"pin", color:TC("--gold", "#ecbd4f"), label:"your pin", labelAlways:true, inert:true, fixed:true }]); setStatus(); }); }
   if (askEra) bar = AS.ui.eraBar(eraHost, { value:null, allowAll:false, ages:true, onChange:i => { if (done){ bar.set(eraGuess); return; } eraGuess = i; setStatus(); } });
   const finish = () => { if (done || lock.disabled) return; done = true; const t = o.truth; const res = { max:(askPin ? 5000 : 0) + (askEra ? 5000 : 0), pts:0 };
     if (askPin){ res.lon = guess.lon; res.lat = guess.lat; res.km = AS.geo.havKm(guess.lon, guess.lat, t.lon, t.lat); res.pinPts = AS.score.pin(res.km, Math.max(50, t.r_km || 50), 800); res.pts += res.pinPts; res.regionGuess = AS.regionOfPoint(guess.lon, guess.lat);
       map.setCrosshair(false); if (o.revealYear) map.setBase({ year:o.revealYear });
-      map.setAreas([{ lon:t.lon, lat:t.lat, r_km:Math.max(50, t.r_km || 50), color:"#3fd08f", alpha:.14 }]); map.setArcs([{ from:[guess.lon, guess.lat], to:[t.lon, t.lat], color:"#f1ebdd", dashed:true, width:1.6 }]);
-      map.setMarkers([{ lon:guess.lon, lat:guess.lat, r:8, shape:"pin", color:"#ff6b6b", label:"you", labelAlways:true, inert:true, fixed:true }, { lon:t.lon, lat:t.lat, r:9, shape:"pin", color:"#3fd08f", label:t.label || "answer", labelAlways:true, pulse:true, inert:true, fixed:true }]);
+      map.setAreas([{ lon:t.lon, lat:t.lat, r_km:Math.max(50, t.r_km || 50), color:TC("--good", "#3fd08f"), alpha:.14 }]); map.setArcs([{ from:[guess.lon, guess.lat], to:[t.lon, t.lat], color:TC("--ink", "#f1ebdd"), dashed:true, width:1.6 }]);
+      map.setMarkers([{ lon:guess.lon, lat:guess.lat, r:8, shape:"pin", color:TC("--bad", "#ff6b6b"), label:"you", labelAlways:true, inert:true, fixed:true }, { lon:t.lon, lat:t.lat, r:9, shape:"pin", color:TC("--good", "#3fd08f"), label:t.label || "answer", labelAlways:true, pulse:true, inert:true, fixed:true }]);
       map.fit([[guess.lon, guess.lat], [t.lon, t.lat]], { pad:110, maxZoom:6, ms:AS.still ? 0 : 800 }); }
     if (askEra){ res.eraGuess = eraGuess; res.eraPts = AS.score.era(eraGuess, t.eras); res.pts += res.eraPts; bar.setMarks({ truth:t.eras, guess:eraGuess }); }
     status.remove(); lock.remove(); left.querySelector(".qt-ask .row").remove();

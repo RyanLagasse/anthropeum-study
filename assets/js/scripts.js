@@ -298,7 +298,7 @@ function drawDetailEra(syncBar){
   const sorted = s.areas.slice().sort((a, b) => b.r_km - a.r_km), labelled = [];
   map.setAreas(sorted.map(a => { const on = areaOn(a, era), col = AS.regionColor(a.region);
     const lab = on && a.label && !labelled.some(q => AS.geo.havKm(a.lon, a.lat, q.lon, q.lat) < Math.max(a.r_km, q.r_km) * .45); if (lab) labelled.push(a);
-    return on ? { lon:a.lon, lat:a.lat, r_km:a.r_km, color:col, alpha:.2, label:lab ? a.label : null } : { lon:a.lon, lat:a.lat, r_km:a.r_km, color:"#5d627a", alpha:.03, dashed:true }; }));
+    return on ? { lon:a.lon, lat:a.lat, r_km:a.r_km, color:col, alpha:.2, label:lab ? a.label : null, labelColor:AS.theme.light ? AS.theme.css("--map-label") : null } : { lon:a.lon, lat:a.lat, r_km:a.r_km, color:AS.theme.css("--faint") || "#5d627a", alpha:AS.theme.light ? .05 : .03, dashed:true }; }));
   const n = s.areas.filter(a => areaOn(a, era)).length;
   if (M.readout) M.readout.textContent = era == null ? `all periods · ${s.areas.length} area${s.areas.length > 1 ? "s" : ""}` : n ? `${AS.eraLabel(era)} · ${n} of ${s.areas.length} active` : `${AS.eraLabel(era)} · not in use`;
 }
@@ -325,7 +325,7 @@ function drawWorld(refit){
   if (refit){ const narrowed = M.visible.length < M.all.length, pts = [];
     if (narrowed) for (const s of M.visible) for (const a of s.areas){ if (M.st.region && a.region !== M.st.region) continue; pts.push([a.lon, a.lat]); for (const b of [0, 90, 180, 270]) pts.push(AS.geo.dest(a.lon, a.lat, b, Math.min(a.r_km, 3000))); }
     if (pts.length) M.worldMap.fit(pts, { pad:70, maxZoom:6, ms:AS.still ? 0 : 600 }); else M.worldMap.reset(AS.still ? 0 : 500); }
-  M.wCap.innerHTML = ""; M.wCap.append(h("div.eyebrow", {}, AS.ageOf(era).name), h("div.sc-w-era", { style:{ color:AS.eraColor(era) } }, AS.eraLabel(era)),
+  M.wCap.innerHTML = ""; M.wCap.append(h("div.eyebrow", {}, AS.ageOf(era).name), h("div.sc-w-era", { style:{ color:AS.theme.id === "night" ? AS.eraColor(era) : `color-mix(in srgb,${AS.eraColor(era)} 72%,var(--mix))` } }, AS.eraLabel(era)),
     h("div.sc-w-n", {}, h("b.mono", {}, String(act.length)), act.length === 1 ? " script in use" : " scripts in use"), h("div.faint.sc-w-b", {}, "borders c. " + AS.mapKeyLabel(AS.ERA2MAP[era])));
   /* side list, grouped by region */
   const side = M.wSide; side.innerHTML = "";

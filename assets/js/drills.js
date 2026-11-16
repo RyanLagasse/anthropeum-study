@@ -15,7 +15,10 @@
 "use strict";
 const AS = window.AS, h = AS.h, Q = AS.quiz, D = window.AS_DATA = window.AS_DATA || {};
 const N = 8;
-const ACC = { tells:"#ecbd4f", lookalikes:"#c56bd6", scripts:"#37bfc2", when:"#4c8fe6", powers:"#f06f9b" };
+/* accents: the tells drill follows the theme accent; the others are fixed hues, inked darker on light themes */
+const TC = n => (AS.theme && AS.theme.css(n)) || { "--good":"#3fd08f", "--bad":"#ff6b6b", "--ink":"#f1ebdd", "--gold":"#ecbd4f" }[n];
+const ACC = AS.theme && AS.theme.light ? { tells:"var(--gold)", lookalikes:"#8a3f9c", scripts:"#1b7f86", when:"#2b5fa8", powers:"#b03a66" }
+  : { tells:"var(--gold)", lookalikes:"#c56bd6", scripts:"#37bfc2", when:"#4c8fe6", powers:"#f06f9b" };
 const svg = d => `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
 
 /* ================= helpers ================= */
@@ -234,7 +237,7 @@ function buildScripts(f){
         return { lon:best.lon, lat:best.lat, r_km:Math.max(300, best.r_km || 0), label:best.label, area:best }; });
       const task = Q.placeTask(body, { media, prompt:"Where and when would you find this writing?", hint:hintOf(api, "Any place and any era it was really in use counts."), truth, nextLabel:api.nextLabel, onNext:api.next,
         reveal:() => { const hit = truth.freeze().area; media.showAnswer(); return scriptReveal(s, areas.length > 1 ? h("p.dr-text.dr-dim", {}, `Scored against the nearest of its ${areas.length} home ranges: ${hit.label}.`) : null); },
-        onDone:res => { if (task.map){ const hit = truth.freeze().area; task.map.setAreas(areas.map(a => a === hit ? { lon:a.lon, lat:a.lat, r_km:Math.max(300, a.r_km || 0), color:"#3fd08f", alpha:.14 } : { lon:a.lon, lat:a.lat, r_km:Math.max(300, a.r_km || 0), color:AS.regionColor(a.region), alpha:.07, label:a.label })); }
+        onDone:res => { if (task.map){ const hit = truth.freeze().area; task.map.setAreas(areas.map(a => a === hit ? { lon:a.lon, lat:a.lat, r_km:Math.max(300, a.r_km || 0), color:TC("--good"), alpha:.14 } : { lon:a.lon, lat:a.lat, r_km:Math.max(300, a.r_km || 0), color:AS.regionColor(a.region), alpha:.07, label:a.label })); }
           api.done(res, { era:nearest(eras, res.eraGuess) }); } });
       truth.bind(task); return task; } });
     else if (kind === "name") qs.push({ ref:s.id, deck:"scripts", kind:"name", label:s.name, region, href, run(body, api){
@@ -294,8 +297,8 @@ function buildWhen(f){
       const task = Q.placeTask(body, { media:cardOf(api), prompt:"Where did it start?", hint:hintOf(api, "Pin the earliest known home."), askEra:false, truth:{ lon:o.lon, lat:o.lat, r_km:400, label:o.place, dateLabel:AS.fmtYear(o.year) },
         nextLabel:api.nextLabel, onNext:api.next, reveal:() => techReveal(t),
         onDone:res => { const arrs = techArrivals(t).filter(a => num(a.lat) && num(a.lon)); if (task.map && arrs.length){
-            task.map.setArcs([{ from:[res.lon, res.lat], to:[o.lon, o.lat], color:"#f1ebdd", dashed:true, width:1.6 }, ...arrs.filter(a => !a.independent).map(a => ({ from:[o.lon, o.lat], to:[a.lon, a.lat], color:AS.regionColor(a.region), width:1.2 }))]);
-            task.map.setMarkers([{ lon:res.lon, lat:res.lat, r:8, shape:"pin", color:"#ff6b6b", label:"you", labelAlways:true, inert:true, fixed:true }, { lon:o.lon, lat:o.lat, r:9, shape:"pin", color:"#3fd08f", label:o.place || "origin", labelAlways:true, pulse:true, inert:true, fixed:true },
+            task.map.setArcs([{ from:[res.lon, res.lat], to:[o.lon, o.lat], color:TC("--ink"), dashed:true, width:1.6 }, ...arrs.filter(a => !a.independent).map(a => ({ from:[o.lon, o.lat], to:[a.lon, a.lat], color:AS.regionColor(a.region), width:1.2 }))]);
+            task.map.setMarkers([{ lon:res.lon, lat:res.lat, r:8, shape:"pin", color:TC("--bad"), label:"you", labelAlways:true, inert:true, fixed:true }, { lon:o.lon, lat:o.lat, r:9, shape:"pin", color:TC("--good"), label:o.place || "origin", labelAlways:true, pulse:true, inert:true, fixed:true },
               ...arrs.map(a => ({ lon:a.lon, lat:a.lat, r:5, shape:a.independent ? "diamond" : "circle", color:AS.regionColor(a.region), label:`${a.place} ${AS.fmtYearShort(a.year)}`, inert:true, fixed:true }))]); }
           api.done(res, {}); } });
       return task; } });

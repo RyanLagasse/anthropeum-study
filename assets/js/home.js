@@ -2,6 +2,7 @@
 (function(){
 "use strict";
 const AS = window.AS, h = AS.h, D = window.AS_DATA;
+const TH = AS.theme || { id:"night", light:false, css:() => "" }, LIGHT = !!TH.light, NIGHT = TH.id === "night", pal = (dark, light) => LIGHT ? light : dark;
 const dayIndex = () => { const d = new Date(); return Math.floor((Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - Date.UTC(2026, 0, 1)) / 864e5); };
 const pick = (arr, salt) => arr && arr.length ? arr[((dayIndex() * 2654435761 + salt * 40503) >>> 0) % arr.length] : null;
 const tells = () => (D.tells && D.tells.tells) || [], looks = () => (D.tells && D.tells.lookalikes) || [];
@@ -27,9 +28,11 @@ AS.views.home = {
       h("div.hm-now", {}, h("div.eyebrow", {}, "The world in"), eraName, eraAge, powers),
       barHost);
     const map = this.map = AS.createMap(stage, { year:AS.ERA2MAP[era], mode:"polities", controls:false });
+    /* power diamonds: gold leaf on Night; elsewhere the theme accent, rimmed in the paper colour on light maps */
+    const powerCol = NIGHT ? "#f7d98b" : (TH.css(LIGHT ? "--gold" : "--gold-2") || "#f7d98b"), powerRing = LIGHT ? (TH.css("--map-halo") || undefined) : undefined;
     const showEra = i => { era = i; map.setBase({ year:AS.ERA2MAP[i] });
       const ems = ((D.empires && D.empires.eras[i]) || { empires:[] }).empires;
-      map.setMarkers(ems.map(e => ({ lon:e.lon, lat:e.lat, r:3 + e.strength * 2.2, shape:"diamond", color:"#f7d98b", label:e.strength >= 2 ? e.name : null, priority:e.strength, glow:e.strength === 3, tip:`<div class="t">${AS.esc(e.name)}</div><div class="s">${AS.esc(e.note || "")}</div>` })));
+      map.setMarkers(ems.map(e => ({ lon:e.lon, lat:e.lat, r:3 + e.strength * 2.2, shape:"diamond", color:powerCol, ring:powerRing, label:e.strength >= 2 ? e.name : null, priority:e.strength, glow:NIGHT && e.strength === 3, tip:`<div class="t">${AS.esc(e.name)}</div><div class="s">${AS.esc(e.note || "")}</div>` })));
       eraName.textContent = AS.eraLabel(i); eraName.style.color = AS.eraColor(i); eraAge.textContent = AS.ageOf(i).name;
       powers.innerHTML = ""; for (const e of ems.filter(e => e.strength === 3).slice(0, 4)) powers.append(h("span.hm-power", {}, e.name)); };
     const stop = () => { clearInterval(timer); timer = null; };
@@ -48,7 +51,7 @@ AS.views.home = {
       ans.onclick = reveal; ans.onkeydown = e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); reveal(); } };
       today.append(h("div.card.gilt.hm-day", { style:{ "--c":AS.regionColor(tell.place && tell.place.region) } }, h("div.eyebrow", {}, "Tell of the day"), h("h3", {}, tell.title), h("p.hm-cue", {}, tell.cue), ans,
         h("div.row.between.hm-day-foot", {}, h("span.row", {}, tell.place ? AS.ui.regionTag(tell.place.region) : null, AS.ui.pips(tell.strength || 1)), h("a", { href:AS.href("tells", { id:tell.id }) }, "Open in Tells →")))); }
-    if (script){ today.append(h("div.card.gilt.hm-day", { style:{ "--c":"#22b5c9" } }, h("div.eyebrow", {}, "Script of the day"),
+    if (script){ today.append(h("div.card.gilt.hm-day", { style:{ "--c":pal("#22b5c9", "#1b7f95") } }, h("div.eyebrow", {}, "Script of the day"),
         h("div.hm-specimen", { dir:script.dir === "rtl" ? "rtl" : null, style:{ fontFamily:`"${script.font}", serif` } }, script.sample),
         h("h3", {}, script.name), h("p.hm-cue", {}, script.infer || (script.look || [])[0] || ""),
         h("div.row.between.hm-day-foot", {}, AS.ui.yearChip(script.from, script.to), h("a", { href:AS.href("scripts", { id:script.id }) }, "Open in Scripts →")))); }
@@ -58,10 +61,10 @@ AS.views.home = {
 
     /* ---------- rooms ---------- */
     const art = {
-      atlas(){ const s = h("div.hm-art.atlas"); const pts = [[18, 52, 16, "#8fb9c9"], [46, 38, 22, "#5d8ff2"], [52, 58, 10, "#edd15a"], [70, 44, 14, "#ef5350"], [62, 62, 7, "#f6a821"], [30, 72, 8, "#f06f9b"], [80, 70, 6, "#4dd6c1"], [56, 76, 6, "#e07a3f"]];
+      atlas(){ const s = h("div.hm-art.atlas"); const pts = [[18, 52, 16, pal("#8fb9c9", "#5d7d8e")], [46, 38, 22, pal("#5d8ff2", "#2f5ea8")], [52, 58, 10, pal("#edd15a", "#b99a1f")], [70, 44, 14, pal("#ef5350", "#c2362a")], [62, 62, 7, pal("#f6a821", "#d08a1c")], [30, 72, 8, pal("#f06f9b", "#c8557b")], [80, 70, 6, pal("#4dd6c1", "#35a798")], [56, 76, 6, pal("#e07a3f", "#c2602b")]];
         for (const p of pts) s.append(h("i", { style:{ left:p[0] + "%", top:p[1] + "%", width:p[2] * 2 + "px", height:p[2] * 2 + "px", "--c":p[3] } })); return s; },
       when(){ const s = h("div.hm-art.when"); for (let i = 0; i < 12; i++) s.append(h("i", { style:{ left:(4 + i * 7.6) + "%", top:(8 + i * 7) + "%", "--c":AS.eraColor(Math.round(i * 1.7)) } })); return s; },
-      tells(){ const s = h("div.hm-art.tells"); ["#ef5350", "#edd15a", "#22b5c9"].forEach((c, i) => s.append(h("i", { style:{ "--c":c, "--i":i } }, h("b"), h("u"), h("u"), h("u")))); return s; },
+      tells(){ const s = h("div.hm-art.tells"); [pal("#ef5350", "#c2362a"), pal("#edd15a", "#b99a1f"), pal("#22b5c9", "#1b7f95")].forEach((c, i) => s.append(h("i", { style:{ "--c":c, "--i":i } }, h("b"), h("u"), h("u"), h("u")))); return s; },
       scripts(){ return h("div.hm-art.scripts", {}, h("span", {}, "文"), h("span", {}, "ع"), h("span", {}, "अ"), h("span", {}, "Ω"), h("span", {}, "ᚠ")); },
       practice(){ return h("div.hm-art.practice", {}, h("i"), h("i"), h("i"), h("b")); }
     };

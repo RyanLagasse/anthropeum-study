@@ -23,7 +23,7 @@
    map.setCrosshair(bool)   map.redraw()   map.destroy()
    Theming: colours are read from CSS custom properties on :root when the map is created — --ocean-0 --ocean-1 --land --land-line --coast --grat --ink --bg
    plus optional --map-halo (label outline) --map-label --map-glow --map-rim --map-equator --map-coast-2 --map-polity-line --map-polity-label --map-polity-halo
-   --map-polity-hover --map-polity-sat / --map-polity-light (numeric shifts applied to polity fill saturation / lightness, e.g. "-8" / "38" for a light theme).
+   --map-polity-hover --map-label-style (e.g. italic) --map-marker-ring (selected/hover outline) --map-flat (1 = flat marker fills outlined in their own colour, no gloss) --map-polity-sat / --map-polity-light (numeric shifts applied to polity fill saturation / lightness, e.g. "-8" / "38" for a light theme).
    Marker/area/arc arrays are replaced wholesale on each set* call; call again to update. */
 (function(){
 "use strict";
@@ -72,7 +72,7 @@ AS.createMap = function(host, opts = {}){
     /* optional theme tokens (defaults = night gallery): */
     halo:V("--map-halo") || "rgba(6,9,18,.9)", glow:V("--map-glow") || "rgba(70,120,255,.25)", rim:V("--map-rim") || "rgba(160,190,255,.22)", equator:V("--map-equator") || "rgba(236,189,79,.16)", coast2:V("--map-coast-2") || "rgba(140,185,255,.10)",
     polLine:V("--map-polity-line") || "rgba(8,11,20,.75)", polLabel:V("--map-polity-label") || "rgba(255,255,255,.62)", polHalo:V("--map-polity-halo") || "rgba(8,11,20,.55)", polHover:V("--map-polity-hover") || "rgba(255,255,255,.14)",
-    pS:parseFloat(V("--map-polity-sat")) || 0, pL:parseFloat(V("--map-polity-light")) || 0, labelInk:V("--map-label") || V("--ink") || "#f1ebdd" };
+    pS:parseFloat(V("--map-polity-sat")) || 0, pL:parseFloat(V("--map-polity-light")) || 0, labelInk:V("--map-label") || V("--ink") || "#f1ebdd", labelStyle:V("--map-label-style") || "normal", ring:V("--map-marker-ring") || "#fff", flat:V("--map-flat") === "1", noGlow:/rgba\(0, ?0, ?0, ?0\)|transparent/.test(V("--map-glow")) };
   const pcache = {}; const pcol = n => pcache[n] || (pcache[n] = polityColor(n, C.pS, C.pL));
   const root = AS.h("div.asmap" + (o.crosshair ? ".crosshair" : "")); const base = AS.h("canvas"), over = AS.h("canvas"); root.append(base, over);
   const bx = base.getContext("2d"), ox = over.getContext("2d"); host.append(root);
@@ -114,7 +114,7 @@ AS.createMap = function(host, opts = {}){
         bx.font = `600 ${fs}px ${C.font}`; const tw = bx.measureText(c.f.name).width; const b = [cx - tw / 2 - 4, cy - fs / 2 - 3, cx + tw / 2 + 4, cy + fs / 2 + 3]; if (boxes.some(q => !(b[2] < q[0] || b[0] > q[2] || b[3] < q[1] || b[1] > q[3]))) continue;
         boxes.push(b); seen.add(c.f.name); bx.fillStyle = C.polLabel; bx.strokeStyle = C.polHalo; bx.lineWidth = 3; bx.strokeText(c.f.name, cx, cy); bx.fillText(c.f.name, cx, cy); } }
   }
-  function label(ctx, text, x, y, opt = {}){ const fs = opt.size || 12; ctx.font = `${opt.weight || 600} ${fs}px ${C.font}`; ctx.textAlign = opt.align || "center"; ctx.textBaseline = opt.base || "alphabetic";
+  function label(ctx, text, x, y, opt = {}){ const fs = opt.size || 12; ctx.font = `${C.labelStyle} ${opt.weight || 600} ${fs}px ${C.font}`; ctx.textAlign = opt.align || "center"; ctx.textBaseline = opt.base || "alphabetic";
     ctx.lineJoin = "round"; ctx.lineWidth = 3.5; ctx.strokeStyle = C.halo; ctx.strokeText(text, x, y); ctx.fillStyle = opt.color || C.labelInk; ctx.fillText(text, x, y); }
   function drawOver(){
     ox.setTransform(dpr, 0, 0, dpr, 0, 0); ox.clearRect(0, 0, W, H);
@@ -124,7 +124,7 @@ AS.createMap = function(host, opts = {}){
     /* geographic areas */
     for (const a of areas){ ox.beginPath(); for (let b = 0; b <= 360; b += 6){ const q = AS.geo.dest(a.lon, a.lat, b, a.r_km), s = toScreen(q[0], q[1]); b ? ox.lineTo(s[0], s[1]) : ox.moveTo(s[0], s[1]); } ox.closePath();
       ox.fillStyle = withAlpha(a.color || C.gold, a.alpha == null ? .16 : a.alpha); ox.fill(); ox.lineWidth = 1.4; ox.setLineDash(a.dashed ? [5, 4] : []); ox.strokeStyle = withAlpha(a.color || C.gold, .8); ox.stroke(); ox.setLineDash([]);
-      if (a.label){ const s = toScreen(a.lon, a.lat); label(ox, a.label, s[0], s[1] + 4, { color:a.labelColor || "#fff" }); } }
+      if (a.label){ const s = toScreen(a.lon, a.lat); label(ox, a.label, s[0], s[1] + 4, { color:a.labelColor || C.labelInk }); } }
     /* arcs */
     for (const a of arcs){ const pts = AS.geo.arc(a.from[0], a.from[1], a.to[0], a.to[1], 40).map(p => toScreen(p[0], p[1])); const t = a.t == null ? 1 : Math.max(0, Math.min(1, a.t)); if (t <= 0) continue;
       const n = Math.max(1, Math.floor((pts.length - 1) * t)); /* lift the arc off the ground for a "flight path" look */
@@ -136,13 +136,13 @@ AS.createMap = function(host, opts = {}){
     /* markers, largest first so small ones stay clickable on top */
     const zs = Math.pow(k / k0, .28); const order = markers.map(m => { const s = toScreen(m.lon, m.lat); m._x = s[0]; m._y = s[1]; m._r = (m.r || 5) * (m.fixed ? 1 : zs); return m; }).sort((a, b) => b._r - a._r);
     for (const m of order){ if (m._x < -80 || m._x > W + 80 || m._y < -80 || m._y > H + 80) continue; const col = m.color || C.gold, r = m._r, hov = hover === m;
-      if (m.glow){ ox.save(); ox.globalCompositeOperation = "lighter"; const g = ox.createRadialGradient(m._x, m._y, r * .2, m._x, m._y, r * 2.4); g.addColorStop(0, withAlpha(col, .42)); g.addColorStop(1, withAlpha(col, 0)); ox.fillStyle = g; ox.beginPath(); ox.arc(m._x, m._y, r * 2.4, 0, 7); ox.fill(); ox.restore(); }
+      if (m.glow && !C.noGlow){ ox.save(); ox.globalCompositeOperation = "lighter"; const g = ox.createRadialGradient(m._x, m._y, r * .2, m._x, m._y, r * 2.4); g.addColorStop(0, withAlpha(col, .42)); g.addColorStop(1, withAlpha(col, 0)); ox.fillStyle = g; ox.beginPath(); ox.arc(m._x, m._y, r * 2.4, 0, 7); ox.fill(); ox.restore(); }
       if (m.pulse){ const ph = performance.now() < pulseUntil ? (clock / 1400 + (m._ph || (m._ph = Math.random()))) % 1 : .45; ox.beginPath(); ox.arc(m._x, m._y, r + ph * 22, 0, 7); ox.strokeStyle = withAlpha(col, .55 * (1 - ph)); ox.lineWidth = 2; ox.stroke(); }
       if (m.shape === "pin"){ const hgt = r * 2.6; ox.beginPath(); ox.moveTo(m._x, m._y); ox.bezierCurveTo(m._x - r * 1.3, m._y - hgt * .55, m._x - r, m._y - hgt, m._x, m._y - hgt); ox.bezierCurveTo(m._x + r, m._y - hgt, m._x + r * 1.3, m._y - hgt * .55, m._x, m._y); ox.closePath();
         ox.fillStyle = col; ox.shadowColor = "rgba(0,0,0,.6)"; ox.shadowBlur = 8; ox.fill(); ox.shadowBlur = 0; ox.lineWidth = 1.6; ox.strokeStyle = "rgba(255,255,255,.9)"; ox.stroke(); ox.beginPath(); ox.arc(m._x, m._y - hgt * .68, r * .36, 0, 7); ox.fillStyle = "rgba(255,255,255,.95)"; ox.fill(); }
       else { ox.beginPath(); if (m.shape === "diamond"){ ox.moveTo(m._x, m._y - r * 1.25); ox.lineTo(m._x + r * 1.25, m._y); ox.lineTo(m._x, m._y + r * 1.25); ox.lineTo(m._x - r * 1.25, m._y); ox.closePath(); } else ox.arc(m._x, m._y, r, 0, 7);
-        const g = ox.createRadialGradient(m._x - r * .3, m._y - r * .35, r * .1, m._x, m._y, r * 1.05); const fa = m.fill == null ? (r > 9 ? .55 : .9) : m.fill; g.addColorStop(0, withAlpha(lighten(col), Math.min(1, fa + .25))); g.addColorStop(1, withAlpha(col, fa)); ox.fillStyle = g; ox.fill();
-        ox.lineWidth = m.selected ? 2.6 : hov ? 2.2 : 1.2; ox.strokeStyle = m.selected || hov ? "#fff" : (m.ring || withAlpha(lighten(col), .95)); ox.stroke();
+        const fa = m.fill == null ? (r > 9 ? .55 : .9) : m.fill; if (C.flat) ox.fillStyle = withAlpha(col, Math.min(1, fa + .08)); else { const g = ox.createRadialGradient(m._x - r * .3, m._y - r * .35, r * .1, m._x, m._y, r * 1.05); g.addColorStop(0, withAlpha(lighten(col), Math.min(1, fa + .25))); g.addColorStop(1, withAlpha(col, fa)); ox.fillStyle = g; } ox.fill();
+        ox.lineWidth = m.selected ? 2.6 : hov ? 2.2 : 1.2; ox.strokeStyle = m.selected || hov ? C.ring : (m.ring || (C.flat ? col : withAlpha(lighten(col), .95))); ox.stroke();
         if (m.selected){ ox.beginPath(); ox.arc(m._x, m._y, r + 5, 0, 7); ox.lineWidth = 1.2; ox.strokeStyle = withAlpha(C.gold, .9); ox.stroke(); } }
     }
     /* labels with collision avoidance: selected/always first, then by priority */

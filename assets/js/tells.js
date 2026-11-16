@@ -5,6 +5,7 @@
 (function(){
 "use strict";
 const AS = window.AS, h = AS.h;
+const TC = (n, d) => (AS.theme && AS.theme.css(n)) || d;   /* a theme token's current value, for canvas markers */
 const ANY = "any";
 const MEDIA = { painting:"Painting", ceramics:"Ceramics", metalwork:"Metalwork", sculpture:"Sculpture", textile:"Textile", manuscript:"Manuscript", arms:"Arms & armour",
   jewelry:"Jewelry", glass:"Glass", furniture:"Furniture", mask:"Masks", architecture:"Architecture", coins:"Coins", lacquer:"Lacquer", "ivory-bone":"Ivory & bone",
@@ -21,7 +22,7 @@ const num = v => (typeof v === "number" && isFinite(v)) ? v : (typeof v === "str
 const str = v => v == null ? "" : String(v);
 const arr = v => Array.isArray(v) ? v.filter(x => x != null && x !== "").map(String) : (typeof v === "string" && v ? [v] : []);
 const isRegion = id => AS.REGIONS.some(r => r.id === id);
-const reg = id => id === ANY ? { id:ANY, name:"Anywhere", short:"Anywhere", color:"#8f93a6" } : AS.region(id);
+const reg = id => id === ANY ? { id:ANY, name:"Anywhere", short:"Anywhere", color:TC("--muted", "#8f93a6") } : AS.region(id);
 const terms = q => str(q).toLowerCase().split(/\s+/).filter(Boolean);
 const dueText = c => { const d = (c.due - Date.now()) / 864e5; return d <= 0 ? "due now" : d < 1.5 ? "back tomorrow" : `back in ${Math.round(d)} d`; };
 
@@ -232,7 +233,7 @@ function renderGrid(){
 }
 function spanStrip(t){
   if (!t.years) return null; const a = AS.eraOf(t.years[0]), b = AS.eraOf(Math.max(t.years[0], t.years[1] - 1)), stops = [];
-  for (let i = 0; i < 20; i++) stops.push(`${i >= a && i <= b ? AS.eraColor(i) : "rgba(255,255,255,.07)"} ${i * 5}% ${i * 5 + 5}%`);
+  for (let i = 0; i < 20; i++) stops.push(`${i >= a && i <= b ? AS.eraColor(i) : "rgba(var(--tint),.07)"} ${i * 5}% ${i * 5 + 5}%`);
   return h("div.tl-span", { title:`${AS.rangeLabel(t.years[0], t.years[1])} on the 3000 BCE – 2000 CE scale`, style:{ background:`linear-gradient(90deg,${stops.join(",")})` } });
 }
 function boxEl(c){ const b = h("span.tl-box", { title:`Box ${c.box} of 5 · ${dueText(c)} · seen ${c.seen}×` }); for (let i = 1; i <= 5; i++) b.append(h("i" + (i <= c.box ? ".on" : ""))); return b; }
@@ -370,7 +371,7 @@ function renderPanel(s){
   if (!lmap && els.lmap.offsetWidth) lmap = AS.createMap(els.lmap, { controls:false });
   if (!lmap) return;
   lmap.setMarkers(s.contenders.map((c, ci) => { if (!c.pt) return null; const hid = hidden(ci), r = reg(c.region);
-    return { lon:c.pt[0], lat:c.pt[1], r:hid ? 6 : 7.5, color:hid ? "#8f93a6" : r.color, glow:!hid, label:hid ? "?" : c.label, labelAlways:true, fixed:true, tip:hid ? "<div class=\"s\">One of them lives here.</div>" : `<div class="t">${AS.esc(c.label)}</div><div class="s">${AS.esc(r.name)}</div>` }; }).filter(Boolean));
+    return { lon:c.pt[0], lat:c.pt[1], r:hid ? 6 : 7.5, color:hid ? TC("--muted", "#8f93a6") : r.color, glow:!hid, label:hid ? "?" : c.label, labelAlways:true, fixed:true, tip:hid ? "<div class=\"s\">One of them lives here.</div>" : `<div class="t">${AS.esc(c.label)}</div><div class="s">${AS.esc(r.name)}</div>` }; }).filter(Boolean));
   if (lfitSig !== s.id){ lfitSig = s.id; requestAnimationFrame(() => { if (!lmap || !els.lmap.offsetWidth) return; const pts = s.contenders.filter(c => c.pt).map(c => c.pt); if (pts.length) lmap.fit(pts, { pad:64, maxZoom:pts.length === 1 ? 3 : 6, ms:AS.still ? 0 : 500 }); else lmap.reset(0); }); }
 }
 function toggleCover(){ const s = data.setById[look.id]; if (!s) return; look.cover = !look.cover; look.shown = new Set(); look.peek = false; look.order = s.contenders.map((_, i) => i); if (look.cover) look.order = AS.shuffle(look.order); renderPanel(s); }
