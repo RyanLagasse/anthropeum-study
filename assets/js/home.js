@@ -19,7 +19,7 @@ AS.views.home = {
       h("div.hm-copy", {},
         h("div.eyebrow", {}, "Anthropeum study desk"),
         h("h1", { html:"Learn the world,<br><em>not the catalogue.</em>" }),
-        h("p.hm-lede", {}, "Where and when things were made: priors, tells, scripts and first appearances. Practised on a held-out set, because you don't train on the test set."),
+        h("p.hm-lede", {}, "Where and when things were made: priors, tells, scripts and first appearances. Practised on objects from other museums: no overlap with the Met collection Anthropeum draws from."),
         h("div.row.wrap", { style:{ gap:"12px", marginTop:"6px" } },
           h("a.btn.primary.lg", { href:AS.href("practice", { mode:"place" }) }, "Play a round"),
           h("a.btn.lg", { href:AS.href("atlas") }, "Open the Atlas")),
@@ -73,7 +73,7 @@ AS.views.home = {
       room("when", "When", "Earliest possible", "What existed when, and when it reached each region. Lower bounds you can apply to the thing in front of you.", n.techs ? `${n.techs} techniques & motifs` : "data pending", prog("when", techs().map(t => t.id))),
       room("tells", "Tells", "Cue → inference", "The random facts that win rounds, as a field guide you can self-test on. Plus the classic lookalike showdowns.", n.tells ? `${n.tells} tells · ${n.looks} lookalike sets` : "data pending", prog("tells", tells().map(t => t.id))),
       room("scripts", "Scripts", "Read the writing", "Writing systems as live specimens: where, when, and what the style says about the date.", n.scripts ? `${n.scripts} writing systems` : "data pending", prog("scripts", scripts().map(t => t.id))),
-      room("practice", "Practice", "Validation set", "The real game on objects from Cleveland, Chicago and Minneapolis, plus drills. Your misses turn into a calibration report.", n.gal ? `${n.gal} held-out objects · 0 Met` : "data pending"));
+      room("practice", "Practice", "No Met objects", "The real game on objects from Cleveland, Chicago and Minneapolis, plus drills. Your misses turn into a calibration report.", n.gal ? `${n.gal} practice objects · 0 Met` : "data pending"));
 
     /* ---------- calibration snapshot ---------- */
     const log = AS.log.all(), scored = log.filter(e => e.max), last = scored.slice(-50);
@@ -83,7 +83,7 @@ AS.views.home = {
     const weak = Object.entries(byReg).filter(([, r]) => r.n >= 3).map(([id, r]) => ({ id, f:r.p / r.m, n:r.n })).sort((a, b) => a.f - b.f).slice(0, 3);
     const stat = (v, l) => h("div.stat", {}, h("b", {}, v), h("span", {}, l));
     const calib = h("div.card.hm-calib", {},
-      h("div.row.between.wrap", { style:{ gap:"18px" } }, h("div", {}, h("div.eyebrow", {}, "Your residuals"), h("h3", {}, log.length ? "Where you're off" : "No answers logged yet")), h("a.btn.sm", { href:AS.href("practice") }, "Full calibration →")),
+      h("div.row.between.wrap", { style:{ gap:"18px" } }, h("div", {}, h("div.eyebrow", {}, "Calibration"), h("h3", {}, log.length ? "Where you're off" : "No answers logged yet")), h("a.btn.sm", { href:AS.href("practice") }, "Full calibration →")),
       log.length ? h("div.hm-stats", {}, stat(String(log.length), "questions answered"), stat(String(AS.log.streak()), "day streak"), stat(avg == null ? "–" : avg + "%", "of points, last 50"), stat(med == null ? "–" : AS.fmtN(med) + " km", "median pin error"))
         : h("p.muted", { style:{ margin:"10px 0 0" } }, "Play a round and this turns into a report: pin error by region, whether you date things too early or too late, and what to drill next."),
       weak.length ? h("div.hm-weak", {}, h("span.muted", {}, "Weakest regions:"), weak.map(w => h("a.chip", { href:AS.href("practice", { mode:"place", region:w.id }), style:{ "--c":AS.regionColor(w.id) } }, h("span.dot"), AS.region(w.id).short, h("span.n", {}, Math.round(w.f * 100) + "%")))) : null);

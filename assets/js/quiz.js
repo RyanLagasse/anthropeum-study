@@ -1,6 +1,6 @@
 /* Anthropeum Study — shared quiz kit (used by practice.js and drills.js so every mode feels the same).
 
-   AS.quiz.register(mode)      mode = { id, title, blurb, group:"Held-out gallery"|"Drills", accent:"#hex", glyph:"short text or inline SVG",
+   AS.quiz.register(mode)      mode = { id, title, blurb, group:"Museum gallery"|"Drills", accent:"#hex", glyph:"short text or inline SVG",
                                         available:() => bool, unavailableNote, start(host, params, ctx) → { destroy() } }   ctx = { exit() }
    AS.quiz.modes               { id: mode }
 

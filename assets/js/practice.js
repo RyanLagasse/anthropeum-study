@@ -9,7 +9,7 @@
 "use strict";
 const AS = window.AS, h = AS.h, Q = AS.quiz;
 const DATA = () => window.AS_DATA || {};
-const GROUP = "Held-out gallery";
+const GROUP = "Museum gallery";
 const SRC = { cma:"Cleveland", aic:"Chicago", mia:"Minneapolis" };
 const TYPE2MED = { "Sculpture":"sculpture", "Ceramic":"ceramics", "Metalwork":"metalwork", "Textile":"textile", "Jewelry":"jewelry", "Glass":"glass", "Ivory & Bone":"ivory-bone",
   "Painting":"painting", "Arms & Armor":"arms", "Furniture":"furniture", "Manuscript":"manuscript", "Mask":"mask", "Lacquer":"lacquer", "Drawing":"painting" };
@@ -202,12 +202,19 @@ const dateChip = o => h("span.era-chip", { style:{ "--c":AS.eraColor(o.eraMid) }
 
 /* ============================ reveal content ============================ */
 function tellsFor(o){
+  /* Only tells that could plausibly apply to this object: same region and overlapping dates, AND the same kind of thing
+     (the tell's medium matches the object's type, or they share a material word such as "jade" or "bronze"), AND pinned
+     within ~1,500 km. A tell about calligraphy must not show up under a textile just because both are Moroccan. */
   const T = (DATA().tells && DATA().tells.tells) || []; if (!Array.isArray(T)) return [];
-  const med = TYPE2MED[o.type], words = String((o.medium || "") + " " + (o.type || "")).toLowerCase().split(/[^a-z]+/).filter(w => w.length > 4);
+  const med = TYPE2MED[o.type], STOP = new Set(["other", "with", "from", "overall", "glazed", "painted", "decoration", "decorated", "carved", "traces", "paint", "color", "colour", "inlaid", "inlay"]);
+  const words = String(o.medium || "").toLowerCase().split(/[^a-z]+/).filter(w => w.length > 3 && !STOP.has(w));
   return T.filter(t => t && t.id && t.place && t.place.region === o.region && Array.isArray(t.years) && t.years[0] <= o.y1 && t.years[1] >= o.y0).map(t => {
-    let sc = +t.strength || 0; if (med && t.medium === med) sc += 10; const txt = String((t.title || "") + " " + (t.cue || "") + " " + (t.tags || []).join(" ")).toLowerCase(); if (words.some(w => txt.includes(w))) sc += 3;
-    if (Number.isFinite(+t.place.lat) && AS.geo.havKm(o.lon, o.lat, +t.place.lon, +t.place.lat) < 700) sc += 5; if (o.country && String(t.place.label || "").includes(o.country)) sc += 4;
-    return [sc, t]; }).sort((a, b) => b[0] - a[0]).slice(0, 3).map(x => x[1]);
+    const txt = String((t.title || "") + " " + (t.cue || "") + " " + (t.tags || []).join(" ")).toLowerCase();
+    const sameKind = !!med && t.medium === med, shared = words.some(w => new RegExp("\\b" + w).test(txt));
+    const km = Number.isFinite(+t.place.lat) ? AS.geo.havKm(o.lon, o.lat, +t.place.lon, +t.place.lat) : 9e9;
+    if (!(sameKind || shared) || km > 1500) return null;
+    let sc = (+t.strength || 0) + (sameKind ? 6 : 0) + (shared ? 5 : 0) + (km < 400 ? 5 : km < 900 ? 2 : 0); if (o.country && String(t.place.label || "").includes(o.country)) sc += 4;
+    return [sc, t]; }).filter(Boolean).sort((a, b) => b[0] - a[0]).slice(0, 3).map(x => x[1]);
 }
 function placeReveal(o, res){
   const box = h("div.pr-reveal");
@@ -218,9 +225,9 @@ function placeReveal(o, res){
   box.append(tags);
   if (o.geoPrecision === "country" || o.geoPrecision === "culture") box.append(h("div.pr-geo", {}, `Located to ${o.geoPrecision} level only — full marks within ${AS.fmtN(o.r_km)} km.`));
   const tells = tellsFor(o);
-  if (tells.length){ box.append(h("div.eyebrow", { style:{ marginTop:"6px" } }, "Tells that would have helped"));
+  if (tells.length){ box.append(h("div.eyebrow", { style:{ marginTop:"6px" } }, "Tells for this kind of object, here and then"));
     box.append(h("div.pr-tells", {}, tells.map(t => h("a.pr-tell", { href:AS.href("tells", { id:t.id }) }, h("div.row.between", {}, h("b", {}, t.title || t.id), AS.ui.pips(+t.strength || 0)), h("span", {}, cut(t.infer || t.cue, 120)))))); }
-  else box.append(h("div.muted", { style:{ fontSize:"12.5px" } }, h("a", { href:AS.href("tells", { region:o.region }) }, `Browse ${AS.region(o.region).short} tells`), " — none on file match this one."));
+  else box.append(h("div.muted", { style:{ fontSize:"12.5px" } }, h("a", { href:AS.href("tells", { region:o.region }) }, `Browse ${AS.region(o.region).short} tells`), " (none on file for this kind of object)."));
   box.append(h("div.pr-credit", {}, h("span", {}, o.credit || SRC[o.src] || ""), museumLink(o)));
   return box;
 }
@@ -231,7 +238,7 @@ const SHOW = {
     const o = q.o, fr = frame(o); let revealed = false;
     const cap = () => revealed ? h("div", {}, h("b", {}, o.title), h("div.muted", {}, `${o.place} · ${o.dateLabel}`)) : null;
     const media = h("div.pr-obj", { role:"button", tabindex:"0", title:"Inspect up close (Z)", onclick:() => lightbox(o, cap()) }, fr, h("span.pr-zoomhint", {}, h("i", { html:ICON.zoom }), "Inspect", h("span.kbd", {}, "Z")));
-    const task = Q.placeTask(body, { media, prompt:"Where and when was this made?", hint:"Held-out object. Look closely first: click the picture to zoom.",
+    const task = Q.placeTask(body, { media, prompt:"Where and when was this made?", hint:"Look closely first: click the picture to zoom.",
       truth:{ lon:o.lon, lat:o.lat, r_km:o.r_km, label:o.place, eras:o.eras, dateLabel:o.dateLabel }, mapYear:AS.MODERN_MAP, revealYear:AS.ERA2MAP[o.eraMid],
       reveal:res => placeReveal(o, res), nextLabel:hk.last ? "See results" : "Next", onNext:hk.next,
       onDone(res){ revealed = true; const g = res.eraGuess, era = g == null ? o.eraMid : o.eras.reduce((b, e) => Math.abs(e - g) < Math.abs(b - g) ? e : b, o.eras[0]);
@@ -315,7 +322,7 @@ function engine(host, params, ctx, cfg){
         next(){ if (gone || my !== gen || at !== i) return; kill(); i++; step(); } });
       if (cfg.plan[at + 1] && cfg.plan[at + 1] !== "older") eager(); });
   }
-  function starve(body){ body.append(h("div.pr-starve", {}, h("div.eyebrow", {}, "Nothing to show"), h("h2", {}, objects().length ? "That focus is too narrow." : "The validation set is not loaded."),
+  function starve(body){ body.append(h("div.pr-starve", {}, h("div.eyebrow", {}, "Nothing to show"), h("h2", {}, objects().length ? "That focus is too narrow." : "The practice gallery is not loaded."),
     h("p.muted", {}, objects().length ? "No objects match, or their images would not load. Widen the focus, or check the connection: pictures are fetched live from the museums." : "data/gallery.js has no objects yet. Run build/pack.py once the gallery has been built."),
     h("button.btn.primary", { type:"button", onclick:ctx.exit }, "Back to practice"))); }
   function finish(note){
@@ -325,16 +332,16 @@ function engine(host, params, ctx, cfg){
       if (cfg.daily){ const d = AS.store.get("practice.daily", {}); AS.store.set("practice.daily", { day:AS.log.day(), pts:d.day === AS.log.day() ? Math.max(d.pts || 0, score) : score, max }); } }
     const extra = h("div.pr-fin", {}, record ? h("span.pr-record", {}, "New best") : null, note ? h("span.muted", {}, note) : null,
       cfg.id === "older" && st.minGap < 1e9 ? h("span.muted", {}, "Tightest pair you called: ", h("b.mono", {}, AS.fmtN(Math.round(st.minGap / 10) * 10) + " yr")) : null,
-      cfg.daily ? h("span.muted", {}, "Same draw until midnight. Every answer went into your residuals.") : h("a", { href:AS.href("practice", Object.assign({ show:"residuals" }, focusParams(focus))) }, "See what this did to your residuals"));
+      cfg.daily ? h("span.muted", {}, "Same draw until midnight. Every answer went into your calibration.") : h("a", { href:AS.href("practice", Object.assign({ show:"residuals" }, focusParams(focus))) }, "See what this did to your calibration"));
     round.finish({ rows, onAgain:start, extra });
   }
   start();
   return { destroy(){ gone = true; kill(); if (round) round.destroy(); closeLightbox(); wrap.remove(); } };
 }
 const enough = () => objects().length >= 12;
-const NOTE = "The validation set is not packed yet (data/gallery.js is empty).";
+const NOTE = "The practice gallery is not packed yet (data/gallery.js is empty).";
 const rep = (k, n) => Array(n).fill(k);
-[ { id:"daily", title:"Daily mix", blurb:"Eight held-out objects, three games, one fixed draw per day.", accent:"#ecbd4f", glyph:ICON.daily, featured:true, daily:true, plan:["place", "older", "lineup", "place", "lineup", "older", "place", "lineup"] },
+[ { id:"daily", title:"Daily mix", blurb:"Eight objects, three games, one fixed draw per day.", accent:"#ecbd4f", glyph:ICON.daily, featured:true, daily:true, plan:["place", "older", "lineup", "place", "lineup", "older", "place", "lineup"] },
   { id:"place", title:"Place & date", blurb:"The real game on objects you have never seen: drop a pin, pick an era. Five per round.", accent:"#3fd08f", glyph:ICON.place, plan:rep("place", 5) },
   { id:"older", title:"Older or newer?", blurb:"Two objects, one question. The gap between them shrinks every time you get it right.", accent:"#5b86ff", glyph:ICON.older, plan:rep("older", 10), variants:[{ label:"Same region only", params:{ same:"1" } }] },
   { id:"lineup", title:"Which one is from…?", blurb:"Four objects in a row; pick the one from the named region or era. The decoys are neighbours.", accent:"#c56bd6", glyph:ICON.lineup, plan:rep("lineup", 8) }
@@ -416,15 +423,15 @@ function weakList(c){
 function ghost(){
   const g = h("div.pr-ghost-heat"); for (let t = 0; t < 12; t++) for (let q = 0; q < 12; q++){ const d = Math.abs(t - q), a = d === 0 ? .5 : d === 1 ? .2 : d === 2 && (t * 7 + q) % 3 === 0 ? .1 : 0; g.append(h("i", { style:a ? { background:`color-mix(in srgb, var(--gold) ${Math.round(a * 100)}%, transparent)` } : null })); }
   const bars = h("div.pr-ghost-bars"); [72, 55, 48, 33, 26, 14].forEach((w, i) => bars.append(h("i", { style:{ width:w + "%", background:AS.REGIONS[[0, 4, 7, 1, 11, 6][i]].color } })));
-  return h("div.pr-empty", {}, h("div.pr-ghost", {}, bars, g), h("div.pr-empty-copy", {}, h("div.eyebrow", {}, "No residuals yet"), h("h3", {}, "Nothing to regress on."),
+  return h("div.pr-empty", {}, h("div.pr-ghost", {}, bars, g), h("div.pr-empty-copy", {}, h("div.eyebrow", {}, "Calibration"), h("h3", {}, "No answers yet."),
     h("p", {}, "Answer a few questions and this fills in: how far your pins land by region, which way your dates lean, which eras you swap, and the cells worth drilling."),
     h("div.row.wrap", {}, Q.modes.place && Q.modes.place.available() ? h("a.btn.primary", { href:AS.href("practice", { mode:"place" }) }, "Play Place & date") : null, h("span.muted", { style:{ fontSize:"12.5px" } }, "Tells and Scripts quick tests count too."))));
 }
 function dashboard(params, rerender){
   const log = AS.log.all(), c = calc(log), box = h("div.pr-dash", { id:"pr-residuals" });
-  const reset = h("button.btn.ghost.sm", { type:"button", onclick:() => { const m = AS.modal(h("div.pr-confirm", {}, h("h3", {}, "Reset history?"), h("p.muted", {}, `This deletes all ${AS.fmtN(log.length)} logged answers, so the residuals start from nothing. Best scores and the streak stay.`),
+  const reset = h("button.btn.ghost.sm", { type:"button", onclick:() => { const m = AS.modal(h("div.pr-confirm", {}, h("h3", {}, "Reset history?"), h("p.muted", {}, `This deletes all ${AS.fmtN(log.length)} logged answers, so the calibration starts from nothing. Best scores and the streak stay.`),
     h("div.row", { style:{ justifyContent:"flex-end" } }, h("button.btn", { type:"button", onclick:() => m.close() }, "Keep it"), h("button.btn.pr-danger", { type:"button", onclick:() => { AS.log.clear(); m.close(); AS.toast("History cleared"); rerender(); } }, "Delete history"))), { width:440 }); } }, "Reset history");
-  box.append(h("div.pr-sec", {}, h("div", {}, h("div.eyebrow", {}, "Calibration"), h("h2", {}, "Your residuals"), h("p.muted", {}, "Every answer from every room, read as error. Rows with fewer than three answers are greyed: noise, not signal.")), log.length ? reset : null));
+  box.append(h("div.pr-sec", {}, h("div", {}, h("div.eyebrow", {}, "Calibration"), h("h2", {}, "Where you are off"), h("p.muted", {}, "Built from every answer in every room. Rows with fewer than three answers are greyed out.")), log.length ? reset : null));
   if (!log.length){ box.append(ghost()); return box; }
   const last = c.fr.slice(-50), med = median(c.km), streak = AS.log.streak();
   const tile = (v, label, sub) => h("div.pr-tile", {}, h("b", {}, v), h("span", {}, label), sub ? h("small", {}, sub) : null);
@@ -450,8 +457,8 @@ function hub(el, params){
     h("div.pr-split", {}, h("span", {}, "train"), h("b", {}, "The other rooms"), h("small", {}, "priors, not pictures")),
     h("div.pr-split.on", {}, h("span", {}, "validation"), h("b", {}, N ? `${AS.fmtN(N)} objects` : "not loaded"), h("small", {}, N ? `${nSrc} other museum${nSrc === 1 ? "" : "s"} · you are here` : "run build/pack.py")),
     h("div.pr-split.locked", {}, h("span", {}, "test ", h("i", { html:ICON.lock })), h("b", {}, "The Met"), h("small", {}, "sealed · 0 objects here")));
-  page.append(h("div.page-head", {}, h("div", {}, h("div.eyebrow", {}, "Validation set, not the test set"), h("h1", {}, "Practice"),
-    h("p.lede", {}, N ? `Held-out validation set: ${AS.fmtN(N)} objects from ${sourcesLine()}. Zero Met objects, so nothing here can leak into the game.` : "The held-out validation set has not been packed yet, so the gallery games are closed. Still zero Met objects.")), splits));
+  page.append(h("div.page-head", {}, h("div", {}, h("div.eyebrow", {}, "No overlap with the Met collection Anthropeum draws from!"), h("h1", {}, "Practice"),
+    h("p.lede", {}, N ? `${AS.fmtN(N)} real objects from ${sourcesLine()}. None are from the Met, so practising here cannot spoil the real game.` : "The practice gallery has not been packed yet, so the picture games are closed."))));
 
   /* focus */
   const count = h("b.mono"), clear = h("button.btn.ghost.sm", { type:"button", onclick:() => { focus.regions = null; focus.ages = null; focus.weak = false; rc.set(new Set()); ac.set(new Set()); weakBtn.classList.remove("on"); sync(); } }, "Clear");
@@ -473,7 +480,7 @@ function hub(el, params){
     const strip = h("div.pr-strip"); if (ok){ const rng = mulberry(daySeed() ^ 0x9e3779b9), S = makeSampler({ regions:null, ages:null, weak:false }, rng, true); for (let i = 0; i < 6; i++){ const o = S.pick(); if (!o) break; const im = h("img", { alt:"", loading:"lazy", referrerpolicy:"no-referrer", src:o.thumb }); im.onerror = () => im.remove(); strip.append(im); } }
     const d = new Date(); const dateTxt = d.toLocaleDateString("en-US", { weekday:"short", month:"short", day:"numeric" });
     page.append(h("a.pr-daily" + (ok ? "" : ".off"), { href:ok ? AS.href("practice", { mode:"daily" }) : null, data:{ mode:"daily", daily:"1" } }, strip,
-      h("div.pr-daily-copy", {}, h("div.eyebrow", {}, `Daily mix · ${dateTxt}`), h("h2", {}, "Eight objects, three games, one draw."), h("p", {}, ok ? "Three to place and date, two duels, three line-ups. Same for everyone who is you, until midnight." : NOTE),
+      h("div.pr-daily-copy", {}, h("div.eyebrow", {}, `Daily mix · ${dateTxt}`), h("h2", {}, "Eight objects, three games, one draw."), h("p", {}, ok ? "Three to place and date, two duels, three line-ups. The same draw all day; a new one tomorrow." : NOTE),
         h("div.row.wrap", {}, h("span.btn.primary.lg", {}, playedToday ? "Play it again" : "Play today's mix", h("span.kbd", {}, "D")),
           playedToday ? h("span.pr-dstat", {}, "today ", h("b.mono", {}, AS.fmtN(dd.pts)), ` / ${AS.fmtN(dd.max)}`) : h("span.pr-dstat", {}, "not played today"),
           st.daily ? h("span.pr-dstat", {}, "best ", h("b.mono", {}, AS.fmtN(st.daily.best)), ` · ${st.daily.plays} play${st.daily.plays === 1 ? "" : "s"}`) : null))));
@@ -496,7 +503,7 @@ function hub(el, params){
   for (const m of modes){ const g = m.group || "Other"; if (!groups.includes(g)) groups.push(g); }
   groups.sort((a, b) => (a === GROUP ? -1 : b === GROUP ? 1 : 0));
   if (!groups.includes("Drills")) groups.push("Drills");
-  const SUB = { [GROUP]:"real objects you have not seen · images load live from the museums", "Drills":"knowledge without pictures of the test set: tells, scripts, dates, powers" };
+  const SUB = { [GROUP]:"real objects you have not seen · images load live from the museums", "Drills":"no pictures, just knowledge: tells, scripts, dates, powers" };
   for (const g of groups){ const list = modes.filter(m => (m.group || "Other") === g);
     page.append(h("div.pr-group", {}, h("h2", {}, g), h("span", {}, SUB[g] || "")));
     page.append(list.length ? h("div.pr-cards", {}, list.map(card)) : h("div.pr-nodrills", {}, h("b", {}, "No drills registered yet."), " When the drill deck lands it will list itself here; until then the Tells and Scripts rooms have their own quick tests.")); }
