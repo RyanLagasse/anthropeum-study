@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anthropeum Study · Museum Label direction</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="page">
+
+  <header class="intro">
+    <div class="intro-k mono">Anthropeum Study · UI direction</div>
+    <h1>Museum Label</h1>
+    <p>White walls, black type, a strict grid. The only saturated colour on any screen is data: twenty era colours and fourteen region colours. One orange-red accent marks the primary action. Seven frames follow, built with the real map engine and the real data files.</p>
+  </header>
+
+  <section class="frame" id="f1">
+    <div class="cap"><span class="mono no">01</span><b>Shell + Desk</b><span>Slim text navigation along the top. The Desk opens on one era: its dates as the headline, the period borders beside it, the twenty-era bar as the footer rule.</span></div>
+    <div class="screen" id="s-desk"></div>
+  </section>
+
+  <section class="frame" id="f2">
+    <div class="cap"><span class="mono no">02</span><b>Atlas</b><span>Grey land, white borders, region-coloured bubbles. The ranked list repeats the same colours, so the map and the table read as one figure.</span></div>
+    <div class="screen" id="s-atlas"></div>
+  </section>
+
+  <section class="frame" id="f3">
+    <div class="cap"><span class="mono no">03</span><b>Tells</b><span>Cards set like wall labels: a bold title, a short description, hairline rules. A covered answer is a flat grey panel, not a blur.</span></div>
+    <div class="screen" id="s-tells"></div>
+  </section>
+
+  <section class="frame" id="f4">
+    <div class="cap"><span class="mono no">04</span><b>When</b><span>A plain chart. Grey bars start at each first appearance; coloured ticks are arrivals by region. The selected rule is set at headline size.</span></div>
+    <div class="screen" id="s-when"></div>
+  </section>
+
+  <section class="frame" id="f5">
+    <div class="cap"><span class="mono no">05</span><b>Scripts</b><span>Specimen sheets. Each script is shown large in its own typeface on white, with dates and an era strip underneath.</span></div>
+    <div class="screen" id="s-scripts"></div>
+  </section>
+
+  <section class="frame" id="f6a">
+    <div class="cap"><span class="mono no">06a</span><b>Practice · question</b><span>The object gets the left half of the screen, like a work on a wall. Map and era picker are numbered steps on the right; one accent button.</span></div>
+    <div class="screen" id="s-pq"></div>
+  </section>
+
+  <section class="frame" id="f6b">
+    <div class="cap"><span class="mono no">06b</span><b>Practice · reveal and calibration</b><span>The score is the largest thing on the page. Guess is black, answer is the accent. The label for the object appears only now. Calibration tiles sit below.</span></div>
+    <div class="screen" id="s-pr"></div>
+  </section>
+
+  <section class="frame" id="f7">
+    <div class="cap"><span class="mono no">07</span><b>Design notes</b><span>Palette, type, data colours and trade-offs.</span></div>
+    <div class="screen notes" id="s-notes"></div>
+  </section>
+
+</div>
+
+<script src="../../build/borders_data.js"></script>
+<script src="../../data/agg.js"></script><script src="../../data/tells.js"></script>
+<script src="../../data/techniques.js"></script><script src="../../data/scripts.js"></script><script src="../../data/gallery.js"></script>
+<script src="../../assets/js/core.js"></script><script src="../../assets/js/map.js"></script>
+<script src="page.js"></script>
+</body>
+</html>

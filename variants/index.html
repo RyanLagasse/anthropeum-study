@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UI directions · Anthropeum Study</title>
+<style>
+  :root{--bg:#f4f3ef;--ink:#16171a;--muted:#6a6d75;--line:#d9d8d2;--card:#fff}
+  @media (prefers-color-scheme:dark){:root{--bg:#121318;--ink:#ecebe6;--muted:#9a9da6;--line:#2c2e36;--card:#1a1c22}}
+  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+  main{max-width:1320px;margin:0 auto;padding:40px 24px 80px}
+  h1{font-size:30px;margin:0 0 6px;letter-spacing:-.01em} p.lede{color:var(--muted);max-width:70ch;margin:0 0 28px}
+  .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+  a.card{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;text-decoration:none;color:inherit;transition:transform .15s,box-shadow .15s}
+  a.card:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(0,0,0,.18)}
+  a.card img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top left;border-bottom:1px solid var(--line)}
+  .body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:6px}
+  .tag{font:600 11px/1 ui-monospace,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  h2{font-size:21px;margin:0} .body p{margin:0;color:var(--muted);font-size:14.5px}
+  ul{margin:4px 0 0;padding-left:18px;font-size:14px} li{margin:2px 0}
+  .go{margin-top:8px;font-weight:600;font-size:14px}
+  footer{margin-top:30px;color:var(--muted);font-size:13.5px;max-width:80ch}
+  @media (max-width:820px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+  <h1>Four UI directions</h1>
+  <p class="lede">The same product in four visual styles. A is the working app. B, C and D are static template pages: seven screens each, built with the real data and the real map, but the controls are not wired up and the personal stats on them are sample values.</p>
+  <div class="grid">
+    <a class="card" href="../index.html">
+      <img src="night-preview.png" alt="Night Gallery: dark navy interface with a gold accent">
+      <div class="body"><span class="tag">A · working app</span><h2>Night Gallery</h2>
+        <p>Dark navy, gold accent, serif headlines, glowing map, icon rail on the left.</p>
+        <ul><li>Most atmosphere; the map and era colours glow.</li><li>Dense screens can feel heavy; small text has less contrast than on a light page.</li></ul>
+        <span class="go">Open the app →</span></div></a>
+    <a class="card" href="label/index.html">
+      <img src="label/preview.png" alt="Museum Label: white page with heavy black type and coloured data">
+      <div class="body"><span class="tag">B · template</span><h2>Museum Label</h2>
+        <p>White wall, heavy black sans, hairline rules. Colour appears only on eras and regions.</p>
+        <ul><li>Fastest to read; numbers and lists are very clear.</li><li>Least mood. Neighbouring era colours are closer together than in A.</li></ul>
+        <span class="go">Open the template →</span></div></a>
+    <a class="card" href="vellum/index.html">
+      <img src="vellum/preview.png" alt="Vellum Atlas: cream paper, serif type and an engraved-style map">
+      <div class="body"><span class="tag">C · template</span><h2>Vellum Atlas</h2>
+        <p>Cream paper, ink-coloured serif type, an engraved-style map, top masthead.</p>
+        <ul><li>Suits the subject; long text (tells, rules) reads comfortably.</li><li>Quieter colours; yellow data marks are weak on paper.</li></ul>
+        <span class="go">Open the template →</span></div></a>
+    <a class="card" href="board/index.html">
+      <img src="board/preview.png" alt="Game Board: cream board with thick outlines and flat bright colours">
+      <div class="body"><span class="tag">D · template</span><h2>Game Board</h2>
+        <p>Thick outlines, flat bright colour, big pressable buttons, streak and score as game pieces.</p>
+        <ul><li>Most playful; practice and review feel like a game.</li><li>Loudest. Data-heavy screens (Atlas, When) have to work harder to stay calm.</li></ul>
+        <span class="go">Open the template →</span></div></a>
+  </div>
+  <footer>Mixing is possible: for example the layout and type of one with the map treatment of another. Each template's last frame lists its palette, fonts and trade-offs.</footer>
+</main>
+</body>
+</html>

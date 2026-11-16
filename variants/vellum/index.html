@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Anthropeum Study — Vellum Atlas (UI direction)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;0,700;1,500;1,600&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="comp-head">
+  <h1>Vellum <em>Atlas</em></h1>
+  <p>An alternative look for Anthropeum Study: a printed historical atlas. Light paper ground, dark ink, four printing colours for data. Same six rooms and the same data as the current app.</p>
+</header>
+
+<section class="frame" id="f1">
+  <div class="cap"><span class="pl">Plate 1</span><h2>Shell and Desk</h2><p>The six rooms sit in a top masthead, so the map gets the full width. The Desk opens on the world as it was in one era.</p></div>
+  <div class="screen fix"><div data-mast="Desk"></div>
+    <div class="desk">
+      <div class="col" id="deskcol"></div>
+      <div class="mapwrap"><div class="plate" id="deskmap"><div class="cart" style="left:30px;bottom:30px" id="deskcart"></div><div class="cart" style="right:30px;bottom:30px;padding:10px 14px"><div class="legend"><span><b style="width:18px;height:18px"></b>Major power</span><span><b style="width:13px;height:13px"></b>Regional</span><span><b style="width:9px;height:9px"></b>Minor</span></div></div></div></div>
+    </div>
+    <div class="deskbar" id="deskbar"></div>
+  </div>
+</section>
+
+<section class="frame" id="f2">
+  <div class="cap"><span class="pl">Plate 2</span><h2>Atlas</h2><p>Bubbles are flat ink circles coloured by region. The readout sits on the map like a title cartouche; the ranking reads as a gazetteer column.</p></div>
+  <div class="screen fix"><div data-mast="Atlas"></div>
+    <div class="tool" id="atlastool"></div>
+    <div class="barrow" id="atlasbar"></div>
+    <div class="atlas">
+      <div class="mapwrap"><div class="plate" id="atlasmap"><div class="cart readout" id="readout"></div></div></div>
+      <aside class="side" id="atlasside"></aside>
+    </div>
+  </div>
+</section>
+
+<section class="frame" id="f3">
+  <div class="cap"><span class="pl">Plate 3</span><h2>Tells</h2><p>Tells are index cards with a region-coloured top edge. A covered answer is hatched like an engraving, so covered and revealed cards differ at a glance.</p></div>
+  <div class="screen"><div data-mast="Tells"></div>
+    <div class="filters" id="tellfilters"></div>
+    <div class="pad"><div id="tellsec"></div><div class="look" id="lookalike"></div></div>
+  </div>
+</section>
+
+<section class="frame" id="f4">
+  <div class="cap"><span class="pl">Plate 4</span><h2>When</h2><p>Each bar starts where a technique first appears and takes that era's colour. Ticks mark arrivals elsewhere, coloured by region. The selected row's rule is set large.</p></div>
+  <div class="screen"><div data-mast="When"></div>
+    <div class="when"><div class="tl" id="timeline"></div><aside class="rule-p" id="rulepanel"></aside></div>
+  </div>
+</section>
+
+<section class="frame" id="f5">
+  <div class="cap"><span class="pl">Plate 5</span><h2>Scripts</h2><p>Specimens are set like a type foundry's sample sheet: the sample large, then name, dates and the twenty-era strip.</p></div>
+  <div class="screen"><div data-mast="Scripts"></div>
+    <div class="scripts"><div class="sgrid" id="sgrid"></div><aside class="sbig" id="sbig"></aside></div>
+  </div>
+</section>
+
+<section class="frame" id="f6">
+  <div class="cap"><span class="pl">Plate 6</span><h2>Practice</h2><p>The photo sits on a pale mount so objects keep their true colour. One red button per state. Calibration figures below are sample values.</p></div>
+  <div class="sublab" style="margin-top:0">6a · Question</div>
+  <div class="screen"><div data-mast="Practice"></div>
+    <div class="pbar"><h2>Place and date</h2><div class="prog"><i class="d"></i><i class="d"></i><i class="c"></i><i></i><i></i></div><span class="lab">Object 3 of 5</span><span class="sp"></span><span class="pts"><b>11,930</b>points so far</span></div>
+    <div class="pq">
+      <div class="photo" id="qphoto"></div>
+      <div class="mapwrap"><div class="plate" id="qmap"><div class="cart hint">Click the map to move your pin. <b>Pin placed: Arita, Japan</b></div></div></div>
+    </div>
+    <div class="lock" id="qlock"></div>
+  </div>
+  <div class="sublab">6b · Reveal</div>
+  <div class="screen">
+    <div class="pbar"><h2>Place and date</h2><div class="prog"><i class="d"></i><i class="d"></i><i class="d"></i><i></i><i></i></div><span class="lab">Object 3 of 5</span><span class="sp"></span><span class="pts" id="rpts"></span></div>
+    <div class="pr">
+      <div class="res" id="res"></div>
+      <div class="mapwrap"><div class="plate" id="rmap"><div class="cart key"><span><i class="dot" style="--c:var(--verdigris)"></i>Where it was made</span><span><i class="dot" style="--c:var(--oxblood)"></i>Your pin</span></div></div></div>
+    </div>
+    <div class="rfoot"><div id="rbar"></div><div class="k"><span><i style="background:var(--verdigris);border:1px solid var(--ink)"></i>Era it was made</span><span><i style="border:2px solid var(--oxblood)"></i>Era you chose</span></div></div>
+  </div>
+  <div class="sublab">6c · Calibration</div>
+  <div class="screen"><div class="calib" id="calib"></div></div>
+</section>
+
+<section class="frame" id="f7">
+  <div class="cap"><span class="pl">Plate 7</span><h2>Design notes</h2><p>Palette, type, the two colour scales, and what this direction trades away.</p></div>
+  <div class="screen"><div class="notes" id="notes"></div></div>
+</section>
+
+<script src="../../build/borders_data.js"></script>
+<script src="../../data/agg.js"></script><script src="../../data/tells.js"></script>
+<script src="../../data/techniques.js"></script><script src="../../data/scripts.js"></script><script src="../../data/gallery.js"></script>
+<script src="../../assets/js/core.js"></script><script src="../../assets/js/map.js"></script>
+<script src="page.js"></script>
+</body>
+</html>
