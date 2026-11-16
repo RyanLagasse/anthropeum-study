@@ -6,7 +6,9 @@
 <title>Anthropeum Study</title>
 <meta name="referrer" content="no-referrer">
 <meta name="description" content="A study desk for anthropeum.games: learn where and when things were made, with practice objects that never overlap the Met collection the game draws from.">
-<link rel="icon" href="favicon.ico">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="alternate icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
 /* theme before first paint: saved choice, else Vellum Atlas in light mode */
 (function(){ var t = "vellum", m = "light"; try { t = localStorage.getItem("anthro.theme") || t; m = localStorage.getItem("anthro.mode") || m; } catch(e){}
@@ -15,16 +17,16 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..700,0..100;1,9..144,400..700,0..100&family=Instrument+Sans:wght@400..700&family=JetBrains+Mono:wght@400;500;700&family=Cormorant:ital,wght@0,500;0,600;0,700;1,500;1,600&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=IBM+Plex+Sans:wght@400;500;600&family=Inter+Tight:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/base.css?v=202611152328">
-<link rel="stylesheet" href="assets/css/quiz.css?v=202611152328">
-<link rel="stylesheet" href="assets/css/home.css?v=202611152328">
-<link rel="stylesheet" href="assets/css/atlas.css?v=202611152328">
-<link rel="stylesheet" href="assets/css/when.css?v=202611152328">
-<link rel="stylesheet" href="assets/css/tells.css?v=202611152328">
-<link rel="stylesheet" href="assets/css/scripts.css?v=202611152328">
-<link rel="stylesheet" href="assets/css/practice.css?v=202611152328">
-<link rel="stylesheet" href="assets/css/drills.css?v=202611152328">
-<link rel="stylesheet" href="assets/css/themes.css?v=202611152328">
+<link rel="stylesheet" href="assets/css/base.css?v=202611161038">
+<link rel="stylesheet" href="assets/css/quiz.css?v=202611161038">
+<link rel="stylesheet" href="assets/css/home.css?v=202611161038">
+<link rel="stylesheet" href="assets/css/atlas.css?v=202611161038">
+<link rel="stylesheet" href="assets/css/when.css?v=202611161038">
+<link rel="stylesheet" href="assets/css/tells.css?v=202611161038">
+<link rel="stylesheet" href="assets/css/scripts.css?v=202611161038">
+<link rel="stylesheet" href="assets/css/practice.css?v=202611161038">
+<link rel="stylesheet" href="assets/css/drills.css?v=202611161038">
+<link rel="stylesheet" href="assets/css/themes.css?v=202611161038">
 </head>
 <body>
 <div id="app">
@@ -49,24 +51,24 @@ window.addEventListener("error", function(e){ var b = document.getElementById("e
   b.style.cssText = "position:fixed;left:0;right:0;top:0;z-index:9999;background:#7a1020;color:#fff;font:12px/1.4 monospace;padding:6px 10px;white-space:pre-wrap";
   b.textContent += (e.message || "error") + " @ " + String(e.filename || "").split("/").pop() + ":" + e.lineno + "\n"; });
 </script>
-<script src="build/borders_data.js?v=202611152328"></script>
-<script src="data/agg.js?v=202611152328"></script>
-<script src="data/notes.js?v=202611152328"></script>
-<script src="data/techniques.js?v=202611152328"></script>
-<script src="data/tells.js?v=202611152328"></script>
-<script src="data/scripts.js?v=202611152328"></script>
-<script src="data/gallery.js?v=202611152328"></script>
-<script src="assets/js/core.js?v=202611152328"></script>
-<script src="assets/js/theme.js?v=202611152328"></script>
-<script src="assets/js/map.js?v=202611152328"></script>
-<script src="assets/js/quiz.js?v=202611152328"></script>
-<script src="assets/js/home.js?v=202611152328"></script>
-<script src="assets/js/atlas.js?v=202611152328"></script>
-<script src="assets/js/when.js?v=202611152328"></script>
-<script src="assets/js/tells.js?v=202611152328"></script>
-<script src="assets/js/scripts.js?v=202611152328"></script>
-<script src="assets/js/drills.js?v=202611152328"></script>
-<script src="assets/js/practice.js?v=202611152328"></script>
+<script src="build/borders_data.js?v=202611161038"></script>
+<script src="data/agg.js?v=202611161038"></script>
+<script src="data/notes.js?v=202611161038"></script>
+<script src="data/techniques.js?v=202611161038"></script>
+<script src="data/tells.js?v=202611161038"></script>
+<script src="data/scripts.js?v=202611161038"></script>
+<script src="data/gallery.js?v=202611161038"></script>
+<script src="assets/js/core.js?v=202611161038"></script>
+<script src="assets/js/theme.js?v=202611161038"></script>
+<script src="assets/js/map.js?v=202611161038"></script>
+<script src="assets/js/quiz.js?v=202611161038"></script>
+<script src="assets/js/home.js?v=202611161038"></script>
+<script src="assets/js/atlas.js?v=202611161038"></script>
+<script src="assets/js/when.js?v=202611161038"></script>
+<script src="assets/js/tells.js?v=202611161038"></script>
+<script src="assets/js/scripts.js?v=202611161038"></script>
+<script src="assets/js/drills.js?v=202611161038"></script>
+<script src="assets/js/practice.js?v=202611161038"></script>
 <script>AS.start();</script>
 </body>
 </html>
