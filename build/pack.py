@@ -21,3 +21,9 @@ for p in sorted((ROOT / "data-src").glob("*.json")):
     except Exception as e: print("skip", p.name, e); continue
     (OUT / f"{p.stem}.js").write_text(f"{HEAD}AS_DATA.{p.stem}={dump(o)};\n", encoding="utf-8")
 for f in sorted(OUT.glob("*.js")): print(f"{f.name:18s} {f.stat().st_size/1024:8.1f} KB")
+
+# stamp asset links in index.html so browsers never mix cached old files with new ones
+import time
+_idx = ROOT / "index.html"; _v = time.strftime("%Y%m%d%H%M")
+_idx.write_text(re.sub(r'((?:href|src)="(?:assets|data|build)/[^"?]+\.(?:css|js))(?:\?v=\d+)?"', r'\1?v=' + _v + '"', _idx.read_text(encoding="utf-8")), encoding="utf-8")
+print("index.html asset links stamped", _v)
